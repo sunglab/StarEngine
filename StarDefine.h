@@ -1,0 +1,34 @@
+enum
+{
+    Vertex_Shader_Number,
+    Total_Vertex_Shader_Number,
+};
+enum
+{
+    Fragment_Shader_Number,
+    Total_Fragment_Shader_Number,
+};
+enum
+{
+    Shader_Program_NORMAL,
+    Total_Shader_Program_Number,
+};
+enum
+{
+    ATTRIBUTES_POSITION,
+    ATTRIBUTES_UV,
+    ATTRIBUTES_COLOR,
+    Total_Attributes_Number,
+};
+enum
+{
+    UNIFORMS_TRANSLATE,
+    Total_Uniforms_Number,
+};
+
+
+enum
+{
+    TEXTURES_PAPER,
+    Total_Texture_Number,
+};

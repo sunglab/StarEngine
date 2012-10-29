@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/137/trunk/Oolong%20Engine2/Math/vfpmath
+END
+common_macros.h
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/133/trunk/Oolong%20Engine2/Math/vfpmath/common_macros.h
+END
+utility_impl.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/112/trunk/Oolong%20Engine2/Math/vfpmath/utility_impl.cpp
+END
+matrix_impl.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/137/trunk/Oolong%20Engine2/Math/vfpmath/matrix_impl.cpp
+END
+utility_impl.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/98/trunk/Oolong%20Engine2/Math/vfpmath/utility_impl.h
+END
+matrix_impl.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/133/trunk/Oolong%20Engine2/Math/vfpmath/matrix_impl.h
+END
+vfp_clobbers.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/133/trunk/Oolong%20Engine2/Math/vfpmath/vfp_clobbers.h
+END
