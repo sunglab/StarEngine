@@ -82,26 +82,55 @@ void MatrixMultiply(
 {
 #if ((TARGET_IPHONE_SIMULATOR == 0) && (TARGET_OS_IPHONE == 1)) || ANDROID
             #ifdef _ARM_ARCH_7 // SAME Defined
-                                    #ifdef ANDROID // Especial Android
-                                        uint64_t features = android_getCpuFeatures(); // Seperate Poor devices
-                                        if ((features & ANDROID_CPU_ARM_FEATURE_NEON) == 0) { // if it deon't surport NEON 
-//                                             LOGE("NO NEON BUT ARMV7 ??");
-//                                             LOGE("Matrix with VFP??");
-                                            if (features & ANDROID_CPU_ARM_FEATURE_VFPv3) // if it support VFP
+                                    #ifdef ANDROID /********* Especial Android *********/
+                                        uint64_t features = android_getCpuFeatures(); /************ Seperate Poor devices ************/
+                                        if ((features & ANDROID_CPU_ARM_FEATURE_NEON) == 0) {  /************Unfortunelly if it deon't surport NEON ************/
+                                            // LOGE("NO NEON BUT ARMV7 ??");
+                                           // LOGE("Matrix with VFP??");
+                                            if (features & ANDROID_CPU_ARM_FEATURE_VFPv3)/************ By the way if it support VFP ***************/
                                             { // LOGE("YES,Matrix with VFP");
                                                 Matrix4Mul(mA.f,	mB.f,mOut.f);
                                             }
+                                            else
+                                            {
+                                                MATRIX mRet;
+                                                
+                                                // Perform calculation on a dummy matrix (mRet)
+                                                mRet.f[ 0] = mA.f[ 0]*mB.f[ 0] + mA.f[ 1]*mB.f[ 4] + mA.f[ 2]*mB.f[ 8] + mA.f[ 3]*mB.f[12];
+                                                mRet.f[ 1] = mA.f[ 0]*mB.f[ 1] + mA.f[ 1]*mB.f[ 5] + mA.f[ 2]*mB.f[ 9] + mA.f[ 3]*mB.f[13];
+                                                mRet.f[ 2] = mA.f[ 0]*mB.f[ 2] + mA.f[ 1]*mB.f[ 6] + mA.f[ 2]*mB.f[10] + mA.f[ 3]*mB.f[14];
+                                                mRet.f[ 3] = mA.f[ 0]*mB.f[ 3] + mA.f[ 1]*mB.f[ 7] + mA.f[ 2]*mB.f[11] + mA.f[ 3]*mB.f[15];
+                                                
+                                                mRet.f[ 4] = mA.f[ 4]*mB.f[ 0] + mA.f[ 5]*mB.f[ 4] + mA.f[ 6]*mB.f[ 8] + mA.f[ 7]*mB.f[12];
+                                                mRet.f[ 5] = mA.f[ 4]*mB.f[ 1] + mA.f[ 5]*mB.f[ 5] + mA.f[ 6]*mB.f[ 9] + mA.f[ 7]*mB.f[13];
+                                                mRet.f[ 6] = mA.f[ 4]*mB.f[ 2] + mA.f[ 5]*mB.f[ 6] + mA.f[ 6]*mB.f[10] + mA.f[ 7]*mB.f[14];
+                                                mRet.f[ 7] = mA.f[ 4]*mB.f[ 3] + mA.f[ 5]*mB.f[ 7] + mA.f[ 6]*mB.f[11] + mA.f[ 7]*mB.f[15];
+                                                
+                                                mRet.f[ 8] = mA.f[ 8]*mB.f[ 0] + mA.f[ 9]*mB.f[ 4] + mA.f[10]*mB.f[ 8] + mA.f[11]*mB.f[12];
+                                                mRet.f[ 9] = mA.f[ 8]*mB.f[ 1] + mA.f[ 9]*mB.f[ 5] + mA.f[10]*mB.f[ 9] + mA.f[11]*mB.f[13];
+                                                mRet.f[10] = mA.f[ 8]*mB.f[ 2] + mA.f[ 9]*mB.f[ 6] + mA.f[10]*mB.f[10] + mA.f[11]*mB.f[14];
+                                                mRet.f[11] = mA.f[ 8]*mB.f[ 3] + mA.f[ 9]*mB.f[ 7] + mA.f[10]*mB.f[11] + mA.f[11]*mB.f[15];
+                                                
+                                                mRet.f[12] = mA.f[12]*mB.f[ 0] + mA.f[13]*mB.f[ 4] + mA.f[14]*mB.f[ 8] + mA.f[15]*mB.f[12];
+                                                mRet.f[13] = mA.f[12]*mB.f[ 1] + mA.f[13]*mB.f[ 5] + mA.f[14]*mB.f[ 9] + mA.f[15]*mB.f[13];
+                                                mRet.f[14] = mA.f[12]*mB.f[ 2] + mA.f[13]*mB.f[ 6] + mA.f[14]*mB.f[10] + mA.f[15]*mB.f[14];
+                                                mRet.f[15] = mA.f[12]*mB.f[ 3] + mA.f[13]*mB.f[ 7] + mA.f[14]*mB.f[11] + mA.f[15]*mB.f[15];
+                                                
+                                                // Copy result in pResultMatrix
+                                                mOut = mRet;
+                                            }
                                         }
-                                        else // IF NEON ANDROID? 
+                                        else /****************** IF NEON ANDROID ******************/
                                         {   NEON_Matrix4Mul( mA.f, mB.f, mOut.f );
-//                                             LOGE("Matrix with NEON");
+                                           //  LOGE("Matrix with NEON");
                                         }
-                                    #elif IOS // IF IOS? ONLY NEON
+    
+                                    #elif IOS /*************** IF IOS ONLY NEON ****************/
                                     NEON_Matrix4Mul( mA.f, mB.f, mOut.f );
-//                                    printf("Matrix with NEON\n");
+                                        // printf("Matrix with NEON\n");
                                     #endif
 
-            #else // if n def _ARM_ARCH_7
+            #else  /********************************** If n def _ARM_ARCH_7 **********************************/
 //                                        #ifdef IOS
 //                                        printf("Matrix with VFP\n");
 //                                        #elif ANDROID 
@@ -113,6 +142,34 @@ void MatrixMultiply(
                             { // if it support VFP
                                 Matrix4Mul(mA.f,	mB.f,mOut.f);
                             }
+                        else
+                        {
+                            MATRIX mRet;
+                            
+                            // Perform calculation on a dummy matrix (mRet)
+                            mRet.f[ 0] = mA.f[ 0]*mB.f[ 0] + mA.f[ 1]*mB.f[ 4] + mA.f[ 2]*mB.f[ 8] + mA.f[ 3]*mB.f[12];
+                            mRet.f[ 1] = mA.f[ 0]*mB.f[ 1] + mA.f[ 1]*mB.f[ 5] + mA.f[ 2]*mB.f[ 9] + mA.f[ 3]*mB.f[13];
+                            mRet.f[ 2] = mA.f[ 0]*mB.f[ 2] + mA.f[ 1]*mB.f[ 6] + mA.f[ 2]*mB.f[10] + mA.f[ 3]*mB.f[14];
+                            mRet.f[ 3] = mA.f[ 0]*mB.f[ 3] + mA.f[ 1]*mB.f[ 7] + mA.f[ 2]*mB.f[11] + mA.f[ 3]*mB.f[15];
+                            
+                            mRet.f[ 4] = mA.f[ 4]*mB.f[ 0] + mA.f[ 5]*mB.f[ 4] + mA.f[ 6]*mB.f[ 8] + mA.f[ 7]*mB.f[12];
+                            mRet.f[ 5] = mA.f[ 4]*mB.f[ 1] + mA.f[ 5]*mB.f[ 5] + mA.f[ 6]*mB.f[ 9] + mA.f[ 7]*mB.f[13];
+                            mRet.f[ 6] = mA.f[ 4]*mB.f[ 2] + mA.f[ 5]*mB.f[ 6] + mA.f[ 6]*mB.f[10] + mA.f[ 7]*mB.f[14];
+                            mRet.f[ 7] = mA.f[ 4]*mB.f[ 3] + mA.f[ 5]*mB.f[ 7] + mA.f[ 6]*mB.f[11] + mA.f[ 7]*mB.f[15];
+                            
+                            mRet.f[ 8] = mA.f[ 8]*mB.f[ 0] + mA.f[ 9]*mB.f[ 4] + mA.f[10]*mB.f[ 8] + mA.f[11]*mB.f[12];
+                            mRet.f[ 9] = mA.f[ 8]*mB.f[ 1] + mA.f[ 9]*mB.f[ 5] + mA.f[10]*mB.f[ 9] + mA.f[11]*mB.f[13];
+                            mRet.f[10] = mA.f[ 8]*mB.f[ 2] + mA.f[ 9]*mB.f[ 6] + mA.f[10]*mB.f[10] + mA.f[11]*mB.f[14];
+                            mRet.f[11] = mA.f[ 8]*mB.f[ 3] + mA.f[ 9]*mB.f[ 7] + mA.f[10]*mB.f[11] + mA.f[11]*mB.f[15];
+                            
+                            mRet.f[12] = mA.f[12]*mB.f[ 0] + mA.f[13]*mB.f[ 4] + mA.f[14]*mB.f[ 8] + mA.f[15]*mB.f[12];
+                            mRet.f[13] = mA.f[12]*mB.f[ 1] + mA.f[13]*mB.f[ 5] + mA.f[14]*mB.f[ 9] + mA.f[15]*mB.f[13];
+                            mRet.f[14] = mA.f[12]*mB.f[ 2] + mA.f[13]*mB.f[ 6] + mA.f[14]*mB.f[10] + mA.f[15]*mB.f[14];
+                            mRet.f[15] = mA.f[12]*mB.f[ 3] + mA.f[13]*mB.f[ 7] + mA.f[14]*mB.f[11] + mA.f[15]*mB.f[15];
+                            
+                            // Copy result in pResultMatrix
+                            mOut = mRet;
+                        }
 
                         #endif
             #endif
@@ -157,27 +214,39 @@ void MatrixVec4Multiply(VECTOR4			&vOut,
 {
 #if ((TARGET_IPHONE_SIMULATOR == 0) && (TARGET_OS_IPHONE == 1)) || ANDROID
 #ifdef _ARM_ARCH_7 // SAME Defined
-                        #ifdef ANDROID // Especial Android
-                            uint64_t features = android_getCpuFeatures(); // Seperate Poor devices
-                            if ((features & ANDROID_CPU_ARM_FEATURE_NEON) == 0) { // if it deon't surport NEON 
-//                                LOGE("NO NEON BUT ARMV7");
-//                                LOGE("Calculating with VFP");
-                                if (features & ANDROID_CPU_ARM_FEATURE_VFPv3) // But if it support VFP
-                                { 
-                                    Matrix4Vector4Mul(mIn.f,
-                                                      &vIn.x,
-                                                      &vOut.x);
-                                }
-                            }
-                            else  // IF NEON ANDROID?
-                            {   NEON_Matrix4Vector4Mul( mIn.f, &vIn.x, &vOut.x );
-//                                LOGE("Vector with NEON");
-                            }
-                        #elif IOS  // IF IOS? ONLY NEON
-                            NEON_Matrix4Vector4Mul( mIn.f, &vIn.x, &vOut.x );
-//                            printf("Vector with NEON\n");
-                        #endif
-#else // if n def _ARM_ARCH_7
+                                            #ifdef ANDROID /********* Especial Android *********/
+                                                uint64_t features = android_getCpuFeatures(); /************ Seperate Poor devices ************/
+                                                if ((features & ANDROID_CPU_ARM_FEATURE_NEON) == 0) { /************Unfortunelly if it deon't surport NEON ************/
+                                                   // LOGE("NO NEON BUT ARMV7");
+                                                   // LOGE("Calculating with VFP");
+                                                    if (features & ANDROID_CPU_ARM_FEATURE_VFPv3) /************ By the way if it support VFP ***************/
+                                                    { 
+                                                        Matrix4Vector4Mul(mIn.f,
+                                                                          &vIn.x,
+                                                                          &vOut.x);
+                                                    }
+                                                    else
+                                                    {
+                                                        VECTOR4 result;
+                                                        
+                                                        /* Perform calculation on a dummy VECTOR (result) */
+                                                        result.x = mIn.f[_11] * vIn.x + mIn.f[_21] * vIn.y + mIn.f[_31] * vIn.z + mIn.f[_41] * vIn.w;
+                                                        result.y = mIn.f[_12] * vIn.x + mIn.f[_22] * vIn.y + mIn.f[_32] * vIn.z + mIn.f[_42] * vIn.w;
+                                                        result.z = mIn.f[_13] * vIn.x + mIn.f[_23] * vIn.y + mIn.f[_33] * vIn.z + mIn.f[_43] * vIn.w;
+                                                        result.w = mIn.f[_14] * vIn.x + mIn.f[_24] * vIn.y + mIn.f[_34] * vIn.z + mIn.f[_44] * vIn.w;
+                                                        
+                                                        vOut = result;
+                                                    }
+                                                }
+                                                else  /****************** IF NEON ANDROID ******************/
+                                                {   NEON_Matrix4Vector4Mul( mIn.f, &vIn.x, &vOut.x );
+                                                    //LOGE("Vector with NEON");
+                                                }
+                                            #elif IOS  /*************** IF IOS ONLY NEON ****************/
+                                                NEON_Matrix4Vector4Mul( mIn.f, &vIn.x, &vOut.x );
+                                                //printf("Vector with NEON\n");
+                                            #endif
+#else /********************************** If n def _ARM_ARCH_7 **********************************/
 //                        #ifdef IOS
 //                            printf("Vector with VFP\n");
 //                        #elif ANDROID 
@@ -190,6 +259,18 @@ void MatrixVec4Multiply(VECTOR4			&vOut,
                                 Matrix4Vector4Mul(mIn.f,
                                                   &vIn.x,
                                                   &vOut.x);
+                            }
+                            else
+                            {
+                                VECTOR4 result;
+                                
+                                /* Perform calculation on a dummy VECTOR (result) */
+                                result.x = mIn.f[_11] * vIn.x + mIn.f[_21] * vIn.y + mIn.f[_31] * vIn.z + mIn.f[_41] * vIn.w;
+                                result.y = mIn.f[_12] * vIn.x + mIn.f[_22] * vIn.y + mIn.f[_32] * vIn.z + mIn.f[_42] * vIn.w;
+                                result.z = mIn.f[_13] * vIn.x + mIn.f[_23] * vIn.y + mIn.f[_33] * vIn.z + mIn.f[_43] * vIn.w;
+                                result.w = mIn.f[_14] * vIn.x + mIn.f[_24] * vIn.y + mIn.f[_34] * vIn.z + mIn.f[_44] * vIn.w;
+                                
+                                vOut = result;
                             }
 
 #endif
