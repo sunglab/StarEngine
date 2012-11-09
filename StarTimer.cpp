@@ -11,7 +11,9 @@
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)      
 #endif
 
-#include "StarEngine.h"
+
+#include "../Android/StarEngine/jni/StarEngine.h"
+//class Star;
 Star *starDelegate;
 
 #ifdef IOS
