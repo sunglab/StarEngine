@@ -20,17 +20,29 @@
 
 class StarFBO
 {
+    private:
+    GLuint s_FrameBuffer;
+    GLuint s_ColorRenderBuffer;
+    GLuint s_DepthRenderBuffer;
+    
+    GLuint b_FrameBuffer;
+    GLuint b_ColorRenderBuffer;
+    GLuint b_DepthRenderBuffer;
     public:
     //ColorRenderbuffer Setting
     StarFBO();
     //ETC Renderbuffers and Framebuffer Setting
     void  createFBO(bool depth=0, bool stencil=0,int width=0,int height=0);
+    void  createFBObyBack(bool depth=0, bool stencil=0,int width=0,int height=0);
 
     //Binding 2 buffers
     void  bindingColorbuffer();
     void  bindingFramebuffer();
     
-    private:
+    
+    //Binding 2 buffers
+    void  bindingColorbufferBack();
+    void  bindingFramebufferBack();
 
 };
 #endif

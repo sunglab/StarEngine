@@ -14,9 +14,9 @@
 #include <time.h>
 #endif
 
-
 class StarTimer
 {
+
    private:
 float getTime() ; 
     

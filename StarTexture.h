@@ -31,10 +31,11 @@ class StarTexture
     StarTexture Create_Texture_IOS(NSString *filename);
     
 #elif ANDROID
-    StarTexture Create_Texture_CAM_ANDROID(char * camData,int width,int height);
+    StarTexture Create_Texture_CAM_ANDROID(char * camData,int width,int height);  // Espcial
     StarTexture Create_Texture_ANDROID(int* array,int width, int height);
 #endif
     
+    StarTexture Create_Texture_FBO(int width,int height);
     void Delete_Texture(StarTexture Texture);
 };
 #endif

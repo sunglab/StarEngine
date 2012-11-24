@@ -18,9 +18,7 @@
 #include <iostream>
 #endif
 
-GLuint s_FrameBuffer;
-GLuint s_ColorRenderBuffer;
-GLuint _DepthRenderBuffer;
+
 
 StarFBO::StarFBO()
 {
@@ -29,6 +27,7 @@ StarFBO::StarFBO()
 #elif IOS
     std::cout << "Created RederColorbuffer" <<std::endl;
 #endif
+
     // Create the renderbuffer object.
     glGenRenderbuffers(1, &s_ColorRenderBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, s_ColorRenderBuffer);
@@ -37,11 +36,10 @@ StarFBO::StarFBO()
 void StarFBO::createFBO(bool depth, bool stencil,int width, int height)
 {   
 
-
     if(depth)
     { // Create the depth buffer.
-    glGenRenderbuffers(1, &_DepthRenderBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, _DepthRenderBuffer);
+    glGenRenderbuffers(1, &s_DepthRenderBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, s_DepthRenderBuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
     }
     if(stencil)
@@ -67,7 +65,7 @@ void StarFBO::createFBO(bool depth, bool stencil,int width, int height)
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, 
                               GL_DEPTH_ATTACHMENT, 
                               GL_RENDERBUFFER, 
-                              _DepthRenderBuffer);
+                              s_DepthRenderBuffer);
     }
     // Bind the color buffer for rendering.
     glBindRenderbuffer(GL_RENDERBUFFER, s_ColorRenderBuffer);
@@ -75,6 +73,63 @@ void StarFBO::createFBO(bool depth, bool stencil,int width, int height)
 
 }
 
+void StarFBO::createFBObyBack(bool depth, bool stencil,int width, int height)
+{
+    // Create the renderbuffer object.
+    glGenRenderbuffers(1, &b_ColorRenderBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, b_ColorRenderBuffer);
+    if(depth)
+    { // Create the depth buffer.
+        glGenRenderbuffers(1, &b_DepthRenderBuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, b_DepthRenderBuffer);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+    }
+    if(stencil)
+    {
+        //Create the stencil buffer.
+    }
+    
+    // Create the framebuffer object.
+    glGenFramebuffers(1, &b_FrameBuffer);
+#ifdef IOS
+    glBindFramebuffer(GL_FRAMEBUFFER, b_FrameBuffer);
+#elif ANDROID
+    glBindFramebuffer(GL_FRAMEBUFFER, b_FrameBuffer);
+#endif
+    // Attach ColorRenderbuffers
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER,
+                              GL_COLOR_ATTACHMENT0,
+                              GL_RENDERBUFFER,
+                              b_ColorRenderBuffer);
+    
+    if(depth)
+    {// Attach DepthRenderbuffers
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER,
+                                  GL_DEPTH_ATTACHMENT,
+                                  GL_RENDERBUFFER,
+                                  b_DepthRenderBuffer);
+    }
+}
+
+
+/* This is On Frame & Render Buffers binding
+ */
+void StarFBO::bindingColorbufferBack()
+{
+    glBindRenderbuffer(GL_RENDERBUFFER, b_ColorRenderBuffer);
+}
+void StarFBO::bindingFramebufferBack()
+{
+#ifdef IOS
+    glBindFramebuffer(GL_FRAMEBUFFER, b_FrameBuffer);
+#elif ANDROID
+    glBindFramebuffer(GL_FRAMEBUFFER, b_FrameBuffer);
+#endif
+}
+
+
+/* This is On Frame & Render Buffers binding
+ */
 void StarFBO::bindingColorbuffer()
 {
     glBindRenderbuffer(GL_RENDERBUFFER, s_ColorRenderBuffer);
