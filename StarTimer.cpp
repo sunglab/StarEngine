@@ -11,8 +11,8 @@
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)      
 #endif
 
-//#include "../Android/StarEngine/jni/StarEngine.h"
-#include "StarEngine.h"
+#include "../Android/StarEngine/jni/StarEngine.h"
+//#include "StarEngine.h"
 
 Star *starDelegate;
 
@@ -42,7 +42,7 @@ float StarTimer::getTime()
 #ifdef ANDROID
     timespec current; 
     const int result = clock_gettime(CLOCK_MONOTONIC, &current); 
-    current_msec = (current.tv_sec * 1000) + (current.tv_nsec / 1000000); \
+    current_msec = (current.tv_sec * 1000) + (current.tv_nsec / 1000000); 
 
 #else  // windows ... something like that
     clock_t current = clock(); 
@@ -58,16 +58,17 @@ float StarTimer::getTime()
 void StarTimer::getFPS() 
 { 
     static unsigned long framePerSecond = 0; 
-    static unsigned long lastTime = 0; 
-    static unsigned long frameTime = 0; 
+    static unsigned long lastTime = 0;
+    static unsigned long frameTime = 0;
 //    static char strFrameRate[50] = {0};  //IF I need to put Font with FPS
     
     unsigned long current = getTime();//GetTickCount(); 
 //    LOGE("%lu\n",current);
     ++framePerSecond; 
      //if the time is bigger than 1.0 sec
-    if (current - lastTime > 1000) { 
-        lastTime = current; // init
+   
+    if (current - lastTime > 1000) {
+        lastTime = current; // init 
 //        sprintf(strFrameRate, "FPS :%d", int(framePerSecond)); 
             #ifdef ANDROID
 //        LOGE(strFrameRate); 
@@ -75,10 +76,12 @@ void StarTimer::getFPS()
 //        printf("%s\n",strFrameRate);
             #endif
         starDelegate->CallbackFPS(framePerSecond);
+           
         framePerSecond = 0; 
     } 
     
-    frameTime = current; 
+     starDelegate->CallbackTICK(current-frameTime);
+    frameTime = current;
     
 } 
 

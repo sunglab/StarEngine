@@ -25,7 +25,7 @@ StarFBO::StarFBO()
 #ifdef ANDROID
     LOGE("Created RederColorbuffer");
 #elif IOS
-    std::cout << "Created RederColorbuffer" <<std::endl;
+    std::cout << "Created RederColorbuffer\n" <<std::endl;
 #endif
 
     // Create the renderbuffer object.
@@ -112,13 +112,13 @@ void StarFBO::createFBObyBack(bool depth, bool stencil,int width, int height)
 }
 
 
-/* This is On Frame & Render Buffers binding
+/* This is Off Frame & Render Buffers binding
  */
-void StarFBO::bindingColorbufferBack()
+void StarFBO::bindingColorBackbuffer()
 {
     glBindRenderbuffer(GL_RENDERBUFFER, b_ColorRenderBuffer);
 }
-void StarFBO::bindingFramebufferBack()
+void StarFBO::bindingFrameBackbuffer()
 {
 #ifdef IOS
     glBindFramebuffer(GL_FRAMEBUFFER, b_FrameBuffer);
@@ -126,6 +126,15 @@ void StarFBO::bindingFramebufferBack()
     glBindFramebuffer(GL_FRAMEBUFFER, b_FrameBuffer);
 #endif
 }
+void StarFBO::bindingColorBackbufferRelease()
+{
+    glBindRenderbuffer(GL_RENDERBUFFER,0);
+}
+void StarFBO::bindingFrameBackbufferRelease()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 
 
 /* This is On Frame & Render Buffers binding
@@ -142,3 +151,14 @@ void StarFBO::bindingFramebuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 #endif
 }
+void StarFBO::bindingColorbufferRelease()
+{
+    glBindRenderbuffer(GL_RENDERBUFFER,0);
+}
+void StarFBO::bindingFramebufferRelease()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
+

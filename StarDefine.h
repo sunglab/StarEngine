@@ -23,16 +23,15 @@ enum
 {
     ATTRIBUTES_POSITION,
     ATTRIBUTES_POSITION2,
-    ATTRIBUTES_UV2,
     ATTRIBUTES_POSITION3,
-    ATTRIBUTES_UV3,
+    ATTRIBUTES_UV,
+    ATTRIBUTES_UV2,
     ATTRIBUTES_COLOR,
     Total_Attributes_Number,
 };
 enum
 {
     UNIFORMS_TRANSLATE,
-    UNIFORMS_SCALE,
     Total_Uniforms_Number,
 };
 

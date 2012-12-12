@@ -35,14 +35,21 @@ class StarFBO
     void  createFBO(bool depth=0, bool stencil=0,int width=0,int height=0);
     void  createFBObyBack(bool depth=0, bool stencil=0,int width=0,int height=0);
 
-    //Binding 2 buffers
+    //Binding 2  Onscreen Buffers
     void  bindingColorbuffer();
     void  bindingFramebuffer();
     
+    //Release 2 Onscreen Buffers
+    void  bindingColorbufferRelease();
+    void  bindingFramebufferRelease();
     
-    //Binding 2 buffers
-    void  bindingColorbufferBack();
-    void  bindingFramebufferBack();
+    //Binding 2 Offscreen buffers
+    void  bindingColorBackbuffer();
+    void  bindingFrameBackbuffer();
+    
+    //Release 2 Offscreen buffers
+    void  bindingColorBackbufferRelease();
+    void  bindingFrameBackbufferRelease();
 
 };
 #endif
