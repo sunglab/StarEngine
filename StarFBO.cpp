@@ -78,6 +78,7 @@ void StarFBO::createFBObyBack(bool depth, bool stencil,int width, int height)
     // Create the renderbuffer object.
     glGenRenderbuffers(1, &b_ColorRenderBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, b_ColorRenderBuffer);
+    
     if(depth)
     { // Create the depth buffer.
         glGenRenderbuffers(1, &b_DepthRenderBuffer);

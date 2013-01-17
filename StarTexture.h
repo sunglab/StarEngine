@@ -22,7 +22,7 @@ class StarTexture
 {
     public:
     StarTexture()
-	{TexID = 0;}
+	{TexID = 0; width=0; height=0; }
 	int width, height;
 	GLuint TexID;
     
