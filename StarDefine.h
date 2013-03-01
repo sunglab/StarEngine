@@ -35,9 +35,15 @@ enum
     Total_Uniforms_Number,
 };
 
-
+// Texture
 enum
 {
     TEXTURES_PAPER,
     Total_Texture_Number,
+};
+
+// Sound
+enum  {
+    SOUNDS_BACK,
+Total_Sound_Number,
 };

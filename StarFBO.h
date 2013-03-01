@@ -28,6 +28,8 @@ class StarFBO
     GLuint b_FrameBuffer;
     GLuint b_ColorRenderBuffer;
     GLuint b_DepthRenderBuffer;
+    
+    
     public:
     //ColorRenderbuffer Setting
     StarFBO();

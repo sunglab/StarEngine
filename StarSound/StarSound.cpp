@@ -1,25 +1,15 @@
 //
-//  StarSound.h
+//  StarSound.cpp
 //  StarEngine
 //
 //  Created by sungwoo choi on 9/5/12.
 //  Copyright (c) 2012 SungLab. All rights reserved.
 //
 
-#ifndef StarEngine_StarSound_h
-#define StarEngine_StarSound_h
+
 #ifdef ANDROID
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <ivorbisfile.h>
 
-#include <android/log.h>
-#include <jni.h>
-
-#include <stddef.h>
-#include <assert.h>
-#include <string.h>
-#include <time.h>
+#include "StarSound.h"
 
 #define LOG(...) __android_log_print(ANDROID_LOG_INFO, "OpenAL", __VA_ARGS__)
 
@@ -110,7 +100,7 @@ static size_t decode(OggVorbis_File* vf)
     return sizeof(temp) - left;
 }
 
-JNIEXPORT void JNICALL Java_net_strangesoft_kcat_OpenAL_run(JNIEnv* env, jclass klass, jarray data)
+void StarSound::Create_Sound(jarray data)
 {
     int i;
     
@@ -126,7 +116,7 @@ JNIEXPORT void JNICALL Java_net_strangesoft_kcat_OpenAL_run(JNIEnv* env, jclass 
     
     MemoryStream* stream = NULL;
     
-    OggVorbis_File vf = { 0 };   
+    OggVorbis_File vf = { 0 };
     
     // 5 miliseconds
     struct timespec sleepTime;
@@ -292,7 +282,7 @@ exitpoint:
         // JNI_ABORT means that we do not want to copy native data back to Java world
         (*env)->ReleaseByteArrayElements(env, data, stream->buffer, JNI_ABORT);
         free(stream);
-    }   
+    }
 }
 
 
@@ -301,5 +291,4 @@ exitpoint:
 #elif IOS
 
 
-#endif
 #endif

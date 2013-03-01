@@ -116,6 +116,21 @@ typedef struct
 struct Vec2
 {
 	VERTTYPE x, y;
+    
+    float * getPtr() {
+        return (float*)&x;
+    }
+    const float * getPtr() const {
+        return (const float *)&x;
+    }
+    
+    float& operator[]( int n ){
+        return getPtr()[n];
+    }
+    
+    float operator[]( int n ) const {
+        return getPtr()[n];
+    }
 	/*!***************************************************************************
 		** Constructors
 		****************************************************************************/
