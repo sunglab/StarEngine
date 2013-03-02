@@ -9,15 +9,16 @@
 #include "StarButton.h"
 
 
+
 StarButton::StarButton()
 {
     
 }
 
-bool StarButton::IsTouched(float _x, float _y)
+bool StarButton::IsTouched(Vec2 touch)
 {
-    x = _x;
-    y = _y;
+    x = touch.x;
+    y = touch.y;
     
     return 0;
 }

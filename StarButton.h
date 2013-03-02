@@ -9,6 +9,7 @@
 #ifndef __StarEngine__StarButton__
 #define __StarEngine__StarButton__
 
+#include "StarMain.h"
 
 #ifdef ANDROID
 
@@ -27,7 +28,7 @@ class StarButton
     public :
     StarButton();
     
-    bool IsTouched(float _x,float _y);
+    bool IsTouched(Vec2 touch);
     
 };
 #endif /* defined(__StarEngine__StarButton__) */
