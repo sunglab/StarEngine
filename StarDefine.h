@@ -31,6 +31,7 @@ enum
 };
 enum
 {
+    UNIFORMS_PROJECTION,
     UNIFORMS_TRANSLATE,
     Total_Uniforms_Number,
 };
