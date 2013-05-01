@@ -35,6 +35,7 @@ class StarTexture
     StarTexture Create_Texture_ANDROID(int* array,int width, int height);
 #endif
     
+    StarTexture Create_Texture_FBO_SECOND(int width,int height);
     StarTexture Create_Texture_FBO(int width,int height);
     void Delete_Texture(StarTexture Texture);
 };

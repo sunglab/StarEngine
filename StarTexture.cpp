@@ -124,6 +124,22 @@ StarTexture StarTexture::Create_Texture_CAM_ANDROID(char * camData,int width,int
 }
 #endif
 
+StarTexture StarTexture::Create_Texture_FBO_SECOND( int width, int height)
+{
+    StarTexture fboTex;
+    fboTex.width = width;
+    fboTex.height = height;
+	glGenTextures(2, &fboTex.TexID);
+	glBindTexture(GL_TEXTURE_2D,fboTex.TexID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTex.TexID, 0);
+	return fboTex;
+}
+
 StarTexture StarTexture::Create_Texture_FBO( int width, int height)
 {
     StarTexture fboTex;
@@ -139,7 +155,6 @@ StarTexture StarTexture::Create_Texture_FBO( int width, int height)
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTex.TexID, 0);
 	return fboTex;
 }
-
 void StarTexture::Delete_Texture(StarTexture Texture)
 {
 	if(Texture.TexID!=0)
