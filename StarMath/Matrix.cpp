@@ -34,8 +34,8 @@ subject to the following restrictions:
 #if (TARGET_IPHONE_SIMULATOR == 0) && (TARGET_OS_IPHONE == 1)
 #ifdef _ARM_ARCH_7
 #include "neonmath/neon_matrix_impl.h"
-#else
-#include "vfpmath/matrix_impl.h"
+//#else
+//#include "vfpmath/matrix_impl.h"
 #endif
 #endif
 #endif
@@ -84,7 +84,8 @@ void MatrixMultiply(
             #ifdef _ARM_ARCH_7 // SAME Defined
                                     #ifdef ANDROID /********* Especial Android *********/
                                         uint64_t features = android_getCpuFeatures(); /************ Seperate Poor devices ************/
-                                        if ((features & ANDROID_CPU_ARM_FEATURE_NEON) == 0) {  /************Unfortunelly if it deon't surport NEON ************/
+                                        if ((features & ANDROID_CPU_ARM_FEATURE_NEON) == 0)
+                                        {  /************Unfortunelly if it deon't surport NEON ************/
                                             // LOGE("NO NEON BUT ARMV7 ??");
                                            // LOGE("Matrix with VFP??");
                                             if (features & ANDROID_CPU_ARM_FEATURE_VFPv3)/************ By the way if it support VFP ***************/
@@ -127,7 +128,7 @@ void MatrixMultiply(
     
                                     #elif IOS /*************** IF IOS ONLY NEON ****************/
                                     NEON_Matrix4Mul( mA.f, mB.f, mOut.f );
-                                        // printf("Matrix with NEON\n");
+//                                         printf("Matrix with NEON\n");
                                     #endif
 
             #else  /********************************** If n def _ARM_ARCH_7 **********************************/

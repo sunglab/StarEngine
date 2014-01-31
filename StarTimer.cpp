@@ -79,8 +79,8 @@ void StarTimer::getFPS()
            
         framePerSecond = 0; 
     } 
-    if(current-frameTime<1000)
-    starDelegate->CallbackTICK(current-frameTime);
+//    if(current-frameTime<1000)//넘의면 안되는 이유는? 
+//    starDelegate->CallbackTICK(current-frameTime);
     frameTime = current;
     
 } 
