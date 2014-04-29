@@ -9,36 +9,15 @@
 #ifndef StarEngine_Main_Header
 #define StarEngine_Main_Header
 
-#include "StarDefine.h"
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// Case IOS //////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ #ifdef IOS
+ #import "GLView.h"
+ #endif
 
 
-#ifdef __APPLE__
-#include "TargetConditionals.h"
-#if TARGET_IPHONE_SIMULATOR
-// Simulator
-#include <iostream>
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
-#import "GLView.h"
-#elif TARGET_OS_IPHONE
-// iPhone
-#include <iostream>
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
-#import "GLView.h"
-#elif TARGET_OS_MAC
-// Other kinds of Mac OS
-#import <OpenGL/OpenGL.h>
-#import <OpenGL/gl.h>
-//#import <OpenGL/gl3ext.h>
-#else
-// Unsupported platform
-#endif
-#endif
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// Case ANDROID //////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,22 +28,24 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #include <stdlib.h>
+//#include <iostream>
+#include <string.h>
 #define  LOG_TAG    "StarEngine"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-
-
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__) 
 #endif
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// Can use both  //////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "./renderer/StarShader.h"
+#include "./renderer/StarFBO.h"
+#include "./renderer/StarTexture.h"
+#include "./math/StarMath.h"
+#include "./tool/StarTimer.h"
+#include "./tool/StarTouch.h"
 
-#include "StarShader.h"
-#include "StarFBO.h"
-#include "StarTexture.h"
-#include "./StarMath/StarMath.h"
-#include "StarTimer.h"
-//#include "./StarSound/StarSound.h"
+#include "./effect/StarEffect.h"
 
 
 #endif

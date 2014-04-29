@@ -1,0 +1,196 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+CreateProgram	renderer/StarShader.cpp	/^unsigned int StarShader::CreateProgram(	GLuint* const pProgramObject,$/;"	f	class:StarShader
+Create_Texture_ANDROID	renderer/StarTexture.cpp	/^StarTexture StarTexture::Create_Texture_ANDROID(int * array,int texture_width, int texture_height)$/;"	f	class:StarTexture
+Create_Texture_CAM_ANDROID	renderer/StarTexture.cpp	/^StarTexture StarTexture::Create_Texture_CAM_ANDROID(char * camData,int texture_width,int texture_height)$/;"	f	class:StarTexture
+Create_Texture_FBO_FIRST	renderer/StarTexture.cpp	/^StarTexture StarTexture::Create_Texture_FBO_FIRST( int texture_width, int texture_height)$/;"	f	class:StarTexture
+Create_Texture_FBO_SECOND	renderer/StarTexture.cpp	/^StarTexture StarTexture::Create_Texture_FBO_SECOND(int texture_width, int texture_height)$/;"	f	class:StarTexture
+Create_Texture_FBO_THIRD	renderer/StarTexture.cpp	/^StarTexture StarTexture::Create_Texture_FBO_THIRD(int texture_width, int texture_height)$/;"	f	class:StarTexture
+Create_Texture_IOS	renderer/StarTexture.cpp	/^StarTexture StarTexture::Create_Texture_IOS(NSString *filename)$/;"	f	class:StarTexture
+Delete_Texture	renderer/StarTexture.cpp	/^void StarTexture::Delete_Texture(StarTexture Texture)$/;"	f	class:StarTexture
+FAIL	renderer/StarShader.cpp	7;"	d	file:
+LOGE	StarMain.h	33;"	d
+LOGE	renderer/StarFBO.cpp	16;"	d	file:
+LOGE	renderer/StarFBO.h	20;"	d
+LOGE	renderer/StarShader.h	15;"	d
+LOGE	renderer/StarTexture.h	20;"	d
+LOGI	StarMain.h	32;"	d
+LOGI	renderer/StarFBO.cpp	15;"	d	file:
+LOGI	renderer/StarFBO.h	19;"	d
+LOGI	renderer/StarShader.h	14;"	d
+LOGI	renderer/StarTexture.h	19;"	d
+LOG_TAG	StarMain.h	31;"	d
+LOG_TAG	renderer/StarFBO.cpp	14;"	d	file:
+LOG_TAG	renderer/StarFBO.h	18;"	d
+LOG_TAG	renderer/StarShader.h	13;"	d
+LOG_TAG	renderer/StarTexture.h	18;"	d
+MATRIX_H	math/Matrix.h	2;"	d
+Matrix	math/Matrix.h	/^class Matrix$/;"	c
+MatrixRotationX	math/Matrix.cpp	/^void MatrixRotationX($/;"	f
+MatrixRotationY	math/Matrix.cpp	/^void MatrixRotationY($/;"	f
+MatrixRotationZ	math/Matrix.cpp	/^void MatrixRotationZ($/;"	f
+MatrixVec3CrossProduct	math/Matrix.cpp	/^void MatrixVec3CrossProduct($/;"	f
+MatrixVec3Normalize	math/Matrix.cpp	/^void MatrixVec3Normalize($/;"	f
+Matrix_Identity	math/Matrix.cpp	/^void Matrix_Identity( Matrix& out_M)$/;"	f
+Matrix_Look_At	math/Matrix.cpp	/^void Matrix_Look_At( Matrix& out_M, const Vec3& in_EYE, const Vec3& in_AT,const Vec3& in_UP)$/;"	f
+Matrix_MxM	math/Matrix.cpp	/^void Matrix_MxM( Matrix& out_M, const Matrix& in_M1, const Matrix& in_M2)$/;"	f
+Matrix_MxM_NEON	math/Matrix.cpp	/^void Matrix_MxM_NEON(__MATRIX__TYPE__ * out_M, const __MATRIX__TYPE__* in_M1, const __MATRIX__TYPE__* in_M2)$/;"	f
+Matrix_MxV	math/Matrix.cpp	/^void Matrix_MxV( Vec4& out_V, const Vec4& in_V, const Matrix& in_M)$/;"	f
+Matrix_Ortho	math/Matrix.cpp	/^void Matrix_Ortho( Matrix& out_M, const float width, const float height, const float nZ, const float fZ, const bool ROT)$/;"	f
+Matrix_Scaling	math/Matrix.cpp	/^void Matrix_Scaling( Matrix& out_M, const float x, const float y, const float z)$/;"	f
+Matrix_Translation	math/Matrix.cpp	/^void Matrix_Translation( Matrix& out_M, const float x, const float y, const float z)$/;"	f
+NO_NEON	star.h	7;"	d
+STARMATH_H	math/StarMath.h	2;"	d
+STAR_H	star.h	2;"	d
+SUCCESS	renderer/StarShader.cpp	6;"	d	file:
+ShaderLoadSourceFromMemory	renderer/StarShader.cpp	/^unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,$/;"	f	class:StarShader
+StarEngine_Main_Header	StarMain.h	10;"	d
+StarEngine_StarFBO_h	renderer/StarFBO.h	10;"	d
+StarEngine_StarTexture_h	renderer/StarTexture.h	10;"	d
+StarEngine_Timer	tool/StarTimer.h	3;"	d
+StarFBO	renderer/StarFBO.cpp	/^StarFBO::StarFBO()$/;"	f	class:StarFBO
+StarFBO	renderer/StarFBO.h	/^class StarFBO$/;"	c
+StarShader	renderer/StarShader.h	/^class StarShader$/;"	c
+StarTexture	renderer/StarTexture.h	/^    StarTexture()$/;"	f	class:StarTexture
+StarTexture	renderer/StarTexture.h	/^class StarTexture$/;"	c
+StarTimer	tool/StarTimer.h	/^    StarTimer():time4Testing(0.f)$/;"	f	class:StarTimer
+StarTimer	tool/StarTimer.h	/^class StarTimer$/;"	c
+VECTOR_H	math/vector.h	3;"	d
+Vec2	math/vector.h	/^		Vec2(){}$/;"	f	class:Vec2
+Vec2	math/vector.h	/^		Vec2(const Vec2& in_Vector)$/;"	f	class:Vec2
+Vec2	math/vector.h	/^		Vec2(const __VERTEX__TYPE__ in_X = 0.f,const __VERTEX__TYPE__ in_Y = 0.f):x(in_X), y(in_Y){}$/;"	f	class:Vec2
+Vec2	math/vector.h	/^		Vec2(const __VERTEX__TYPE__ in_XY = 0.f) : x(in_XY), y(in_XY) {}$/;"	f	class:Vec2
+Vec2	math/vector.h	/^class Vec2$/;"	c
+Vec3	math/vector.h	/^	Vec3(__VERTEX__TYPE__ in_X, __VERTEX__TYPE__ in_Y, __VERTEX__TYPE__ in_Z)$/;"	f	class:Vec3
+Vec3	math/vector.h	/^  Vec3(){}$/;"	f	class:Vec3
+Vec3	math/vector.h	/^  Vec3(const __VERTEX__TYPE__ const_value)$/;"	f	class:Vec3
+Vec3	math/vector.h	/^  Vec3(const __VERTEX__TYPE__* pVector)$/;"	f	class:Vec3
+Vec3	math/vector.h	/^class Vec3$/;"	c
+Vec4	math/vector.h	/^	Vec4(const Vec3& in_V, const __VERTEX__TYPE__ s)$/;"	f	class:Vec4
+Vec4	math/vector.h	/^	Vec4(const __VERTEX__TYPE__ in_X,const  __VERTEX__TYPE__ in_Y,const __VERTEX__TYPE__ in_Z,const  __VERTEX__TYPE__ in_W)$/;"	f	class:Vec4
+Vec4	math/vector.h	/^	Vec4(const __VERTEX__TYPE__ s, const Vec3& in_V)$/;"	f	class:Vec4
+Vec4	math/vector.h	/^	Vec4(const __VERTEX__TYPE__* pVector)$/;"	f	class:Vec4
+Vec4	math/vector.h	/^  Vec4(){}$/;"	f	class:Vec4
+Vec4	math/vector.h	/^  Vec4(const __VERTEX__TYPE__ in_XYZW)$/;"	f	class:Vec4
+Vec4	math/vector.h	/^class Vec4$/;"	c
+YES_NEON	star.h	5;"	d
+_0x0_	star.h	17;"	d
+_0x1_	star.h	18;"	d
+_0x2_	star.h	19;"	d
+_0x3_	star.h	20;"	d
+_1x0_	star.h	21;"	d
+_1x1_	star.h	22;"	d
+_1x2_	star.h	23;"	d
+_1x3_	star.h	24;"	d
+_2x0_	star.h	25;"	d
+_2x1_	star.h	26;"	d
+_2x2_	star.h	27;"	d
+_2x3_	star.h	28;"	d
+_3x0_	star.h	29;"	d
+_3x1_	star.h	30;"	d
+_3x2_	star.h	31;"	d
+_3x3_	star.h	32;"	d
+_Included_Shader	renderer/StarShader.h	5;"	d
+__MATRIX__TYPE__	star.h	15;"	d
+__S_C_A_L_A_R__	star.h	12;"	d
+__VERTEX__TYPE__	star.h	14;"	d
+b1_ColorRenderBuffer	renderer/StarFBO.h	/^    GLuint b1_ColorRenderBuffer;$/;"	m	class:StarFBO
+b1_DepthRenderBuffer	renderer/StarFBO.h	/^    GLuint b1_DepthRenderBuffer;$/;"	m	class:StarFBO
+b1_FrameBuffer	renderer/StarFBO.h	/^    GLuint b1_FrameBuffer;$/;"	m	class:StarFBO
+b2_ColorRenderBuffer	renderer/StarFBO.h	/^    GLuint b2_ColorRenderBuffer;$/;"	m	class:StarFBO
+b2_DepthRenderBuffer	renderer/StarFBO.h	/^    GLuint b2_DepthRenderBuffer;$/;"	m	class:StarFBO
+b2_FrameBuffer	renderer/StarFBO.h	/^    GLuint b2_FrameBuffer;$/;"	m	class:StarFBO
+b3_ColorRenderBuffer	renderer/StarFBO.h	/^    GLuint b3_ColorRenderBuffer;$/;"	m	class:StarFBO
+b3_DepthRenderBuffer	renderer/StarFBO.h	/^    GLuint b3_DepthRenderBuffer;$/;"	m	class:StarFBO
+b3_FrameBuffer	renderer/StarFBO.h	/^    GLuint b3_FrameBuffer;$/;"	m	class:StarFBO
+bindingColorBackbufferFirst	renderer/StarFBO.cpp	/^void StarFBO::bindingColorBackbufferFirst()$/;"	f	class:StarFBO
+bindingColorBackbufferRelease	renderer/StarFBO.cpp	/^void StarFBO::bindingColorBackbufferRelease()$/;"	f	class:StarFBO
+bindingColorBackbufferSecond	renderer/StarFBO.cpp	/^void StarFBO::bindingColorBackbufferSecond()$/;"	f	class:StarFBO
+bindingColorBackbufferThird	renderer/StarFBO.cpp	/^void StarFBO::bindingColorBackbufferThird()$/;"	f	class:StarFBO
+bindingColorbuffer	renderer/StarFBO.cpp	/^void StarFBO::bindingColorbuffer()$/;"	f	class:StarFBO
+bindingColorbufferRelease	renderer/StarFBO.cpp	/^void StarFBO::bindingColorbufferRelease()$/;"	f	class:StarFBO
+bindingFrameBackbufferFirst	renderer/StarFBO.cpp	/^void StarFBO::bindingFrameBackbufferFirst()$/;"	f	class:StarFBO
+bindingFrameBackbufferRelease	renderer/StarFBO.cpp	/^void StarFBO::bindingFrameBackbufferRelease()$/;"	f	class:StarFBO
+bindingFrameBackbufferSecond	renderer/StarFBO.cpp	/^void StarFBO::bindingFrameBackbufferSecond()$/;"	f	class:StarFBO
+bindingFrameBackbufferThird	renderer/StarFBO.cpp	/^void StarFBO::bindingFrameBackbufferThird()$/;"	f	class:StarFBO
+bindingFramebuffer	renderer/StarFBO.cpp	/^void StarFBO::bindingFramebuffer()$/;"	f	class:StarFBO
+bindingFramebufferRelease	renderer/StarFBO.cpp	/^void StarFBO::bindingFramebufferRelease()$/;"	f	class:StarFBO
+createFBO	renderer/StarFBO.cpp	/^void StarFBO::createFBO(bool depth, bool stencil,int width, int height)$/;"	f	class:StarFBO
+createFBObyBackFirst	renderer/StarFBO.cpp	/^void StarFBO::createFBObyBackFirst(bool depth, bool stencil,int width, int height)$/;"	f	class:StarFBO
+createFBObyBackSecond	renderer/StarFBO.cpp	/^void StarFBO::createFBObyBackSecond(bool depth, bool stencil,int width, int height)$/;"	f	class:StarFBO
+createFBObyBackThird	renderer/StarFBO.cpp	/^void StarFBO::createFBObyBackThird(bool depth, bool stencil,int width, int height)$/;"	f	class:StarFBO
+endTick	tool/StarTimer.cpp	/^void StarTimer::endTick()$/;"	f	class:StarTimer
+getFPS	tool/StarTimer.cpp	/^void StarTimer::getFPS() $/;"	f	class:StarTimer
+getTime	tool/StarTimer.cpp	/^unsigned long long StarTimer::getTime()$/;"	f	class:StarTimer
+operator *	math/Vector.cpp	/^Vec2& Vec2::operator*(const Vec2& in_Vector)$/;"	f	class:Vec2
+operator *	math/Vector.cpp	/^Vec2& Vec2::operator*(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec2
+operator *	math/Vector.cpp	/^Vec3& Vec3::operator*(const Vec3& in_Vector) $/;"	f	class:Vec3
+operator *	math/Vector.cpp	/^Vec3& Vec3::operator*(const __VERTEX__TYPE__& in_Scalar) $/;"	f	class:Vec3
+operator *	math/Vector.cpp	/^Vec4& Vec4::operator*(const Vec4& in_Vector) $/;"	f	class:Vec4
+operator *	math/Vector.cpp	/^Vec4& Vec4::operator*(const __VERTEX__TYPE__& in_Scalar) $/;"	f	class:Vec4
+operator *=	math/Vector.cpp	/^Vec2& Vec2::operator*=(const Vec2& in_Vector)$/;"	f	class:Vec2
+operator *=	math/Vector.cpp	/^Vec2& Vec2::operator*=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec2
+operator *=	math/Vector.cpp	/^Vec3& Vec3::operator*=(const Vec3& in_Vector)$/;"	f	class:Vec3
+operator *=	math/Vector.cpp	/^Vec3& Vec3::operator*=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec3
+operator *=	math/Vector.cpp	/^Vec4& Vec4::operator*=(const Vec4& in_Vector)$/;"	f	class:Vec4
+operator *=	math/Vector.cpp	/^Vec4& Vec4::operator*=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec4
+operator +	math/Vector.cpp	/^Vec2& Vec2::operator+(const Vec2& in_Vector)$/;"	f	class:Vec2
+operator +	math/Vector.cpp	/^Vec2& Vec2::operator+(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec2
+operator +	math/Vector.cpp	/^Vec3& Vec3::operator+(const Vec3& in_Vector)$/;"	f	class:Vec3
+operator +	math/Vector.cpp	/^Vec3& Vec3::operator+(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec3
+operator +	math/Vector.cpp	/^Vec4& Vec4::operator+(const Vec4& in_Vector)$/;"	f	class:Vec4
+operator +	math/Vector.cpp	/^Vec4& Vec4::operator+(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec4
+operator +=	math/Vector.cpp	/^Vec2& Vec2::operator+=(const Vec2& in_Vector)$/;"	f	class:Vec2
+operator +=	math/Vector.cpp	/^Vec2& Vec2::operator+=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec2
+operator +=	math/Vector.cpp	/^Vec3& Vec3::operator+=(const Vec3& in_Vector)$/;"	f	class:Vec3
+operator +=	math/Vector.cpp	/^Vec3& Vec3::operator+=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec3
+operator +=	math/Vector.cpp	/^Vec4& Vec4::operator+=(const Vec4& in_Vector)$/;"	f	class:Vec4
+operator +=	math/Vector.cpp	/^Vec4& Vec4::operator+=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec4
+operator -	math/Vector.cpp	/^Vec2& Vec2::operator-(const Vec2& in_Vector)$/;"	f	class:Vec2
+operator -	math/Vector.cpp	/^Vec2& Vec2::operator-(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec2
+operator -	math/Vector.cpp	/^Vec3& Vec3::operator-(const Vec3& in_Vector)$/;"	f	class:Vec3
+operator -	math/Vector.cpp	/^Vec3& Vec3::operator-(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec3
+operator -	math/Vector.cpp	/^Vec4& Vec4::operator-(const Vec4& in_Vector)$/;"	f	class:Vec4
+operator -	math/Vector.cpp	/^Vec4& Vec4::operator-(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec4
+operator -=	math/Vector.cpp	/^Vec2& Vec2::operator-=(const Vec2& in_Vector)$/;"	f	class:Vec2
+operator -=	math/Vector.cpp	/^Vec2& Vec2::operator-=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec2
+operator -=	math/Vector.cpp	/^Vec3& Vec3::operator-=(const Vec3& in_Vector)$/;"	f	class:Vec3
+operator -=	math/Vector.cpp	/^Vec3& Vec3::operator-=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec3
+operator -=	math/Vector.cpp	/^Vec4& Vec4::operator-=(const Vec4& in_Vector)$/;"	f	class:Vec4
+operator -=	math/Vector.cpp	/^Vec4& Vec4::operator-=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec4
+operator /	math/Vector.cpp	/^Vec2& Vec2::operator\/(const Vec2& in_Vector)$/;"	f	class:Vec2
+operator /	math/Vector.cpp	/^Vec2& Vec2::operator\/(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec2
+operator /	math/Vector.cpp	/^Vec3& Vec3::operator\/(const Vec3& in_Vector)$/;"	f	class:Vec3
+operator /	math/Vector.cpp	/^Vec3& Vec3::operator\/(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec3
+operator /	math/Vector.cpp	/^Vec4& Vec4::operator\/(const Vec4& in_Vector)$/;"	f	class:Vec4
+operator /	math/Vector.cpp	/^Vec4& Vec4::operator\/(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec4
+operator /=	math/Vector.cpp	/^Vec2& Vec2::operator\/=(const Vec2& in_Vector)$/;"	f	class:Vec2
+operator /=	math/Vector.cpp	/^Vec2& Vec2::operator\/=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec2
+operator /=	math/Vector.cpp	/^Vec3& Vec3::operator\/=(const Vec3& in_Vector)$/;"	f	class:Vec3
+operator /=	math/Vector.cpp	/^Vec3& Vec3::operator\/=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec3
+operator /=	math/Vector.cpp	/^Vec4& Vec4::operator\/=(const Vec4& in_Vector)$/;"	f	class:Vec4
+operator /=	math/Vector.cpp	/^Vec4& Vec4::operator\/=(const __VERTEX__TYPE__& in_Scalar)$/;"	f	class:Vec4
+operator []	math/Matrix.h	/^		__MATRIX__TYPE__* operator[] (const unsigned int row)$/;"	f	class:Matrix
+s	math/Matrix.h	/^		__MATRIX__TYPE__ s[16];$/;"	m	class:Matrix
+s_ColorRenderBuffer	renderer/StarFBO.h	/^    GLuint s_ColorRenderBuffer;$/;"	m	class:StarFBO
+s_DepthRenderBuffer	renderer/StarFBO.h	/^    GLuint s_DepthRenderBuffer;$/;"	m	class:StarFBO
+s_FrameBuffer	renderer/StarFBO.h	/^    GLuint s_FrameBuffer;$/;"	m	class:StarFBO
+starDelegate	tool/StarTimer.cpp	/^Star *starDelegate;$/;"	v
+startTick	tool/StarTimer.cpp	/^void StarTimer::startTick()$/;"	f	class:StarTimer
+texture_height	renderer/StarTexture.h	/^    unsigned int texture_width, texture_height;$/;"	m	class:StarTexture
+texture_id	renderer/StarTexture.h	/^	GLuint texture_id;$/;"	m	class:StarTexture
+texture_width	renderer/StarTexture.h	/^    unsigned int texture_width, texture_height;$/;"	m	class:StarTexture
+time4Testing	tool/StarTimer.h	/^    unsigned long  long time4Testing;$/;"	m	class:StarTimer
+w	math/vector.h	/^	float w;$/;"	m	class:Vec4
+x	math/vector.h	/^		__VERTEX__TYPE__ x;$/;"	m	class:Vec2
+x	math/vector.h	/^	__VERTEX__TYPE__ x;$/;"	m	class:Vec3
+x	math/vector.h	/^	float x;$/;"	m	class:Vec4
+y	math/vector.h	/^		__VERTEX__TYPE__ y;$/;"	m	class:Vec2
+y	math/vector.h	/^	__VERTEX__TYPE__ y;$/;"	m	class:Vec3
+y	math/vector.h	/^	float y;$/;"	m	class:Vec4
+z	math/vector.h	/^	__VERTEX__TYPE__ z;$/;"	m	class:Vec3
+z	math/vector.h	/^	float z;$/;"	m	class:Vec4
