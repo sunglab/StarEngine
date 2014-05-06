@@ -2,6 +2,7 @@
 #define STAR_FLUID_H
 #include "../star.h"
 #include "../StarMain.h"
+#include "../tool/StarUtil.h"
 #include <math.h>
 // do not change these values, you can override them using the solver methods
 #define		FLUID_DEFAULT_NX					50
@@ -13,14 +14,14 @@
 #define		FLUID_DEFAULT_SOLVER_ITERATIONS		10
 
 #define		FLUID_IX(i, j)		((i) + (_NX + 2)  *(j))
-//#define SWAP(x0,x) {Vec3 *tmp=x0;x0=x;x=tmp;}
-class FluidSolver {
+
+class StarFluid {
 public:
-    FluidSolver();
-    virtual ~FluidSolver();
+    StarFluid();
+    virtual ~StarFluid();
     
-    FluidSolver& setup(int NX = FLUID_DEFAULT_NX, int NY = FLUID_DEFAULT_NY);
-    FluidSolver& setSize(int NX = FLUID_DEFAULT_NX, int NY = FLUID_DEFAULT_NY);
+   StarFluid& setup(int NX = FLUID_DEFAULT_NX, int NY = FLUID_DEFAULT_NY);
+    StarFluid& setSize(int NX = FLUID_DEFAULT_NX, int NY = FLUID_DEFAULT_NY);
     
     // solve one step of the fluid solver
     void update();
@@ -36,9 +37,9 @@ public:
     // get color and/or vel at any point in the fluid.
     // pass pointers to Vec2 (for velocity) and Color (for color) and they get filled with the info
     // leave any pointer NULL if you don't want that info
-    inline void getInfoAtIndex(int index, Vec2 *vel, Vec3 *color = NULL) const;
-    inline void getInfoAtCell(int i, int j, Vec2 *vel, Vec3 *color = NULL) const;
-    inline void getInfoAtPos(const Vec2 &pos, Vec2 *vel, Vec3 *color = NULL) const;
+    inline void getInfoAtIndex(int index, Vec2 *vel, Color3 *color = NULL) const;
+    inline void getInfoAtCell(int i, int j, Vec2 *vel, Color3 *color = NULL) const;
+    inline void getInfoAtPos(const Vec2 &pos, Vec2 *vel, Color3 *color = NULL) const;
     
     
     // get just velocity
@@ -48,9 +49,9 @@ public:
     
     
     // get just color
-    inline Vec3 getColorAtIndex(int index) const;
-    inline Vec3 getColorAtCell(int i, int j) const;
-    inline Vec3 getColorAtPos(const Vec2 &pos) const;
+    inline Color3 getColorAtIndex(int index) const;
+    inline Color3 getColorAtCell(int i, int j) const;
+    inline Color3 getColorAtPos(const Vec2 &pos) const;
     
     
     // add force (at cell index, cell coordinates, or normalized position)
@@ -60,9 +61,9 @@ public:
     
     
     // add color (at cell index, cell coordinates, or normalized position)
-    inline void addColorAtIndex(int index, const Vec3 &color);
-    inline void addColorAtCell(int i, int j, const Vec3 &color);
-    inline void addColorAtPos(const Vec2 &pos, const Vec3 &color);
+    inline void addColorAtIndex(int index, const Color3 &color);
+    inline void addColorAtCell(int i, int j, const Color3 &color);
+    inline void addColorAtPos(const Vec2 &pos, const Color3 &color);
     
     
     // fill with random color at every cell
@@ -80,22 +81,22 @@ public:
     bool isInited() const;
     
     // accessors for  viscocity, it will lerp to the target at lerpspeed
-    FluidSolver& setVisc(float newVisc);
+    StarFluid& setVisc(float newVisc);
     float getVisc() const;
     
     // accessors for  color diffusion
     // if diff == 0, color diffusion is not performed
     // ** COLOR DIFFUSION IS SLOW!
-    FluidSolver& setColorDiffusion( float diff);
+    StarFluid& setColorDiffusion( float diff);
     float				getColorDiffusion();
     
-    FluidSolver& enableRGB(bool isRGB);
-    FluidSolver& setDeltaT(float deltaT = FLUID_DEFAULT_DT);
-    FluidSolver& setFadeSpeed(float fadeSpeed = FLUID_DEFAULT_FADESPEED);
-    FluidSolver& setSolverIterations(int solverIterations = FLUID_DEFAULT_SOLVER_ITERATIONS);
-    FluidSolver& enableVorticityConfinement(bool b);
+    StarFluid& enableRGB(bool isRGB);
+    StarFluid& setDeltaT(float deltaT = FLUID_DEFAULT_DT);
+    StarFluid& setFadeSpeed(float fadeSpeed = FLUID_DEFAULT_FADESPEED);
+    StarFluid& setSolverIterations(int solverIterations = FLUID_DEFAULT_SOLVER_ITERATIONS);
+    StarFluid& enableVorticityConfinement(bool b);
     bool getVorticityConfinement();
-    FluidSolver& setWrap( bool bx, bool by );
+    StarFluid& setWrap( bool bx, bool by );
     
     // returns average density of fluid
     float getAvgDensity() const;
@@ -111,7 +112,7 @@ public:
     
     
     float	*density, *densityOld;		// used if not RGB
-    Vec3	*color, *colorOld;			// used for RGB
+    Color3	*color, *colorOld;			// used for RGB
     Vec2	*uv, *uvOld;
     
     float	*curl;
@@ -172,41 +173,8 @@ protected:
     
     void	fadeDensity();
     void	fadeRGB();
-   template<typename T>
-   void SWAP(T &a, T& b)
-    {
-        T c = a;
-        a = b;
-        b = c;
-    }
-   template<typename T>
-    T min(T a, T b)
-    {
-        if(a<b)
-            return a;
-        else
-            return b;
-    }
-    template<typename T>
-    T max(T a, T b)
-    {
-        if(a>b)
-            return a;
-        else
-            return b;
-    }
-//    template<typename T>
-    float constrain(float c, float a, float b)
-    {
-        if(c<a)
-            return a;
-        else if(b<c)
-            return b;
-        else
-            return c;
-    }
 public:
-    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce )
+    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,Color3& colors )
     {
         
 //        srand(time(NULL));
@@ -216,16 +184,15 @@ public:
             pos.x = constrain( pos.x, 0.0f, 1.0f );
             pos.y = constrain( pos.y, 0.0f, 1.0f );
         
-//            NSLog(@"%f %f %f %f", pos.x, pos.y, vel.x, vel.y);
-            float colorMult = 50;
+            NSLog(@"%f %f %f %f", pos.x, pos.y, vel.x, vel.y);
+            float colorMult = 100;
             float velocityMult = 100;
             if( addColor ) {
 //                float temp = (rand()%100) *0.01;
-                Vec3 drawColor(1.0,0.0,0.0);
+//                Color3 drawColor(1.0,0.0,0.0);
                 
-                addColorAtPos( pos, drawColor*colorMult);//* colorMult);
+                addColorAtPos( pos, colors*colorMult);//* colorMult);
             }
-            
             if( addForce ) {
                 addForceAtPos( pos, vel *velocityMult);
             }
@@ -235,13 +202,13 @@ public:
 
 
 //-------- get index
-inline int FluidSolver::getIndexForCell(int i, int j) const {
-//    i = constrain(i, 1, _NX);
-//    j = constrain(j, 1, _NY);
+inline int StarFluid::getIndexForCell(int i, int j) const {
+    i = constrain(i, 1, _NX);
+    j = constrain(j, 1, _NY);
     return FLUID_IX(i, j);
 }
 
-inline int FluidSolver::getIndexForPos(const Vec2 &pos) const {
+inline int StarFluid::getIndexForPos(const Vec2 &pos) const {
     
 //    NSLog(@"x cell : %d y cell : %d", (int)floor(pos.x * width),(int)floor(pos.y * height));
     return getIndexForCell((int)floor(pos.x * width), (int)floor(pos.y * height));
@@ -250,87 +217,88 @@ inline int FluidSolver::getIndexForPos(const Vec2 &pos) const {
 
 
 //-------- get info
-inline	void FluidSolver::getInfoAtIndex(int index, Vec2 *vel, Vec3 *color) const {
+inline	void StarFluid::getInfoAtIndex(int index, Vec2 *vel, Color3 *color) const {
     if(vel) *vel = getVelocityAtIndex(index);
     if(color) *color = getColorAtIndex(index);
 }
 
-inline void FluidSolver::getInfoAtCell(int i, int j, Vec2 *vel, Vec3 *color) const {
+inline void StarFluid::getInfoAtCell(int i, int j, Vec2 *vel, Color3 *color) const {
     getInfoAtIndex(getIndexForCell(i, j), vel, color);
 }
 
 
-inline void FluidSolver::getInfoAtPos(const Vec2 &pos, Vec2 *vel, Vec3 *color) const {
+inline void StarFluid::getInfoAtPos(const Vec2 &pos, Vec2 *vel, Color3 *color) const {
     getInfoAtIndex(getIndexForPos(pos), vel, color);
 }
 
 
 //-------- get velocity
-inline Vec2 FluidSolver::getVelocityAtIndex(int index) const {
+inline Vec2 StarFluid::getVelocityAtIndex(int index) const {
     return uv[index];
 }
 
-inline Vec2 FluidSolver::getVelocityAtCell(int i, int j) const {
+inline Vec2 StarFluid::getVelocityAtCell(int i, int j) const {
     return getVelocityAtIndex(getIndexForCell(i, j));
 }
 
-inline Vec2 FluidSolver::getVelocityAtPos(const Vec2 &pos) const {
+inline Vec2 StarFluid::getVelocityAtPos(const Vec2 &pos) const {
     return getVelocityAtIndex(getIndexForPos(pos));
 }
 
 
 //-------- get color
-inline Vec3 FluidSolver::getColorAtIndex(int index) const {
+inline Color3 StarFluid::getColorAtIndex(int index) const {
     if(doRGB) {
-        return Vec3(this->color[index].x, this->color[index].y, this->color[index].z);
+        return Color3(this->color[index].r, this->color[index].g, this->color[index].b);
     } else {
-        return Vec3(density[index], density[index], density[index]);
+        return Color3(density[index], density[index], density[index]);
     }
 }
 
-inline Vec3 FluidSolver::getColorAtCell(int i, int j) const {
+inline Color3 StarFluid::getColorAtCell(int i, int j) const {
     return getColorAtIndex(getIndexForCell(i, j));
 }
 
-inline Vec3 FluidSolver::getColorAtPos(const Vec2 &pos) const {
+inline Color3 StarFluid::getColorAtPos(const Vec2 &pos) const {
     return getColorAtIndex(getIndexForPos(pos));
 }
 
 
 //-------- add force
-inline void FluidSolver::addForceAtIndex(int index, const Vec2 &force) {
+inline void StarFluid::addForceAtIndex(int index, const Vec2 &force) {
     uv[index] += force;
 }
 
-inline void FluidSolver::addForceAtCell(int i, int j, const Vec2 &force) {
+inline void StarFluid::addForceAtCell(int i, int j, const Vec2 &force) {
     addForceAtIndex(getIndexForCell(i, j), force);
 }
 
-inline void FluidSolver::addForceAtPos(const Vec2 &pos, const Vec2 &force) {
+inline void StarFluid::addForceAtPos(const Vec2 &pos, const Vec2 &force) {
     addForceAtIndex(getIndexForPos(pos), force);
 }
 
 
 //-------- add color
-inline void FluidSolver::addColorAtIndex(int index, const Vec3 &color) {
+inline void StarFluid::addColorAtIndex(int index, const Color3 &color) {
     if(doRGB) {
-        colorOld[index] += Vec3(color.x, color.y, color.z);
+        colorOld[index] += Color3(color.r, color.g, color.b);
+//        (Vec3)color[index] += Vec3(color.x, color.y, color.z);
 //        NSLog(@"index : %d", index);
     } else {
-        density[index] += color.x;
+        density[index] += color.r;
     }
 }
 
-inline void FluidSolver::addColorAtCell(int i, int j, const Vec3 &color) {
+inline void StarFluid::addColorAtCell(int i, int j, const Color3 &color) {
     addColorAtIndex(getIndexForCell(i, j), color);
 }
 
-inline void FluidSolver::addColorAtPos(const Vec2 &pos, const Vec3 &color) {
+inline void StarFluid::addColorAtPos(const Vec2 &pos, const Color3 &color) {
     addColorAtIndex(getIndexForPos(pos), color);
 }
 
 template<typename T>
-void FluidSolver::addSource(T *x, T *x0) {
+void StarFluid::addSource(T *x, T *x0) {
     for(int i = _numCells-1; i >=0; --i) {
         x[i] += x0[i] * deltaT;
     }

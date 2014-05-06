@@ -1,6 +1,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 #include "../star.h"
+#include "../tool/StarUtil.h"
 
 class Color3
 {
@@ -36,17 +37,36 @@ class Color3
 			g = newColor.g;
 			b = newColor.b;
 		}
+		Color3(const __COLOR__TYPE__* pColor)
+		{
+			r = *pColor++;
+			g = *pColor++;
+			b = *pColor++;
+		}
 
 		Color3 operator+(const Color3& in_Color)const;
 		Color3 operator-(const Color3& in_Color)const;
-		Color3 operator*(const Color3& in_Color)const;
-		Color3 operator/(const Color3& in_Color)const;
+		void operator+=(const Color3& in_Color);
+		void operator-=(const Color3& in_Color);
 
-		Color3 operator+(__COLOR__TYPE__ in_Float)const;
-		Color3 operator-(__COLOR__TYPE__ in_Float)const;
-		Color3 operator*(__COLOR__TYPE__ in_Float)const;
-		Color3 operator/(__COLOR__TYPE__ in_Float)const;
+		Color3 operator+(__COLOR__TYPE__ in_Scalar)const;
+		Color3 operator-(__COLOR__TYPE__ in_Scalar)const;
+		Color3 operator*(__COLOR__TYPE__ in_Scalar)const;
+		Color3 operator/(__COLOR__TYPE__ in_Scalar)const;
 
+		void operator+=(__COLOR__TYPE__ in_Scalar);
+		void operator-=(__COLOR__TYPE__ in_Scalar);
+		void operator*=(__COLOR__TYPE__ in_Scalar);
+		void operator/=(__COLOR__TYPE__ in_Scalar);
+
+		const Color3& operator[](int index)const;
+		Color3& operator[](int index);
+		Color3& operator=(const __COLOR__TYPE__& in_Scalar);
+
+		void zero()
+		{
+			(*this) = (float)0.0f;
+		}
 		void lerp(float, Color3&);
 };
 
@@ -91,14 +111,27 @@ class Color4
 
 		Color4 operator+(const Color4& inColor)const;
 		Color4 operator-(const Color4& inColor)const;
-		Color4 operator*(const Color4& inColor)const;
-		Color4 operator/(const Color4& inColor)const;
+		void operator+=(const Color4& inColor);
+		void operator-=(const Color4& inColor);
 
-		Color4 operator+(__COLOR__TYPE__ in_Float)const;
-		Color4 operator-(__COLOR__TYPE__ in_Float)const;
-		Color4 operator*(__COLOR__TYPE__ in_Float)const;
-		Color4 operator/(__COLOR__TYPE__ in_Float)const;
+		Color4 operator+(__COLOR__TYPE__ in_Scalar)const;
+		Color4 operator-(__COLOR__TYPE__ in_Scalar)const;
+		Color4 operator*(__COLOR__TYPE__ in_Scalar)const;
+		Color4 operator/(__COLOR__TYPE__ in_Scalar)const;
 
+		void operator+=(__COLOR__TYPE__ in_Scalar);
+		void operator-=(__COLOR__TYPE__ in_Scalar);
+		void operator*=(__COLOR__TYPE__ in_Scalar);
+		void operator/=(__COLOR__TYPE__ in_Scalar);
+
+		const Color4& operator[](int index)const;
+		Color4& operator[](int index);
+		Color4& operator=(const __COLOR__TYPE__& in_Scalar);
+
+		void zero()
+		{
+			(*this) = 0;
+		}
 		void lerp(float, Color4&);
 		void lerp(float, Color3&);
 };

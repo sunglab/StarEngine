@@ -44,7 +44,7 @@
 #include "./math/StarMath.h"
 #include "./tool/StarTimer.h"
 #include "./tool/StarTouch.h"
-
+#include "./tool/StarUtil.h"
 #include "./effect/StarEffect.h"
 
 

@@ -5,7 +5,7 @@
 #include <math.h>
 #include "../star.h"
 #include <stdio.h>
-// Floating-point Operations
+// __VERTEX__TYPE__ing-point Operations
 //#define __VERTEX__TYPE___MUL(a,b)		(	(VERTEX_TYPE)(	(a)*(b)	)	)
 //#define __VERTEX__TYPE___DIV(a,b)		(	(VERTEX_TYPE)(	(a)/(b)	)	)
 //#define __VERTEX__TYPE___ABS(a)			(	(VERTEX_TYPE)(	fabs(a)		)
@@ -38,18 +38,13 @@ class Vec2
 
 		Vec2 operator+(const Vec2& in_Vector)const;
 		Vec2 operator-(const Vec2& in_Vector)const;
-		Vec2 operator*(const Vec2& in_Vector)const;
-		Vec2 operator/(const Vec2& in_Vector)const;
+		Vec2& operator+=(const Vec2& in_Vector);
+		Vec2& operator-=(const Vec2& in_Vector);
 
 		Vec2 operator+(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec2 operator-(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec2 operator*(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec2 operator/(const __VERTEX__TYPE__& in_Scalar)const;
-
-		Vec2& operator+=(const Vec2& in_Vector);
-		Vec2& operator-=(const Vec2& in_Vector);
-		Vec2& operator*=(const Vec2& in_Vector);
-		Vec2& operator/=(const Vec2& in_Vector);
 
 		Vec2& operator+=(const __VERTEX__TYPE__& in_Scalar);
 		Vec2& operator-=(const __VERTEX__TYPE__& in_Scalar);
@@ -60,14 +55,15 @@ class Vec2
 		const Vec2& operator[](const int index) const;
 		Vec2& operator=(const __VERTEX__TYPE__& in_Scalar);
 
+	  __VERTEX__TYPE__ length()const;
+		__VERTEX__TYPE__ lengthSquared()const;
+		__VERTEX__TYPE__ dot(const Vec2&)const;
+		Vec2& normalize();
+
 		void zero()
 		{
 			(*this) = 0.f;
 		}
-		//    __VERTEX__TYPE__ distanceSqrt() const;
-		//		__VERTEX__TYPE__ distance() const;
-		//		Vec2& normalize();
-		//		__VERTEX__TYPE__ dot(const Vec2& in_Vector);
 };
 
 class Vec3
@@ -79,7 +75,6 @@ class Vec3
 		__VERTEX__TYPE__ z;
 
 		Vec3(){}
-
 		Vec3(__VERTEX__TYPE__ in_X, __VERTEX__TYPE__ in_Y, __VERTEX__TYPE__ in_Z)
 		{ 
 			x = in_X; y = in_Y; z = in_Z;
@@ -99,18 +94,13 @@ class Vec3
 
 		Vec3 operator+(const Vec3& in_Vector)const;
 		Vec3 operator-(const Vec3& in_Vector)const;
-		Vec3 operator*(const Vec3& in_Vector)const;
-		Vec3 operator/(const Vec3& in_Vector)const;
+		Vec3& operator+=(const Vec3& in_Vector);
+		Vec3& operator-=(const Vec3& in_Vector);
 
 		Vec3 operator+(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec3 operator-(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec3 operator*(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec3 operator/(const __VERTEX__TYPE__& in_Scalar)const;
-
-		Vec3& operator+=(const Vec3& in_Vector);
-		Vec3& operator-=(const Vec3& in_Vector);
-		Vec3& operator*=(const Vec3& in_Vector);
-		Vec3& operator/=(const Vec3& in_Vector);
 
 		Vec3& operator+=(const __VERTEX__TYPE__& in_Scalar);
 		Vec3& operator-=(const __VERTEX__TYPE__& in_Scalar);
@@ -120,7 +110,13 @@ class Vec3
 		Vec3& operator[](const int index);
 		const Vec3& operator[](const int index) const;
 		Vec3& operator=(const __VERTEX__TYPE__& in_Scalar);
-    
+ 
+		__VERTEX__TYPE__ length()const;
+		__VERTEX__TYPE__ lengthSquared()const;
+		__VERTEX__TYPE__ dot(const Vec3& in_V)const;
+		Vec3& normalize();
+		Vec3 cross(const Vec3& in_V)const;
+
 		void zero()
 		{(*this) = 0.f;}
 
@@ -166,25 +162,27 @@ class Vec4
 
 		Vec4 operator+(const Vec4& in_Vector)const;
 		Vec4 operator-(const Vec4& in_Vector)const;
-		Vec4 operator*(const Vec4& in_Vector)const;
-		Vec4 operator/(const Vec4& in_Vector)const;
+		Vec4& operator+=(const Vec4& in_Vector);
+		Vec4& operator-=(const Vec4& in_Vector);
+
 
 		Vec4 operator+(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec4 operator-(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec4 operator*(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec4 operator/(const __VERTEX__TYPE__& in_Scalar)const;
 
-		Vec4& operator+=(const Vec4& in_Vector);
-		Vec4& operator-=(const Vec4& in_Vector);
-		Vec4& operator*=(const Vec4& in_Vector);
-		Vec4& operator/=(const Vec4& in_Vector);
-
 		Vec4& operator+=(const __VERTEX__TYPE__& in_Scalar);
 		Vec4& operator-=(const __VERTEX__TYPE__& in_Scalar);
 		Vec4& operator*=(const __VERTEX__TYPE__& in_Scalar);
 		Vec4& operator/=(const __VERTEX__TYPE__& in_Scalar);
+		
+		Vec4& operator=(const __VERTEX__TYPE__& in_Scalar); // [] where ??? is it ?
 
-		Vec4& operator=(const __VERTEX__TYPE__& in_Scalar);
+		__VERTEX__TYPE__ length()const;
+		__VERTEX__TYPE__ lengthSquared()const;
+		__VERTEX__TYPE__ dot(const Vec4&)const;
+		Vec4& normalize();
+		Vec4 cross()const;
 
 		void zero()
 		{

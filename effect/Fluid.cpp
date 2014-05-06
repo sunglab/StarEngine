@@ -1,7 +1,7 @@
 
 #include "Fluid.h"
 
-FluidSolver::FluidSolver()
+StarFluid::StarFluid()
 :density(NULL)
 ,densityOld(NULL)
 ,uv(NULL)
@@ -13,7 +13,7 @@ FluidSolver::FluidSolver()
 {
 }
 
-FluidSolver& FluidSolver::setSize(int NX, int NY)
+StarFluid& StarFluid::setSize(int NX, int NY)
 {
     _NX = NX;
     _NY = NY;
@@ -33,7 +33,7 @@ FluidSolver& FluidSolver::setSize(int NX, int NY)
 }
 
 
-FluidSolver& FluidSolver::setup(int NX, int NY)
+StarFluid& StarFluid::setup(int NX, int NY)
 {
 //    setDeltaT();
 //    setFadeSpeed();
@@ -54,52 +54,52 @@ FluidSolver& FluidSolver::setup(int NX, int NY)
     return setSize( NX, NY);
 }
 
-FluidSolver&  FluidSolver::setDeltaT(float deltaT) {
+StarFluid&  StarFluid::setDeltaT(float deltaT) {
     this->deltaT = deltaT;
     return *this;
 }
 
-FluidSolver&  FluidSolver::setFadeSpeed(float fadeSpeed) {
+StarFluid&  StarFluid::setFadeSpeed(float fadeSpeed) {
     this->fadeSpeed = fadeSpeed;
     return *this;
 }
 
-FluidSolver&  FluidSolver::setSolverIterations(int solverIterations) {
+StarFluid&  StarFluid::setSolverIterations(int solverIterations) {
     this->solverIterations = solverIterations;
     return *this;
 }
 
 
 // whether fluid is RGB or monochrome (if only pressure / velocity is needed no need to update 3 channels)
-FluidSolver&  FluidSolver::enableRGB(bool doRGB) {
+StarFluid&  StarFluid::enableRGB(bool doRGB) {
     this->doRGB = doRGB;
     return *this;
 }
 
-FluidSolver&  FluidSolver::enableVorticityConfinement(bool b) {
+StarFluid&  StarFluid::enableVorticityConfinement(bool b) {
     doVorticityConfinement = b;
     return *this;
 }
 
-bool FluidSolver::getVorticityConfinement() {
+bool StarFluid::getVorticityConfinement() {
     return doVorticityConfinement;
 }
 
-FluidSolver& FluidSolver::setWrap( bool bx, bool by ) {
+StarFluid& StarFluid::setWrap( bool bx, bool by ) {
     wrap_x = bx;
     wrap_y = by;
     return *this;
 }
 
-bool FluidSolver::isInited() const {
+bool StarFluid::isInited() const {
     return _isInited;
 }
 
-FluidSolver::~FluidSolver() {
+StarFluid::~StarFluid() {
     destroy();
 }
 
-void FluidSolver::destroy() {
+void StarFluid::destroy() {
     _isInited = false;
     
     if(density)		delete []density;
@@ -112,14 +112,14 @@ void FluidSolver::destroy() {
 }
 
 
-void FluidSolver::reset() {
+void StarFluid::reset() {
     destroy();
     _isInited = true;
     
     density		= new float[_numCells];
     densityOld	= new float[_numCells];
-    color		= new Vec3[_numCells];
-    colorOld	= new Vec3[_numCells];
+    color		= new Color3[_numCells];
+    colorOld	= new Color3[_numCells];
     uv    = new Vec2[_numCells];
     uvOld = new Vec2[_numCells];
     curl = new float[_numCells];
@@ -136,82 +136,82 @@ void FluidSolver::reset() {
 }
 
 // return total number of cells (_NX+2) * (_NY+2)
-int FluidSolver::getNumCells() const {
+int StarFluid::getNumCells() const {
     return _numCells;
 }
 
-int FluidSolver::getWidth() const {
+int StarFluid::getWidth() const {
     return _NX + 2;
 }
 
 
-int FluidSolver::getHeight() const {
+int StarFluid::getHeight() const {
     return _NY + 2;
 }
 
-float FluidSolver::getInvWidth() const {
+float StarFluid::getInvWidth() const {
     return invWidth;
 }
 
 
-float FluidSolver::getInvHeight() const {
+float StarFluid::getInvHeight() const {
     return invHeight;
 }
 
-Vec2 FluidSolver::getSize() {
+Vec2 StarFluid::getSize() {
     return Vec2(getWidth(), getHeight());
 }
 
-Vec2 FluidSolver::getInvSize() {
+Vec2 StarFluid::getInvSize() {
     return Vec2(invWidth, invHeight);
 }
 
 
 
-FluidSolver& FluidSolver::setVisc(float newVisc) {
+StarFluid& StarFluid::setVisc(float newVisc) {
     viscocity = newVisc;
     return *this;
 }
 
 // returns current viscocity
-float FluidSolver::getVisc() const {
+float StarFluid::getVisc() const {
     return viscocity;
 }
 
-FluidSolver& FluidSolver::setColorDiffusion( float diff )
+StarFluid& StarFluid::setColorDiffusion( float diff )
 {
     colorDiffusion = diff;
     return *this;
 }
 
-float	FluidSolver::getColorDiffusion()
+float	StarFluid::getColorDiffusion()
 {
     return colorDiffusion;
 }
 
 // returns average density of fluid
-float FluidSolver::getAvgDensity() const {
+float StarFluid::getAvgDensity() const {
     return _avgDensity;
 }
 
 // returns average uniformity
-float FluidSolver::getUniformity() const {
+float StarFluid::getUniformity() const {
     return _uniformity;
 }
 
-float FluidSolver::getAvgSpeed() const {
+float StarFluid::getAvgSpeed() const {
     return _avgSpeed;
 }
 
 // Curl and vorticityConfinement based on code by Alexander McKenzie
-float FluidSolver::calcCurl( int i, int j)
+float StarFluid::calcCurl( int i, int j)
 {
     float du_dy = uv[FLUID_IX(i, j + 1)].x - uv[FLUID_IX(i, j - 1)].x;
     float dv_dx = uv[FLUID_IX(i + 1, j)].y - uv[FLUID_IX(i - 1, j)].y;
     return (du_dy - dv_dx) * 0.5f;	// for optimization should be moved to later and done with another operation
 }
 
-void FluidSolver::vorticityConfinement(Vec2* Fvc_xy) {
+void StarFluid::vorticityConfinement(Vec2* Fvc_xy) {
     float dw_dx, dw_dy;
     float length;
     float v;
@@ -251,7 +251,7 @@ void FluidSolver::vorticityConfinement(Vec2* Fvc_xy) {
     }
 }
 
-void FluidSolver::update() {
+void StarFluid::update() {
     addSource(uv, uvOld);
     
     if( doVorticityConfinement )
@@ -261,13 +261,13 @@ void FluidSolver::update() {
     }
     
     
-    SWAP(uv, uvOld);
+    swap(uv, uvOld);
     
     diffuseUV( viscocity );
     
     project(uv, uvOld);
     
-    SWAP(uv, uvOld);
+    swap(uv, uvOld);
     
     advect2d(uv, uvOld);
     
@@ -276,12 +276,12 @@ void FluidSolver::update() {
     if(doRGB)
     {
         addSource(color, colorOld);
-        SWAP(color, colorOld);
+        swap(color, colorOld);
         
         if( colorDiffusion!=0. && deltaT!=0. )
         {
             diffuseRGB(0, colorDiffusion );
-            SWAP(color, colorOld);
+            swap(color, colorOld);
         }
         
         advectRGB(0, uv);
@@ -290,11 +290,11 @@ void FluidSolver::update() {
     else
     {
         addSource(density, densityOld);
-        SWAP(density, densityOld);
+        swap(density, densityOld);
         
         if( colorDiffusion!=0. && deltaT!=0. ) {
             diffuse(0, density, densityOld, colorDiffusion );
-            SWAP(density, densityOld);
+            swap(density, densityOld);
         }
         
         advect(0, density, densityOld, uv);	
@@ -305,7 +305,7 @@ void FluidSolver::update() {
 #define ZERO_THRESH		1e-9			// if value falls under this, set to zero (to avoid denormal slowdown)
 #define CHECK_ZERO(p)	if(fabsf(p)<ZERO_THRESH) p = 0
 
-void FluidSolver::fadeDensity() {
+void StarFluid::fadeDensity() {
     // I want the fluid to gradually fade out so the screen doesn't fill. the amount it fades out depends on how full it is, and how uniform (i.e. boring) the fluid is...
     //		float holdAmount = 1 - _avgDensity * _avgDensity * fadeSpeed;	// this is how fast the density will decay depending on how full the screen currently is
     float holdAmount = 1 - fadeSpeed;
@@ -353,7 +353,7 @@ void FluidSolver::fadeDensity() {
 }
 
 
-void FluidSolver::fadeRGB() {
+void StarFluid::fadeRGB() {
     
 //    float holdAmount = 1 - _avgDensity * _avgDensity * fadeSpeed;	// this is how fast the density will decay depending on how full the screen currently is
     float holdAmount = 1 - fadeSpeed;
@@ -363,7 +363,7 @@ void FluidSolver::fadeRGB() {
     
     float totalDeviations = 0;
     float currentDeviation;
-    Vec3 tmp;
+    Color3 tmp;
     _avgSpeed = 0;
     
     for (int i = _numCells-1; i >=0; --i)
@@ -376,9 +376,9 @@ void FluidSolver::fadeRGB() {
         _avgSpeed += uv[i].x * uv[i].x + uv[i].y * uv[i].y;
         
         // calc avg density
-        tmp.x = min( 1.0f, color[i].x );
-        tmp.y = min( 1.0f, color[i].y );
-        tmp.z = min( 1.0f, color[i].z );
+        tmp.r = min( 1.0f, color[i].r );
+        tmp.g = min( 1.0f, color[i].g );
+        tmp.b = min( 1.0f, color[i].b);
 //        tmp.x=  color[i].x;
 //        tmp.y = color[i].y;
 //        tmp.z = color[i].z;
@@ -386,7 +386,7 @@ void FluidSolver::fadeRGB() {
         
         //			float density = max(tmp.a, max( tmp.r, max( tmp.g, tmp.b ) ) );
         //			float density = max( tmp.r, max( tmp.g, tmp.b ) );
-        float density = max( tmp.x, max( tmp.y, tmp.z ) );
+        float density = max( tmp.r, max( tmp.g, tmp.b ) );
         _avgDensity += density;	// add it up
         
         // calc deviation (for _uniformity)
@@ -396,9 +396,9 @@ void FluidSolver::fadeRGB() {
         // fade out old
         color[i] = tmp * holdAmount;
         
-        CHECK_ZERO(color[i].x);
-        CHECK_ZERO(color[i].y);
-        CHECK_ZERO(color[i].z);
+        CHECK_ZERO(color[i].r);
+        CHECK_ZERO(color[i].g);
+        CHECK_ZERO(color[i].b);
         //			CHECK_ZERO(color[i].a);
         CHECK_ZERO(uv[i].x);
         CHECK_ZERO(uv[i].y);
@@ -412,7 +412,7 @@ void FluidSolver::fadeRGB() {
 }
 
 
-void FluidSolver::advect( int bound, float* d, const float* d0, const Vec2* duv) {
+void StarFluid::advect( int bound, float* d, const float* d0, const Vec2* duv) {
     int i0, j0, i1, j1;
     float x, y, s0, t0, s1, t1;
     int	index;
@@ -456,7 +456,7 @@ void FluidSolver::advect( int bound, float* d, const float* d0, const Vec2* duv)
 //          d    d0    du    dv
 // advect(1, u, uOld, uOld, vOld);
 // advect(2, v, vOld, uOld, vOld);
-void FluidSolver::advect2d( Vec2 *uv, const Vec2 *duv ) {
+void StarFluid::advect2d( Vec2 *uv, const Vec2 *duv ) {
     int i0, j0, i1, j1;
     float s0, t0, s1, t1;
     int	index;
@@ -500,7 +500,7 @@ void FluidSolver::advect2d( Vec2 *uv, const Vec2 *duv ) {
     setBoundary2d(2, uv);
 }
 
-void FluidSolver::advectRGB(int bound, const Vec2* duv) {
+void StarFluid::advectRGB(int bound, const Vec2* duv) {
    	int i0, j0;
     float x, y, s0, t0, s1, t1, dt0x, dt0y;
     int	index;
@@ -539,25 +539,25 @@ void FluidSolver::advectRGB(int bound, const Vec2* duv) {
     setBoundaryRGB();
 }
 
-void FluidSolver::diffuse( int bound, float* c, float* c0, float diff )
+void StarFluid::diffuse( int bound, float* c, float* c0, float diff )
 {
     float a = deltaT * diff * _NX * _NY;	//todo find the exact strategy for using _NX and _NY in the factors
     linearSolver( bound, c, c0, a, 1.0 + 4 * a );
 }
 
-void FluidSolver::diffuseRGB( int bound, float diff )
+void StarFluid::diffuseRGB( int bound, float diff )
 {
     float a = deltaT * diff * _NX * _NY;
     linearSolverRGB( a, 1.0 + 4 * a );
 }
 
-void FluidSolver::diffuseUV( float diff )
+void StarFluid::diffuseUV( float diff )
 {
     float a = deltaT * diff * _NX * _NY;
     linearSolverUV( a, 1.0 + 4 * a );
 }
 
-void FluidSolver::project(Vec2* xy, Vec2* pDiv)
+void StarFluid::project(Vec2* xy, Vec2* pDiv)
 {
     float	h;
     int		index;
@@ -599,7 +599,7 @@ void FluidSolver::project(Vec2* xy, Vec2* pDiv)
 
 
 //	Gauss-Seidel relaxation
-void FluidSolver::linearSolver( int bound, float* __restrict x, const float* __restrict x0, float a, float c )
+void StarFluid::linearSolver( int bound, float* __restrict x, const float* __restrict x0, float a, float c )
 {
     int	step_x = _NX + 2;
     int index;
@@ -619,7 +619,7 @@ void FluidSolver::linearSolver( int bound, float* __restrict x, const float* __r
     }
 }
 
-void FluidSolver::linearSolverProject( Vec2* __restrict pdiv )
+void StarFluid::linearSolverProject( Vec2* __restrict pdiv )
 {
     int	step_x = _NX + 2;
     int index;
@@ -638,7 +638,7 @@ void FluidSolver::linearSolverProject( Vec2* __restrict pdiv )
     }
 }
 
-void FluidSolver::linearSolverRGB( float a, float c )
+void StarFluid::linearSolverRGB( float a, float c )
 {
     int index3, index4, index;
     int	step_x = _NX + 2;
@@ -664,7 +664,7 @@ void FluidSolver::linearSolverRGB( float a, float c )
     }
 }
 
-void FluidSolver::linearSolverUV( float a, float c )
+void StarFluid::linearSolverUV( float a, float c )
 {
     int index;
     int	step_x = _NX + 2;
@@ -692,7 +692,7 @@ void FluidSolver::linearSolverUV( float a, float c )
     }
 }
 
-void FluidSolver::setBoundary(int bound, float* x)
+void StarFluid::setBoundary(int bound, float* x)
 {
     int dst1, dst2, src1, src2;
     int step = FLUID_IX(0, 1) - FLUID_IX(0, 0);
@@ -702,7 +702,7 @@ void FluidSolver::setBoundary(int bound, float* x)
     dst2 = FLUID_IX(_NX+1, 1 );
     src2 = FLUID_IX(_NX, 1);
     if( wrap_x )
-        SWAP( src1, src2 );
+        swap( src1, src2 );
     if( bound == 1 && !wrap_x )
         for (int i = _NY; i > 0; --i )
         {
@@ -721,7 +721,7 @@ void FluidSolver::setBoundary(int bound, float* x)
     dst2 = FLUID_IX(1, _NY+1);
     src2 = FLUID_IX(1, _NY);
     if( wrap_y )
-        SWAP( src1, src2 );
+        swap( src1, src2 );
     if( bound == 2 && !wrap_y )
         for (int i = _NX; i > 0; --i )
         {
@@ -741,7 +741,7 @@ void FluidSolver::setBoundary(int bound, float* x)
     x[FLUID_IX(_NX+1, _NY+1)] = 0.5f * (x[FLUID_IX(_NX, _NY+1)] + x[FLUID_IX(_NX+1, _NY)]);
 }
 
-void FluidSolver::setBoundary02d(Vec2* x)
+void StarFluid::setBoundary02d(Vec2* x)
 {
     int dst1, dst2, src1, src2;
     int step = FLUID_IX(0, 1) - FLUID_IX(0, 0);
@@ -751,7 +751,7 @@ void FluidSolver::setBoundary02d(Vec2* x)
     dst2 = FLUID_IX(_NX+1, 1 );
     src2 = FLUID_IX(_NX, 1);
     if( wrap_x )
-        SWAP( src1, src2 );
+        swap( src1, src2 );
     for (int i = _NY; i > 0; --i )
     {
         x[dst1].x = x[src1].x;	dst1 += step;	src1 += step;
@@ -763,7 +763,7 @@ void FluidSolver::setBoundary02d(Vec2* x)
     dst2 = FLUID_IX(1, _NY+1);
     src2 = FLUID_IX(1, _NY);
     if( wrap_y )
-        SWAP( src1, src2 );
+        swap( src1, src2 );
     for (int i = _NX; i > 0; --i )
     {
         x[dst1++] = x[src1++];
@@ -776,7 +776,7 @@ void FluidSolver::setBoundary02d(Vec2* x)
     x[FLUID_IX(_NX+1, _NY+1)].x = 0.5f * (x[FLUID_IX(_NX, _NY+1)].x + x[FLUID_IX(_NX+1, _NY)].x);
 }
 
-void FluidSolver::setBoundary2d( int bound, Vec2 *xy )
+void StarFluid::setBoundary2d( int bound, Vec2 *xy )
 {
     int dst1, dst2, src1, src2;
     int step = FLUID_IX(0, 1) - FLUID_IX(0, 0);
@@ -786,7 +786,7 @@ void FluidSolver::setBoundary2d( int bound, Vec2 *xy )
     dst2 = FLUID_IX(_NX+1, 1 );
     src2 = FLUID_IX(_NX, 1);
     if( wrap_x )
-        SWAP( src1, src2 );
+        swap( src1, src2 );
     if( bound == 1 && !wrap_x )
         for (int i = _NY; i > 0; --i )
         {
@@ -805,7 +805,7 @@ void FluidSolver::setBoundary2d( int bound, Vec2 *xy )
     dst2 = FLUID_IX(1, _NY+1);
     src2 = FLUID_IX(1, _NY);
     if( wrap_y )
-        SWAP( src1, src2 );
+        swap( src1, src2 );
     if( bound == 2 && !wrap_y )
         for (int i = _NX; i > 0; --i )
         {
@@ -828,7 +828,7 @@ void FluidSolver::setBoundary2d( int bound, Vec2 *xy )
 //#define CPY_RGB( d, s )		{	r[d] = r[s];	g[d] = g[s];	b[d] = b[s]; }
 //#define CPY_RGB_NEG( d, s )	{	r[d] = -r[s];	g[d] = -g[s];	b[d] = -b[s]; }
 
-void FluidSolver::setBoundaryRGB()
+void StarFluid::setBoundaryRGB()
 {
     int dst1, dst2, src1, src2;
     int step = FLUID_IX(0, 1) - FLUID_IX(0, 0);
@@ -838,7 +838,7 @@ void FluidSolver::setBoundaryRGB()
     dst2 = FLUID_IX(_NX+1, 1 );
     src2 = FLUID_IX(_NX, 1);
     if( wrap_x )
-        SWAP( src1, src2 );
+        swap( src1, src2 );
     for (int i = _NY; i > 0; --i )
     {
         color[dst1] = color[src1];
@@ -855,7 +855,7 @@ void FluidSolver::setBoundaryRGB()
     dst2 = FLUID_IX(1, _NY+1);
     src2 = FLUID_IX(1, _NY);
     if( wrap_y )
-        SWAP( src1, src2 );
+        swap( src1, src2 );
     for (int i = _NX; i > 0; --i )
     {
         color[dst1] = color[src1];
@@ -869,7 +869,7 @@ void FluidSolver::setBoundaryRGB()
 }
 
 
-void FluidSolver::randomizeColor() {
+void StarFluid::randomizeColor() {
     for (int i = getWidth()-1; i > 0; --i)
     {
         for (int j = getHeight()-1; j > 0; --j)
