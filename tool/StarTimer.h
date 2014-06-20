@@ -3,12 +3,14 @@
 #define StarEngine_Timer
 
 #include "../StarMain.h"
+//#include "iostream"
 #ifdef __APPLE__
 #include "TargetConditionals.h"
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 #include <CoreFoundation/CoreFoundation.h>
-#include <iostream>
+//#include <iostream>
+//using namespace std;
 
 #elif ANDROID
 #include <stdlib.h>
@@ -19,18 +21,19 @@
 class StarTimer
 {
 private:
-    unsigned long  long time4Testing;
-    
+    unsigned long  long timeForTesting;
+    char* nameForTesting;
     
 public:
-    StarTimer():time4Testing(0.f)
+    StarTimer():timeForTesting(0.f)
     {
         
     }
     unsigned long long getTime() ;
     void  getFPS() ;
-//    float getTick();
-    void startTick();
+
+    
+    void startTick(char *name=(char*)"None");
     void endTick();
 };
 

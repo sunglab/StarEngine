@@ -15,11 +15,19 @@ class Matrix
 		Matrix operator*(const Matrix& in_M)const;
     friend Vec4 operator*(const Vec4& in_V, const Matrix& in_M);
     friend Vec3 operator*(const Vec3& in_V, const Matrix& in_M);
+    friend Vec2 operator*(const Vec2& in_V, const Matrix& in_M);
+//    (*this) inverse(void)
+//    {
+//        Matrix out_M;
+//        out_M = *this;
+//    }
 };
 
 void Matrix_MxM( Matrix& out_M, const Matrix& in_M1, const Matrix& in_M2);
 
 void Matrix_MxV( Vec4& out_V, const Vec4& in_V, const Matrix& in_M);
+void Matrix_MxV( Vec3& out_V, const Vec3& in_V, const Matrix& in_M);
+void Matrix_MxV( Vec2& out_V, const Vec2& in_V, const Matrix& in_M);
 
 void Matrix_Translation( Matrix& out_M, const float x, const float y, const float z);
 

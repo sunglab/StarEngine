@@ -19,14 +19,26 @@ Vec4 operator*(const Vec4& in_V,const Matrix& in_M)
 }
 
 Vec3 operator*(const Vec3& in_V,const Matrix& in_M)
-{
-	Vec4 temp_V;
-    Vec3 out_V;
-    Vec4 in_V2 = Vec4((in_V),1.0);
-	Matrix_MxV(temp_V,in_V2,in_M);
-	return out_V= Vec3(temp_V.x,temp_V.y,temp_V.z);
+{ Vec3 out_V;
+	Matrix_MxV(out_V,in_V,in_M);
+	return out_V;
+//	Vec4 temp_V;
+//	Vec3 out_V;
+//	Vec4 in_V2 = Vec4((in_V),0.0);
+//	Matrix_MxV(temp_V,in_V2,in_M);
+//	return out_V= Vec3(temp_V.x,temp_V.y,temp_V.z);
 }
 
+Vec2 operator*(const Vec2& in_V,const Matrix& in_M)
+{ Vec2 out_V;
+	Matrix_MxV(out_V,in_V,in_M);
+	return out_V;
+//	Vec4 temp_V;
+//	Vec2 out_V;
+//	Vec4 in_V2 = Vec4((in_V),0.0,0.0);
+//	Matrix_MxV(temp_V,in_V2,in_M);
+//	return out_V= Vec2(temp_V.x,temp_V.y);
+}
 
 void Matrix_MxM( Matrix& out_M, const Matrix& in_M1, const Matrix& in_M2)
 {
@@ -148,6 +160,19 @@ out_V.w = in_V.x * in_M.s[_0x3_] + in_V.y * in_M.s[_1x3_] + in_V.z * in_M.s[_2x3
 */
 }
 
+// Added w value to be used with the Traslate function
+void Matrix_MxV( Vec3& out_V, const Vec3& in_V, const Matrix& in_M)
+{
+	out_V.x = in_V.x * in_M.s[_0x0_] + in_V.y * in_M.s[_1x0_] + in_V.z * in_M.s[_2x0_] + in_M.s[_3x0_];
+	out_V.y = in_V.x * in_M.s[_0x1_] + in_V.y * in_M.s[_1x1_] + in_V.z * in_M.s[_2x1_] + in_M.s[_3x1_];
+	out_V.z = in_V.x * in_M.s[_0x2_] + in_V.y * in_M.s[_1x2_] + in_V.z * in_M.s[_2x2_] + in_M.s[_3x2_];
+}
+
+void Matrix_MxV( Vec2& out_V, const Vec2& in_V, const Matrix& in_M)
+{
+	out_V.x = in_V.x * in_M.s[_0x0_] + in_V.y * in_M.s[_1x0_]+in_M.s[_3x0_];
+	out_V.y = in_V.x * in_M.s[_0x1_] + in_V.y * in_M.s[_1x1_]+in_M.s[_3x1_];
+}
 void Matrix_MxV_NEON(__VERTEX__TYPE__* out_V, const __VERTEX__TYPE__* in_V, const __MATRIX__TYPE__* in_M)
 {
 	/*
@@ -268,15 +293,35 @@ void Matrix_Look_At( Matrix& out_M, const Vec3& in_EYE, const Vec3& in_AT,const 
 
 }
 ///----------------------------------------------------------------------------------- unsafe------//
+//void Matrix_Rotation_X(Matrix	&out_M,const float angle)
+//{
+//	float COS =	(float)cos(angle);
+//	float SIN =	(float)sin(angle);
+//	out_M.s[_0x0_]=  1.f;		out_M.s[_0x1_]= 0.f;	out_M.s[_0x2_]= 0.f;	out_M.s[_0x3_]= 0.f;
+//	out_M.s[_1x0_]=	 0.f;		out_M.s[_1x1_]= COS;	out_M.s[_1x2_]= SIN;	out_M.s[_1x3_]= 0.f;
+//	out_M.s[_2x0_]=  0.f;		out_M.s[_2x1_]=-SIN;	out_M.s[_2x2_]= COS;	out_M.s[_2x3_]=	0.f;
+//	out_M.s[_3x0_]=	 0.f;		out_M.s[_3x1_]= 0.f;	out_M.s[_3x2_]= 0.f;	out_M.s[_3x3_]= 1.f;
+//
+//}
+//void Matrix_Rotation_Y(Matrix	&out_M, const float angle)
+//{
+//	float COS =	(float)cos(angle);
+//	float SIN =	(float)sin(angle);
+//	out_M.s[_0x0_]=  COS;		out_M.s[_0x1_]= 0.f;	out_M.s[_0x2_]=-SIN;	out_M.s[_0x3_]= 0.f;
+//	out_M.s[_1x0_]=	 0.f;		out_M.s[_1x1_]= 1.f;	out_M.s[_1x2_]= 0.f;	out_M.s[_1x3_]= 0.f;
+//	out_M.s[_2x0_]=  SIN;		out_M.s[_2x1_]=	0.f;	out_M.s[_2x2_]= COS;	out_M.s[_2x3_]=	0.f;
+//	out_M.s[_3x0_]=	 0.f;		out_M.s[_3x1_]= 0.f;	out_M.s[_3x2_]= 0.f;	out_M.s[_3x3_]= 1.f;
+//}
+
 void Matrix_Rotation_X(Matrix	&out_M,const float angle)
 {
 	float COS =	(float)cos(angle);
 	float SIN =	(float)sin(angle);
 	out_M.s[_0x0_]=  1.f;		out_M.s[_0x1_]= 0.f;	out_M.s[_0x2_]= 0.f;	out_M.s[_0x3_]= 0.f;
-	out_M.s[_1x0_]=	 0.f;		out_M.s[_1x1_]= COS;	out_M.s[_1x2_]= SIN;	out_M.s[_1x3_]= 0.f;
-	out_M.s[_2x0_]=  0.f;		out_M.s[_2x1_]=-SIN;	out_M.s[_2x2_]= COS;	out_M.s[_2x3_]=	0.f;
+	out_M.s[_1x0_]=	 0.f;		out_M.s[_1x1_]= COS;	out_M.s[_1x2_]= 0.f;	out_M.s[_1x3_]= 0.f;
+	out_M.s[_2x0_]=  0.f;		out_M.s[_2x1_]=-SIN;	out_M.s[_2x2_]= 1.0;	out_M.s[_2x3_]=	0.f;
 	out_M.s[_3x0_]=	 0.f;		out_M.s[_3x1_]= 0.f;	out_M.s[_3x2_]= 0.f;	out_M.s[_3x3_]= 1.f;
-
+    
 }
 
 
@@ -284,12 +329,11 @@ void Matrix_Rotation_Y(Matrix	&out_M, const float angle)
 {
 	float COS =	(float)cos(angle);
 	float SIN =	(float)sin(angle);
-	out_M.s[_0x0_]=  COS;		out_M.s[_0x1_]= 0.f;	out_M.s[_0x2_]=-SIN;	out_M.s[_0x3_]= 0.f;
+	out_M.s[_0x0_]=  COS;		out_M.s[_0x1_]= 0.f;	out_M.s[_0x2_]=0.f;	out_M.s[_0x3_]= 0.f;
 	out_M.s[_1x0_]=	 0.f;		out_M.s[_1x1_]= 1.f;	out_M.s[_1x2_]= 0.f;	out_M.s[_1x3_]= 0.f;
-	out_M.s[_2x0_]=  SIN;		out_M.s[_2x1_]=	0.f;	out_M.s[_2x2_]= COS;	out_M.s[_2x3_]=	0.f;
+	out_M.s[_2x0_]=  SIN;		out_M.s[_2x1_]=	0.f;	out_M.s[_2x2_]= 1.f;	out_M.s[_2x3_]=	0.f;
 	out_M.s[_3x0_]=	 0.f;		out_M.s[_3x1_]= 0.f;	out_M.s[_3x2_]= 0.f;	out_M.s[_3x3_]= 1.f;
 }
-
 
 void Matrix_Rotation_Z( Matrix	&out_M, const float angle)
 {
@@ -331,10 +375,10 @@ void Matrix_Ortho( Matrix& out_M, const float width, const float height, const f
 	}
 }
 
-	 ////////////////
-	/* Quaternion */
- ////////////////
- 
+////////////////
+/* Quaternion */
+////////////////
+
 void Matrix_Quaternion_Identity(Quaternion& out_Q)
 {
 	out_Q.x = 0.f;
@@ -403,7 +447,7 @@ void Matrix_Quaternion_Slerp(Quaternion& out_Q, const Quaternion& in_Q1, const Q
 		Matrix_Quaternion_Slerp(out_Q,in_Q1,tmp_Q, t);
 		return;
 	}
-	cos = min(cos,1.0f);
+	cos = _min(cos,1.0f);
 	angle = cosf(cos);
 	if(angle==0.f)// to void a division by zero
 	{ 

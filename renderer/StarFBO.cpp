@@ -14,8 +14,7 @@ StarFBO::StarFBO()
 #ifdef ANDROID
     LOGE("Created RederColorbuffer");
 #elif IOS
-    std::cout << "Created RederColorbuffer\n" <<std::endl;
-    
+    printf("Created RederColorbuffer\n");
 #endif
 
     // Create the renderbuffer object.

@@ -13,6 +13,7 @@
 
 class StarFBO
 {
+    // IDs
     private:
     GLuint s_FrameBuffer;
     GLuint s_ColorRenderBuffer;

@@ -65,25 +65,33 @@ void StarTimer::getFPS()
 		starDelegate->CallbackFPS(framePerSecond);
 
 		framePerSecond = 0; 
-	} 
-	//    if(current-frameTime<1000)//넘의면 안되는 이유는? 그건 미친짓 이지
+	}
+    
+	// Don't be over more than 1000
     starDelegate->CallbackTICK(current-frameTime);
 	frameTime = current;
 
-} 
-void StarTimer::startTick()
-{
-	(*this).time4Testing = getTime();
-
 }
+
+void StarTimer::startTick(char* name)
+{
+	timeForTesting = getTime();
+    nameForTesting = name;
+}
+
 void StarTimer::endTick()
 {
-
 	// std::cout << "Total spend time :"<<(*this).time4Testing - getTime() << std::endl;
 
+//#ifdef ANDROID
+//	LOGE("---Total time---\n %llu\n %llu\n %llu\n",(*this).time4Testing, getTime(),(unsigned long long)getTime()-time4Testing) ;
+//#elif IOS
+//	printf("---Total time---\n %llu\n %llu\n %llu\n",(*this).time4Testing, getTime(),(unsigned long long)getTime()-time4Testing) ;
+//#endif
+    
 #ifdef ANDROID
-	LOGE("---Total time---\n %llu\n %llu\n %llu\n",(*this).time4Testing, getTime(),(unsigned long long)getTime()-(*this).time4Testing) ;
+	LOGE("---%s takes ---\n%llu\n",nameForTesting,(unsigned long long)getTime()-timeForTesting) ;
 #elif IOS
-	printf("---Total time---\n %llu\n %llu\n %llu\n",(*this).time4Testing, getTime(),(unsigned long long)getTime()-(*this).time4Testing) ;
+	printf("---%s takes ---\n%llu\n",nameForTesting,(unsigned long long)getTime()-timeForTesting) ;
 #endif
 }

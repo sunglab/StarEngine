@@ -179,32 +179,58 @@ public:
         
 //        srand(time(NULL));
         
-        float speed = vel.x * vel.x  + vel.y * vel.y * (320.f/568.f) * (320.f/568.f);
-        if( speed > 0 ) {
-            pos.x = constrain( pos.x, 0.0f, 1.0f );
-            pos.y = constrain( pos.y, 0.0f, 1.0f );
+//        float speed = vel.x * vel.x  + vel.y * vel.y * (320.f/568.f) * (320.f/568.f);
+//        if( speed > 0 ) {
+//            pos.x = _constrain( pos.x, 0.0f, 1.0f );
+//            pos.y = _constrain( pos.y, 0.0f, 1.0f );
+//        
+////            NSLog(@"%f %f %f %f", pos.x, pos.y, vel.x, vel.y);
+//            float colorMult = 100;
+//            float velocityMult = 100;
+//            if( addColor ) {
+////                float temp = (rand()%100) *0.01;
+////                Color3 drawColor(1.0,0.0,0.0);
+//                
+//                addColorAtPos( pos, colors*colorMult);//* colorMult);
+//            }
+//            if( addForce ) {
+//                addForceAtPos( pos, vel *velocityMult);
+//            }
+//        }
         
-            NSLog(@"%f %f %f %f", pos.x, pos.y, vel.x, vel.y);
-            float colorMult = 100;
-            float velocityMult = 100;
-            if( addColor ) {
-//                float temp = (rand()%100) *0.01;
-//                Color3 drawColor(1.0,0.0,0.0);
+        float speed = vel.x * vel.x  + vel.y * vel.y * (320.f/568.f) * (320.f/568.f);
+//* getWindowAspectRatio() * getWindowAspectRatio();    // balance the x and y components of speed with the screen aspect ratio
+        if(speed > 0) {
+            pos.x = _constrain(pos.x, 0.0f, 1.0f);
+            pos.y = _constrain(pos.y, 0.0f, 1.0f);
+            
+            const float colorMult = 100;
+            const float velocityMult = 30;
+            
+            int index = getIndexForPos(pos);
+            
+            if(addColor) {
+          
+                //			Color drawColor;
+                //			drawColor.setHSV(( getElapsedFrames() % 360 ) / 360.0f, 1, 1 );
                 
-                addColorAtPos( pos, colors*colorMult);//* colorMult);
+                addColorAtIndex(index, colors);
+                
             }
-            if( addForce ) {
-                addForceAtPos( pos, vel *velocityMult);
-            }
+            
+            if(addForce)
+                addForceAtIndex(index, vel * velocityMult);
+            
         }
     }
+    
 };
 
 
 //-------- get index
 inline int StarFluid::getIndexForCell(int i, int j) const {
-    i = constrain(i, 1, _NX);
-    j = constrain(j, 1, _NY);
+    i = _constrain(i, 1, _NX);
+    j = _constrain(j, 1, _NY);
     return FLUID_IX(i, j);
 }
 
@@ -281,9 +307,14 @@ inline void StarFluid::addForceAtPos(const Vec2 &pos, const Vec2 &force) {
 //-------- add color
 inline void StarFluid::addColorAtIndex(int index, const Color3 &color) {
     if(doRGB) {
+        
+//        colorOld[index-3] += Color3(color.r, color.g, color.b);
+//        colorOld[index-2] += Color3(color.r, color.g, color.b);
+//        colorOld[index-1] += Color3(color.r, color.g, color.b);
         colorOld[index] += Color3(color.r, color.g, color.b);
-//        (Vec3)color[index] += Vec3(color.x, color.y, color.z);
-//        NSLog(@"index : %d", index);
+//        colorOld[index+1] += Color3(color.r, color.g, color.b);
+//        colorOld[index+2] += Color3(color.r, color.g, color.b);
+//        colorOld[index+3] += Color3(color.r, color.g, color.b);
     } else {
         density[index] += color.r;
     }
