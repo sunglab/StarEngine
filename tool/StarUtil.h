@@ -1,23 +1,49 @@
 #ifndef STARUTIL_H
 #define STARUTIL_H
+//#include "../../StarEngine/StarMain.h"
 
-class StarUtil
+/*
+ *  singleton
+ */
+template <typename T>
+class StarSingleton
 {
-public:
     
-
+public:
+//    StarSingleton();
+//    virtual ~StarSingleton(){};
+    static T* share()
+    {
+            if(_single)
+                return _single;
+           else
+               return _single = new T;
+    };
+    static void release()
+    {
+            delete _single;
+            _single = false;
+    }
+    
+private:
+    static T* _single;
 };
 
+template <typename T> T* StarSingleton<T>::_single = 0;
 
+/*
+ * global functions for useful
+ */
 template<typename T>
-void _swap(T& a, T& b)
+void starSwap(T& a, T& b)
 {
     T c = a;
     a = b;
     b = c;
 }
+
 template<typename T>
-T _min(T a, T b)
+T starMin(T a, T b)
 {
     if(a<b)
         return a;
@@ -26,7 +52,7 @@ T _min(T a, T b)
 }
 
 template<typename T>
-T _max(T a, T b)
+T starMax(T a, T b)
 {
     if(a>b)
         return a;
@@ -35,7 +61,7 @@ T _max(T a, T b)
 }
 
 template<typename T>
-T _constrain(T c, T a, T b)
+T starConstrain(T c, T a, T b)
 {
     if(c<a)
         return a;
@@ -44,6 +70,7 @@ T _constrain(T c, T a, T b)
     else
         return c;
 }
+
 
 
 #endif

@@ -55,7 +55,7 @@ class Vec2
 		__VERTEX__TYPE__ dot(const Vec2&)const;
 
 		Vec2& normalize();
-
+    
 		void lerp(float, Vec2&);
 
 		void zero()

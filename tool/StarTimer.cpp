@@ -2,10 +2,10 @@
 
 #include "StarTimer.h"
 
-#include "../../Android/StarEngine/jni/StarEngine.h" /* For Delegater */
+#include "../../Mac/GLSLTOY/ParticleArt/StarEngine.h" /* For Delegater */
 Star *starDelegate;
 
-#if IOS
+#if IOS || MAC
 unsigned long long StarTimer::getTime()
 {
 	static mach_timebase_info_data_t  sTimebaseInfo;

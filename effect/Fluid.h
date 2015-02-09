@@ -7,9 +7,11 @@
 // do not change these values, you can override them using the solver methods
 #define		FLUID_DEFAULT_NX					50
 #define		FLUID_DEFAULT_NY					50
+
 #define     FLUID_DEFAULT_DT					0.04f	//Maa	25fps
 #define		FLUID_DEFAULT_VISC					0.0001f
-#define     FLUID_DEFAULT_COLOR_DIFFUSION		0.0f
+#define     FLUID_DEFAULT_COLOR_DIFFUSION		0.1f
+
 #define     FLUID_DEFAULT_FADESPEED				0.03f
 #define		FLUID_DEFAULT_SOLVER_ITERATIONS		10
 
@@ -65,7 +67,8 @@ public:
     inline void addColorAtCell(int i, int j, const Color3 &color);
     inline void addColorAtPos(const Vec2 &pos, const Color3 &color);
     
-    
+    // add Texture
+    inline void addTextureAtPos(Vec2 pos,int w,int h, char* image);
     // fill with random color at every cell
     void randomizeColor();
     
@@ -174,52 +177,59 @@ protected:
     void	fadeDensity();
     void	fadeRGB();
 public:
-    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,Color3& colors )
-    {
-        
-//        srand(time(NULL));
-        
-//        float speed = vel.x * vel.x  + vel.y * vel.y * (320.f/568.f) * (320.f/568.f);
-//        if( speed > 0 ) {
-//            pos.x = _constrain( pos.x, 0.0f, 1.0f );
-//            pos.y = _constrain( pos.y, 0.0f, 1.0f );
-//        
-////            NSLog(@"%f %f %f %f", pos.x, pos.y, vel.x, vel.y);
-//            float colorMult = 100;
-//            float velocityMult = 100;
-//            if( addColor ) {
-////                float temp = (rand()%100) *0.01;
-////                Color3 drawColor(1.0,0.0,0.0);
+//    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,char* img,int img_w, int img_h)
+//    {
+////        float speed = vel.x * vel.x  + vel.y * vel.y * (320.f/568.f) * (320.f/568.f);
+//        if(vel.x != 0 || vel.y != 0)
+//        {
+//            pos.x = starConstrain(pos.x, 0.0f, 1.0f);
+//            pos.y = starConstrain(pos.y, 0.0f, 1.0f);
+//            
+////            const float colorMult = 100;
+//            const float velocityMult = 30;
+//            
+//            int index = getIndexForPos(pos);
+//            
+//            if(addColor) {
+//          
+//                //			Color drawColor;
+//                //			drawColor.setHSV(( getElapsedFrames() % 360 ) / 360.0f, 1, 1 );
 //                
-//                addColorAtPos( pos, colors*colorMult);//* colorMult);
+////                addColorAtIndex(index, colors);
+//                addTextureAtPos(pos,img_w,img_h,img);
+//                
 //            }
-//            if( addForce ) {
-//                addForceAtPos( pos, vel *velocityMult);
-//            }
+//            
+//            if(addForce)
+//                addForceAtIndex(index, vel * velocityMult);
+//            
 //        }
-        
-        float speed = vel.x * vel.x  + vel.y * vel.y * (320.f/568.f) * (320.f/568.f);
-//* getWindowAspectRatio() * getWindowAspectRatio();    // balance the x and y components of speed with the screen aspect ratio
-        if(speed > 0) {
-            pos.x = _constrain(pos.x, 0.0f, 1.0f);
-            pos.y = _constrain(pos.y, 0.0f, 1.0f);
+//    }
+    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,Color3& colors)
+    {
+        //        float speed = vel.x * vel.x  + vel.y * vel.y * (320.f/568.f) * (320.f/568.f);
+        if(vel.x != 0 || vel.y != 0)
+        {
+            pos.x = starConstrain(pos.x, 0.0f, 1.0f);
+            pos.y = starConstrain(pos.y, 0.0f, 1.0f);
             
-            const float colorMult = 100;
-            const float velocityMult = 30;
+            //            const float colorMult = 100;
+//            const float velocityMult = 30;
             
             int index = getIndexForPos(pos);
             
             if(addColor) {
-          
+                
                 //			Color drawColor;
                 //			drawColor.setHSV(( getElapsedFrames() % 360 ) / 360.0f, 1, 1 );
                 
                 addColorAtIndex(index, colors);
+//                addTextureAtPos(pos,img_w,img_h,img);
                 
             }
             
             if(addForce)
-                addForceAtIndex(index, vel * velocityMult);
+                addForceAtIndex(index, vel);
             
         }
     }
@@ -229,8 +239,8 @@ public:
 
 //-------- get index
 inline int StarFluid::getIndexForCell(int i, int j) const {
-    i = _constrain(i, 1, _NX);
-    j = _constrain(j, 1, _NY);
+    i = starConstrain(i, 1, _NX);
+    j = starConstrain(j, 1, _NY);
     return FLUID_IX(i, j);
 }
 
@@ -319,7 +329,18 @@ inline void StarFluid::addColorAtIndex(int index, const Color3 &color) {
         density[index] += color.r;
     }
 }
-
+inline void StarFluid::addTextureAtPos(Vec2 pos, int w, int h, char *img)
+{
+    const char* _img = img;
+    for(int _h=0;_h<h;_h++)
+    for(int _w=0;_w<w;_w++)
+        {
+//            colorOld[((_w*h)+_h)] += *(img+(_h*w)+_w);
+            colorOld[(_h+(int)(pos.y))*(_NX+2)+((int)pos.x+_w)] += *(_img++);
+            
+        }
+    
+}
 inline void StarFluid::addColorAtCell(int i, int j, const Color3 &color) {
     addColorAtIndex(getIndexForCell(i, j), color);
 }

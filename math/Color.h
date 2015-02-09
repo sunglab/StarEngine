@@ -2,6 +2,27 @@
 #define COLOR_H
 #include "../star.h"
 #include "../tool/StarUtil.h"
+#include <time.h>
+#include <stdlib.h>
+class HSV
+{
+public:
+	__COLOR__TYPE__ h;
+	__COLOR__TYPE__ s;
+	__COLOR__TYPE__ v;
+    HSV(__COLOR__TYPE__ _h, __COLOR__TYPE__ _s, __COLOR__TYPE__ _v)
+    {
+        h = _h;
+        s = _s;
+        v = _v;
+    }
+};
+//typedef struct
+//{
+//	double r;
+//	double g;
+//	double b;
+//} RGB;
 
 class Color3
 {
@@ -68,6 +89,9 @@ class Color3
 			(*this) = (float)0.0f;
 		}
 		void lerp(float, Color3&);
+		void genColor();
+    void setHSV(HSV in);
+    
 };
 
 class Color4
@@ -134,6 +158,8 @@ class Color4
 		}
 		void lerp(float, Color4&);
 		void lerp(float, Color3&);
+		void genColor();
+    void setHSV(HSV in);
 };
 
 

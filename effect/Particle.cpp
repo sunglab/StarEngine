@@ -2,7 +2,14 @@
 
 Particle::Particle()
 {
-	position.zero();
-	color.zero();
-	angle.zero();
+//	position.zero();
+//	color.zero();
+//	angle.zero();
+}
+
+ParticleLine::ParticleLine()
+{
+//    line = Lines(Vec3(0.0,0.0,0.0),Vec3(0.0,0.0,0.0));
+//    tranlation.zero();
+//    angle.zero();
 }

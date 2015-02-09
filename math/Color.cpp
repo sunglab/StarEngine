@@ -110,7 +110,6 @@ Color3& Color3::operator[](int index)
 	return (this)[index];
 }
 
-
 void Color3::lerp(float t,Color3& newColor)
 {
 	(this->r) = (1.f-t)*(this->r) + newColor.r * t;
@@ -118,8 +117,71 @@ void Color3::lerp(float t,Color3& newColor)
 	(this->b) = (1.f-t)*(this->b) + newColor.b * t;
 }
 
+void Color3::genColor()
+{
+	srand((unsigned)time(NULL));
+	this->r = rand()%100*0.01;
+	this->g = rand()%100*0.01;
+	this->b = rand()%100*0.01;
+}
 
-
+void Color3::setHSV(HSV in)
+    {
+        double      hh, p, q, t, ff;
+        long        i;
+        Color3         out;
+        
+        if(in.s <= 0.0) {       // < is bogus, just shuts up warnings
+            out.r = in.v;
+            out.g = in.v;
+            out.b = in.v;
+            *this =  out;
+        }
+        hh = in.h;
+        if(hh >= 360.0) hh = 0.0;
+        hh /= 60.0;
+        i = (long)hh;
+        ff = hh - i;
+        p = in.v * (1.0 - in.s);
+        q = in.v * (1.0 - (in.s * ff));
+        t = in.v * (1.0 - (in.s * (1.0 - ff)));
+        
+        switch(i) {
+            case 0:
+                out.r = in.v;
+                out.g = t;
+                out.b = p;
+                break;
+            case 1:
+                out.r = q;
+                out.g = in.v;
+                out.b = p;
+                break;
+            case 2:
+                out.r = p;
+                out.g = in.v;
+                out.b = t;
+                break;
+                
+            case 3:
+                out.r = p;
+                out.g = q;
+                out.b = in.v;
+                break;
+            case 4:
+                out.r = t;
+                out.g = p;
+                out.b = in.v;
+                break;
+            case 5:
+            default:
+                out.r = in.v;
+                out.g = p;
+                out.b = q;
+                break;
+        }
+        *this = out;
+}
 /* Color4 */
 Color4 Color4::operator+(const Color4& in_Color)const
 {
@@ -254,3 +316,69 @@ void Color4::lerp(float t,Color3& newColor)
 	(this->g) = (1.f-t)*(this->g) + newColor.g * t;
 	(this->b) = (1.f-t)*(this->b) + newColor.b * t;
 }
+void Color4::genColor()
+{
+    srand((unsigned)time(NULL));
+	this->r = rand()%100*0.01;
+	this->g = rand()%100*0.01;
+	this->b = rand()%100*0.01;
+    this->a = 1.0f;
+}
+
+void Color4::setHSV(HSV in)
+{
+    double      hh, p, q, t, ff;
+    long        i;
+    Color4         out;
+    out.a = 1.0;
+    if(in.s <= 0.0) {       // < is bogus, just shuts up warnings
+        out.r = in.v;
+        out.g = in.v;
+        out.b = in.v;
+        *this =  out;
+    }
+    hh = in.h;
+    if(hh >= 360.0) hh = 0.0;
+    hh /= 60.0;
+    i = (long)hh;
+    ff = hh - i;
+    p = in.v * (1.0 - in.s);
+    q = in.v * (1.0 - (in.s * ff));
+    t = in.v * (1.0 - (in.s * (1.0 - ff)));
+    
+    switch(i) {
+        case 0:
+            out.r = in.v;
+            out.g = t;
+            out.b = p;
+            break;
+        case 1:
+            out.r = q;
+            out.g = in.v;
+            out.b = p;
+            break;
+        case 2:
+            out.r = p;
+            out.g = in.v;
+            out.b = t;
+            break;
+            
+        case 3:
+            out.r = p;
+            out.g = q;
+            out.b = in.v;
+            break;
+        case 4:
+            out.r = t;
+            out.g = p;
+            out.b = in.v;
+            break;
+        case 5:
+        default:
+            out.r = in.v;
+            out.g = p;
+            out.b = q;
+            break;
+    }
+    *this = out;
+    }

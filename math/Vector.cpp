@@ -258,12 +258,12 @@ const Vec3& Vec3::operator[](int index) const
 //FUNCs
 __VERTEX__TYPE__ Vec3::length() const
 {
- return sqrtf((x*x)+(y*y));
+ return sqrtf((x*x)+(y*y)+(z*z));
 }
 
 __VERTEX__TYPE__ Vec3::lengthSquared() const
 {
-	return (x*x)+(y*y);
+	return (x*x)+(y*y)+(z*z);
 } 
 
 __VERTEX__TYPE__ Vec3::dot(const Vec3& in_Vec) const

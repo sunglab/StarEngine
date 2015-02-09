@@ -11,26 +11,37 @@
 
 #include "../StarMain.h"
 
+class Texture
+{
+public:
+    Texture(){texture_id = 0; texture_width=0; texture_height=0; }
+//    Texture(unsigned int tex_id);
+    unsigned int texture_width;
+    unsigned int texture_height;
+    unsigned  int texture_id;
+};
+
 class StarTexture
 {
     public:
-    unsigned int texture_width, texture_height;
-	GLuint texture_id;
+    Texture* texture;
     
-    StarTexture()
-	{texture_id = 0; texture_width=0; texture_height=0; }
+//    StarTexture(void);
+    StarTexture(unsigned int texture_number);
 
 #ifdef IOS
-    StarTexture Create_Texture_IOS(NSString *filename);
+    void createTEXTURE_IOS(NSString *filename, unsigned texture_id);
+#elif MAC
+//    void createTEXTURE_MAC(NSString *filename, unsigned texture_id);
 #elif ANDROID
-    StarTexture Create_Texture_CAM_ANDROID(char * camData,int width,int height);  // Espcial
-    StarTexture Create_Texture_ANDROID(int* array,int width, int height);
+    void createTEXTURE_ANDROID(int* array,unsigned int width, unsigned int height, unsigned int texture_id);
 #endif
-    StarTexture Create_Texture_PIXEL(char*,int,int);
     
-    StarTexture Create_Texture_FBO_FIRST(int width,int height);
-    StarTexture Create_Texture_FBO_SECOND(int width,int height);
-    StarTexture Create_Texture_FBO_THIRD(int width,int height);
-    void Delete_Texture(StarTexture Texture);
+    void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id);
+    void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texutre_id);
+    
+    Texture* getTEXTURE(unsigned int texture_id);
+    void bindTEXTURE( unsigned int texture_unit, unsigned int texture_id);
+    void deleteTEXTURE(unsigned int texture_id);
 };
 #endif

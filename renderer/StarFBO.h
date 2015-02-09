@@ -10,59 +10,34 @@
 #define StarEngine_StarFBO_h
 
 #include "../StarMain.h"
-
 class StarFBO
 {
-    // IDs
-    private:
-    GLuint s_FrameBuffer;
-    GLuint s_ColorRenderBuffer;
-    GLuint s_DepthRenderBuffer;
     
-    GLuint b1_FrameBuffer;
-    GLuint b1_ColorRenderBuffer;
-    GLuint b1_DepthRenderBuffer;
+public:
+		// IDs for fbo, vao and vbo
+    unsigned int* fbo;
+    unsigned int* rboColor;
+    unsigned int* rboDepth;
+//    unsigned int* rboStencil;
     
-    GLuint b2_FrameBuffer;
-    GLuint b2_ColorRenderBuffer;
-    GLuint b2_DepthRenderBuffer;
-   
-    GLuint b3_FrameBuffer;
-    GLuint b3_ColorRenderBuffer;
-    GLuint b3_DepthRenderBuffer;
+    unsigned int* vao;
+    unsigned int* vbo;
+		
+    StarFBO(void);
+    StarFBO( unsigned int fbo_number, unsigned int vbo_number, unsigned int vao_number);
     
-    public:
-    //ColorRenderbuffer Setting
-    StarFBO();
-    //ETC Renderbuffers and Framebuffer Setting
-    void  createFBO(bool depth=0, bool stencil=0,int width=0,int height=0);
-    void  createFBObyBackFirst(bool depth=0, bool stencil=0,int width=0,int height=0);
-    void  createFBObyBackSecond(bool depth=0, bool stencil=0,int width=0,int height=0);
-    void  createFBObyBackThird(bool depth=0, bool stencil=0,int width=0,int height=0);
-
-    //Binding to  Onscreen Buffers
-    void  bindingColorbuffer();
-    void  bindingFramebuffer();
+		//ETC Renderbuffers and Framebuffer Setting
+		void createFBO( bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id);
+        void bindFBO( unsigned int object_id);
+        void bindRBO( unsigned int object_id);
     
-    //Release to Onscreen Buffers
-    void  bindingColorbufferRelease();
-    void  bindingFramebufferRelease();
+		void createVAO( unsigned int object_id);
+		void bindVAO( unsigned object_id);
     
-    //Binding to Offscreen buffers
-    void  bindingColorBackbufferFirst();
-    void  bindingFrameBackbufferFirst();
-        
-    //Binding to Offscreen buffers
-    void  bindingColorBackbufferSecond();
-    void  bindingFrameBackbufferSecond();
+    void createVBOsub(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int object_id);
+		void createVBO( unsigned int target, unsigned int size, void* data, unsigned int dataType, unsigned int object_id);
+		void bindVBO( unsigned int target, unsigned int object_id);
     
-    //Binding to Offscreen buffers
-    void  bindingColorBackbufferThird();
-    void  bindingFrameBackbufferThird();
-    
-    //Release to Offscreen buffers
-    void  bindingColorBackbufferRelease();
-    void  bindingFrameBackbufferRelease();
-
+    ~StarFBO();
 };
 #endif
