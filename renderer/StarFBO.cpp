@@ -158,9 +158,17 @@ void StarFBO::bindFBO(unsigned int object_id)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
 }
+void StarFBO::unbindFBO()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
 void StarFBO::bindRBO(unsigned int object_id)
 {
     glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
+}
+void StarFBO::unbindRBO()
+{
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
 /*
@@ -185,7 +193,14 @@ void StarFBO::bindVAO(unsigned int object_id)
     glBindVertexArrayOES(vao[object_id]);
 #endif
 }
-
+void StarFBO::unbindVAO()
+{
+#ifdef MAC
+    glBindVertexArray(0);
+#elif IOS
+    glBindVertexArrayOES(0);
+#endif
+}
 
 /*
  VBO
@@ -205,5 +220,9 @@ void StarFBO::createVBO(unsigned int target,unsigned int size, void* data, unsig
 void StarFBO::bindVBO(unsigned int target, unsigned int object_id)
 {
     glBindBuffer( target, vbo[object_id]);
+}
+void StarFBO::unbindVBO(unsigned int target)
+{
+    glBindBuffer(target,0);
 }
 
