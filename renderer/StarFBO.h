@@ -37,7 +37,7 @@ public:
 		void bindVAO( unsigned object_id);
         void unbindVAO();
     
-    void createVBOsub(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int object_id);
+    void createVBOsub(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int dataType, unsigned int object_id);
     void createVBO( unsigned int target, unsigned int size, void* data, unsigned int dataType, unsigned int object_id);
     void bindVBO( unsigned int target, unsigned int object_id);
     void unbindVBO(unsigned int target);

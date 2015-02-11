@@ -183,6 +183,9 @@ void StarFBO::createVAO(unsigned int object_id)
 #elif IOS
     glGenVertexArraysOES(1,&vao[object_id]);
 	glBindVertexArrayOES(vao[object_id]);
+#elif ANDROID
+//    glGenVertexArraysOES(1,&vao[object_id]);
+//	glBindVertexArrayOES(vao[object_id]);
 #endif
 }
 void StarFBO::bindVAO(unsigned int object_id)
@@ -191,6 +194,8 @@ void StarFBO::bindVAO(unsigned int object_id)
     glBindVertexArray(vao[object_id]);
 #elif IOS
     glBindVertexArrayOES(vao[object_id]);
+#elif ANDROID
+//    glBindVertexArrayOES(vao[object_id]);
 #endif
 }
 void StarFBO::unbindVAO()
@@ -199,6 +204,8 @@ void StarFBO::unbindVAO()
     glBindVertexArray(0);
 #elif IOS
     glBindVertexArrayOES(0);
+#elif ANDROID
+//    glBindVertexArrayOES(0);
 #endif
 }
 
@@ -211,10 +218,11 @@ void StarFBO::createVBO(unsigned int target,unsigned int size, void* data, unsig
     glBindBuffer( target, vbo[object_id]);
     glBufferData( target, size, data, dataType);
 }
-    void StarFBO::createVBOsub(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int object_id)
+    void StarFBO::createVBOsub(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int dataType,unsigned int object_id)
 {
     glGenBuffers( 1, &vbo[object_id]);
     glBindBuffer( target, vbo[object_id]);
+    glBufferData( target, size, (void*)0, dataType);
     glBufferSubData(target, offset, size, data);
 }
 void StarFBO::bindVBO(unsigned int target, unsigned int object_id)
