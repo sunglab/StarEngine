@@ -108,29 +108,29 @@ void StarTexture::createTEXTURE_DATA( void* data, unsigned int camera_width, uns
 //    glEnable(GL_TEXTURE_2D);
 }
 
-void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id)
+void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id,bool resize)
 {
-	
+
 	texture[texture_id].texture_width = texture_width;
 	texture[texture_id].texture_height = texture_height;
     
+  if(!resize)
+  {
+      glGenTextures(1, &texture[texture_id].texture_id);
+      glBindTexture(GL_TEXTURE_2D,texture[texture_id].texture_id);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+  }
+  else
+  {
+      glBindTexture(GL_TEXTURE_2D,texture[texture_id].texture_id);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+  }
     
-    glGenTextures(1, &texture[texture_id].texture_id);
-    
-//    printf("gen texture id for RTT is %d\n", texture[texture_id].texture_id);
-    glBindTexture(GL_TEXTURE_2D,texture[texture_id].texture_id);
-
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
-    
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
-	//     glGenerateMipmap(GL_TEXTURE_2D);
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0); //temporary
 }
 
 Texture* StarTexture::getTEXTURE(unsigned int texture_id)

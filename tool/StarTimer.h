@@ -17,24 +17,23 @@
 #include <stdio.h>
 #include <time.h>
 #endif
-
+class StarTimerDelegate
+{
+public:
+    virtual void CallbackFPS(int fps){};
+    virtual void CallbackTICK(float tick){};
+};
 class StarTimer
 {
 private:
-    unsigned long  long timeForTesting;
-    char* nameForTesting;
-    
+    int frame;
+    StarTimerDelegate* delegate;
 public:
-    StarTimer():timeForTesting(0.f)
-    {
-        
-    }
+    //StarTimer():frame(0){}
+    StarTimer(StarTimerDelegate* _delegate):frame(0){delegate = _delegate;};
     unsigned long long getTime() ;
     void  getFPS() ;
-
-    
-    void startTick(char *name=(char*)"None");
-    void endTick();
+    int getFrame();
 };
 
 

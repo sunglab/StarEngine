@@ -45,8 +45,8 @@ StarFluid& StarFluid::setup(int NX, int NY)
     setFadeSpeed();
     setSolverIterations();
     enableVorticityConfinement(false); // off
-    setWrap( false, false );
-//    setWrap( true, true );
+//    setWrap( false, false );
+    setWrap( true, true );
 
     
     //maa

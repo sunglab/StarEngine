@@ -131,8 +131,6 @@ public:
     bool	wrap_x;
     bool	wrap_y;
     
-protected:
-    
     float width;
     float height;
     float invWidth;

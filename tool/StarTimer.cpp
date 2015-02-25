@@ -2,9 +2,6 @@
 
 #include "StarTimer.h"
 
-#include "../../Mac/GLSLTOY/ParticleArt/StarEngine.h" /* For Delegater */
-Star *starDelegate;
-
 #if IOS || MAC
 unsigned long long StarTimer::getTime()
 {
@@ -62,36 +59,16 @@ void StarTimer::getFPS()
 #elif IOS
 		//        printf("%s\n",strFrameRate);
 #endif
-		starDelegate->CallbackFPS(framePerSecond);
-
+		delegate->CallbackFPS((int)framePerSecond);
+        frame++;
 		framePerSecond = 0; 
 	}
-    
 	// Don't be over more than 1000
-    starDelegate->CallbackTICK(current-frameTime);
+    delegate->CallbackTICK(current-frameTime);
 	frameTime = current;
 
 }
-
-void StarTimer::startTick(char* name)
+int StarTimer::getFrame()
 {
-	timeForTesting = getTime();
-    nameForTesting = name;
-}
-
-void StarTimer::endTick()
-{
-	// std::cout << "Total spend time :"<<(*this).time4Testing - getTime() << std::endl;
-
-//#ifdef ANDROID
-//	LOGE("---Total time---\n %llu\n %llu\n %llu\n",(*this).time4Testing, getTime(),(unsigned long long)getTime()-time4Testing) ;
-//#elif IOS
-//	printf("---Total time---\n %llu\n %llu\n %llu\n",(*this).time4Testing, getTime(),(unsigned long long)getTime()-time4Testing) ;
-//#endif
-    
-#ifdef ANDROID
-	LOGE("---%s takes ---\n%llu\n",nameForTesting,(unsigned long long)getTime()-timeForTesting) ;
-#elif IOS
-	printf("---%s takes ---\n%llu\n",nameForTesting,(unsigned long long)getTime()-timeForTesting) ;
-#endif
+    return frame;
 }
