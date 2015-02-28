@@ -254,6 +254,8 @@ void StarFluid::vorticityConfinement(Vec2* Fvc_xy) {
 }
 
 void StarFluid::update() {
+    if (_isInited) {
+
     addSource(uv, uvOld);
     
     if( doVorticityConfinement )
@@ -301,6 +303,8 @@ void StarFluid::update() {
         
         advect(0, density, densityOld, uv);	
         fadeDensity();
+    }
+        
     }
 }
 

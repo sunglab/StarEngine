@@ -35,7 +35,8 @@ class Vec2
 		Vec2 operator-(const Vec2& in_Vector)const;
 		Vec2& operator+=(const Vec2& in_Vector);
 		Vec2& operator-=(const Vec2& in_Vector);
-
+        Vec2 operator*(const Vec2& in_Vector)const;
+    
 		Vec2 operator+(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec2 operator-(const __VERTEX__TYPE__& in_Scalar)const;
 		Vec2 operator*(const __VERTEX__TYPE__& in_Scalar)const;

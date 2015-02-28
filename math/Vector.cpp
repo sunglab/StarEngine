@@ -42,6 +42,15 @@ Vec2 Vec2::operator*(const __VERTEX__TYPE__& in_Scalar)const
 	return out_Vector;
 }
 
+Vec2 Vec2::operator*(const Vec2& in_Vector)const
+{
+    Vec2 out_Vector;
+    out_Vector.x = x * in_Vector.x;
+    out_Vector.y = y * in_Vector.y;
+    return out_Vector;
+}
+
+
 Vec2 Vec2::operator/(const __VERTEX__TYPE__& in_Scalar)const
 {
 	Vec2 out_Vector;
