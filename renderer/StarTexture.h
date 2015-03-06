@@ -21,6 +21,17 @@ public:
     unsigned  int texture_id;
 };
 
+class StarImage
+{
+    public:
+    unsigned int width;
+    unsigned int height;
+    unsigned int format;
+    unsigned int type;
+    unsigned int rowByteSize;
+    char* data;
+};
+
 class StarTexture
 {
     public:
@@ -37,11 +48,15 @@ class StarTexture
     void createTEXTURE_ANDROID(int* array,unsigned int width, unsigned int height, unsigned int texture_id);
 #endif
     
+    StarImage* createImage(const char* filename);
+    void deleteImage(StarImage* image);
+    
     void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id);
     void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texutre_id,bool resize=false);
     
     Texture* getTEXTURE(unsigned int texture_id);
     void bindTEXTURE( unsigned int texture_unit, unsigned int texture_id);
     void deleteTEXTURE(unsigned int texture_id);
+   
 };
 #endif

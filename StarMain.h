@@ -13,7 +13,9 @@
 /////////////////////////////////// Case IOS //////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
  #ifdef IOS
+
  #import "GLView.h"
+#import <UIKit/UIKit.h>
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #include  <iostream>
@@ -46,7 +48,7 @@
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
 //#import <OpenGL/glu.h>
-//#import <Cocoa/Cocoa.h>
+#import <Cocoa/Cocoa.h>
 //#import "GLView.h"
 
 #endif
@@ -63,6 +65,7 @@
 #include "./tool/StarUtil.h"
 #include "./effect/StarEffect.h"
 
+#define STRINGIFY(A)  #A
 
 #ifdef IOS
 #define starLOG printf

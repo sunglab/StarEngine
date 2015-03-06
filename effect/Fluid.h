@@ -4,17 +4,15 @@
 #include "../StarMain.h"
 #include "../tool/StarUtil.h"
 #include <math.h>
+
 // do not change these values, you can override them using the solver methods
 #define		FLUID_DEFAULT_NX					50
 #define		FLUID_DEFAULT_NY					50
-
 #define     FLUID_DEFAULT_DT					0.04f	//Maa	25fps
 #define		FLUID_DEFAULT_VISC					0.0001f
-#define     FLUID_DEFAULT_COLOR_DIFFUSION		0.1f
-
+//#define     FLUID_DEFAULT_COLOR_DIFFUSION		0.1f
 #define     FLUID_DEFAULT_FADESPEED				0.03f
-#define		FLUID_DEFAULT_SOLVER_ITERATIONS		10
-
+#define		FLUID_DEFAULT_SOLVER_ITERATIONS		10  // why 10 ??
 #define		FLUID_IX(i, j)		((i) + (_NX + 2)  *(j))
 
 class StarFluid {
@@ -22,7 +20,7 @@ public:
     StarFluid();
     virtual ~StarFluid();
     
-   StarFluid& setup(int NX = FLUID_DEFAULT_NX, int NY = FLUID_DEFAULT_NY);
+    StarFluid& setup(int NX = FLUID_DEFAULT_NX, int NY = FLUID_DEFAULT_NY);
     StarFluid& setSize(int NX = FLUID_DEFAULT_NX, int NY = FLUID_DEFAULT_NY);
     
     // solve one step of the fluid solver
@@ -90,19 +88,17 @@ public:
     // accessors for  color diffusion
     // if diff == 0, color diffusion is not performed
     // ** COLOR DIFFUSION IS SLOW!
-    StarFluid& setColorDiffusion( float diff);
-    float				getColorDiffusion();
+//    StarFluid& setColorDiffusion( float diff);
+//    float				getColorDiffusion();
     
-    StarFluid& enableRGB(bool isRGB);
     StarFluid& setDeltaT(float deltaT = FLUID_DEFAULT_DT);
     StarFluid& setFadeSpeed(float fadeSpeed = FLUID_DEFAULT_FADESPEED);
     StarFluid& setSolverIterations(int solverIterations = FLUID_DEFAULT_SOLVER_ITERATIONS);
-    StarFluid& enableVorticityConfinement(bool b);
-    bool getVorticityConfinement();
+//    StarFluid& enableVorticityConfinement(bool b);
+//    bool getVorticityConfinement();
     StarFluid& setWrap( bool bx, bool by );
-    
     // returns average density of fluid
-    float getAvgDensity() const;
+//    float getAvgDensity() const;
     
     // returns average _uniformity
     float getUniformity() const;
@@ -120,11 +116,10 @@ public:
     
     float	*curl;
     
-    bool	doRGB;				// for monochrome, update only density
-    bool	doVorticityConfinement;
+//    bool	doRGB;				// for monochrome, update only density
+//    bool	doVorticityConfinement;
     int		solverIterations;
     
-    float	colorDiffusion;
     float	viscocity;
     float	fadeSpeed;
     float	deltaT;
@@ -147,8 +142,8 @@ public:
     
     void	destroy();
     
-    inline	float	calcCurl(int i, int j);
-    void	vorticityConfinement(Vec2 *Fvc_xy);
+//    inline	float	calcCurl(int i, int j);
+//    void	vorticityConfinement(Vec2 *Fvc_xy);
     
     template<typename T>
     void	addSource(T *x, T *x0);
@@ -175,62 +170,51 @@ public:
     void	fadeDensity();
     void	fadeRGB();
 public:
-//    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,char* img,int img_w, int img_h)
-//    {
-////        float speed = vel.x * vel.x  + vel.y * vel.y * (320.f/568.f) * (320.f/568.f);
-//        if(vel.x != 0 || vel.y != 0)
-//        {
-//            pos.x = starConstrain(pos.x, 0.0f, 1.0f);
-//            pos.y = starConstrain(pos.y, 0.0f, 1.0f);
-//            
-////            const float colorMult = 100;
-//            const float velocityMult = 30;
-//            
-//            int index = getIndexForPos(pos);
-//            
-//            if(addColor) {
-//          
-//                //			Color drawColor;
-//                //			drawColor.setHSV(( getElapsedFrames() % 360 ) / 360.0f, 1, 1 );
-//                
-////                addColorAtIndex(index, colors);
-//                addTextureAtPos(pos,img_w,img_h,img);
-//                
-//            }
-//            
-//            if(addForce)
-//                addForceAtIndex(index, vel * velocityMult);
-//            
-//        }
-//    }
-    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,Color3& colors)
+    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,Color3& colors,int r=3,float div=0.01)
     {
-        //        float speed = vel.x * vel.x  + vel.y * vel.y * (320.f/568.f) * (320.f/568.f);
-        if(vel.x != 0 || vel.y != 0)
-        {
+//        if(vel.x >= 0.0 || vel.y >= 0.0)
+//        {
             pos.x = starConstrain(pos.x, 0.0f, 1.0f);
             pos.y = starConstrain(pos.y, 0.0f, 1.0f);
             
             //            const float colorMult = 100;
 //            const float velocityMult = 30;
             
-            int index = getIndexForPos(pos);
             
-            if(addColor) {
-                
-                //			Color drawColor;
-                //			drawColor.setHSV(( getElapsedFrames() % 360 ) / 360.0f, 1, 1 );
-                
-                addColorAtIndex(index, colors);
-//                addTextureAtPos(pos,img_w,img_h,img);
+            
+            int index = getIndexForPos(pos);
+//            int index0 = index1-(_NX+2);
+//            int index2 = index1+(_NX+2);
+
+            if(addColor)
+            {
+                float radius = r;//13.0;
+//                float half_radius = radius *0.5;
+//                float max_long = sqrtf(2*(half_radius)*(half_radius));
+                int texwidth = (_NX+2);
+//                int main = ceil(radius/2.);
+                int start = floorl(radius/2.);
+                for(int i=0;i<radius;i++)
+                    for(int j=0;j<radius;j++)
+                    {
+//                        starLOG("hmm %f",sqrtf((start-i)*(start-i)+(start-j)*(start-j)));
+//                        float multi = 1.0- sqrtf((start-i)*(start-i)+(start-j)*(start-j))/max_long;
+//                        starConstrain(multi, 0.0f,1.0f);
+//                        float minus = (float)abs(start-i)*((0.5)/start)+ abs(start-j)*((0.5)/start);
+//                        float multi = maxim - minus;
+                        float multi = (start-abs(start-i))*(1./(2*start))+ (start-abs(start-j))*(1./(2*start));
+//                        starConstrain(multi, 0.0f,1.0f);
+                        if(index-texwidth*start-start+i+(texwidth*j)>0.0&&index-texwidth*start-start+i+(texwidth*j)<getWidth()*getHeight())
+                        addColorAtIndex(index-texwidth*start-start+i+(texwidth*j), colors*multi*div);//0.005
+                        
+                        
+                    }
                 
             }
-            
-            if(addForce)
-                addForceAtIndex(index, vel);
-            
+        if(addForce)
+            addForceAtIndex(index, vel);
+        
         }
-    }
     
 };
 
@@ -282,11 +266,7 @@ inline Vec2 StarFluid::getVelocityAtPos(const Vec2 &pos) const {
 
 //-------- get color
 inline Color3 StarFluid::getColorAtIndex(int index) const {
-    if(doRGB) {
         return Color3(this->color[index].r, this->color[index].g, this->color[index].b);
-    } else {
-        return Color3(density[index], density[index], density[index]);
-    }
 }
 
 inline Color3 StarFluid::getColorAtCell(int i, int j) const {
@@ -301,6 +281,7 @@ inline Color3 StarFluid::getColorAtPos(const Vec2 &pos) const {
 //-------- add force
 inline void StarFluid::addForceAtIndex(int index, const Vec2 &force) {
     uv[index] += force;
+//    uvOld[index] += force;
 }
 
 inline void StarFluid::addForceAtCell(int i, int j, const Vec2 &force) {
@@ -314,18 +295,7 @@ inline void StarFluid::addForceAtPos(const Vec2 &pos, const Vec2 &force) {
 
 //-------- add color
 inline void StarFluid::addColorAtIndex(int index, const Color3 &color) {
-    if(doRGB) {
-        
-//        colorOld[index-3] += Color3(color.r, color.g, color.b);
-//        colorOld[index-2] += Color3(color.r, color.g, color.b);
-//        colorOld[index-1] += Color3(color.r, color.g, color.b);
         colorOld[index] += Color3(color.r, color.g, color.b);
-//        colorOld[index+1] += Color3(color.r, color.g, color.b);
-//        colorOld[index+2] += Color3(color.r, color.g, color.b);
-//        colorOld[index+3] += Color3(color.r, color.g, color.b);
-    } else {
-        density[index] += color.r;
-    }
 }
 inline void StarFluid::addTextureAtPos(Vec2 pos, int w, int h, char *img)
 {
@@ -334,8 +304,10 @@ inline void StarFluid::addTextureAtPos(Vec2 pos, int w, int h, char *img)
     for(int _w=0;_w<w;_w++)
         {
 //            colorOld[((_w*h)+_h)] += *(img+(_h*w)+_w);
-            colorOld[(_h+(int)(pos.y))*(_NX+2)+((int)pos.x+_w)] += *(_img++);
-            
+//            colorOld
+            Vec2 _pos = Vec2(pos.x*getWidth(),pos.y*getHeight());
+            colorOld[(_h+(int)((_pos.y))*(_NX+2))+((int)_pos.x+_w)] = *(_img++);
+//            colorOld[getIndexForPos(pos)] += *(_img++);
         }
     
 }

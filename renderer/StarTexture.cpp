@@ -7,7 +7,15 @@
 //
 
 #include "StarTexture.h"
+#ifdef IOS
+#import <UIKit/UIKit.h>
+//#elif MAC
+//#import <Cocoa/Cocoa.h>
+#endif
 
+//#ifdef MAC
+//#import <Cocoa/Cocoa.h>
+//#endif
 
 StarTexture::StarTexture(unsigned int texture_number)
 {
@@ -122,6 +130,8 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
   }
@@ -154,4 +164,61 @@ void StarTexture::deleteTEXTURE(unsigned int texture_id)
         texture[texture_id].texture_height = 0;
 		glDeleteTextures(1, &texture[texture_id].texture_id);
 	}
+}
+
+StarImage* StarTexture::createImage(const char* filepathname)
+{
+    NSString *filepathString = [[NSString alloc] initWithUTF8String:filepathname];
+#ifdef IOS
+    UIImage* imageClass = [[UIImage alloc] initWithContentsOfFile:filepathString];
+#elif MAC
+    NSImage *nsimage = [[NSImage alloc] initWithContentsOfFile: filepathString];
+    NSBitmapImageRep *imageClass = [[NSBitmapImageRep alloc] initWithData:[nsimage TIFFRepresentation]];
+    [nsimage release];
+#endif
+    
+    CGImageRef cgImage = imageClass.CGImage;
+    if (!cgImage)
+    {
+        [filepathString release];
+        [imageClass release];
+        return NULL;
+    }
+    StarImage* image = (StarImage*)malloc(sizeof(StarImage));
+    image->width= (float)CGImageGetWidth(cgImage);
+    image->height = (float)CGImageGetHeight(cgImage);
+    image->rowByteSize = image->width * 4;
+    image->data = (char*)malloc(image->height * image->rowByteSize);
+    image->format = GL_RGBA;
+    image->type = GL_UNSIGNED_BYTE;
+    
+    CGContextRef context = CGBitmapContextCreate(image->data, image->width, image->height, 8, image->rowByteSize, CGImageGetColorSpace(cgImage), kCGImageAlphaNoneSkipLast);
+    CGContextSetBlendMode(context, kCGBlendModeCopy);
+//    if(flipVertical)
+//    {
+//        CGContextTranslateCTM(context, 0.0, image->height);
+//        CGContextScaleCTM(context, 1.0, -1.0);
+//    }
+    CGContextDrawImage(context, CGRectMake(0.0, 0.0, image->width, image->height), cgImage);
+    CGContextRelease(context);
+    
+    if(NULL == image->data)
+    {
+        [filepathString release];
+        [imageClass release];
+        
+       deleteImage(image);
+        return NULL;
+    }
+    
+    [filepathString release];
+    [imageClass release];	
+    
+    return image;
+}
+
+void StarTexture::deleteImage(StarImage* image)
+{
+    free(image->data);
+    free(image);
 }

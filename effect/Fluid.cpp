@@ -35,23 +35,16 @@ StarFluid& StarFluid::setSize(int NX, int NY)
 
 StarFluid& StarFluid::setup(int NX, int NY)
 {
-//    setDeltaT();
-//    setFadeSpeed();
-//    setSolverIterations();
-//    enableVorticityConfinement(false); // off
-//    setWrap( true  , true );
     
     setDeltaT();
     setFadeSpeed();
     setSolverIterations();
-    enableVorticityConfinement(false); // off
-//    setWrap( false, false );
-    setWrap( true, true );
-
+//    setWrap( true, true );
+    setWrap(false,false);
     
     //maa
     viscocity =  FLUID_DEFAULT_VISC;
-    colorDiffusion = FLUID_DEFAULT_COLOR_DIFFUSION;
+//    colorDiffusion = FLUID_DEFAULT_COLOR_DIFFUSION;
     
     return setSize( NX, NY);
 }
@@ -69,22 +62,6 @@ StarFluid&  StarFluid::setFadeSpeed(float fadeSpeed) {
 StarFluid&  StarFluid::setSolverIterations(int solverIterations) {
     this->solverIterations = solverIterations;
     return *this;
-}
-
-
-// whether fluid is RGB or monochrome (if only pressure / velocity is needed no need to update 3 channels)
-StarFluid&  StarFluid::enableRGB(bool doRGB) {
-    this->doRGB = doRGB;
-    return *this;
-}
-
-StarFluid&  StarFluid::enableVorticityConfinement(bool b) {
-    doVorticityConfinement = b;
-    return *this;
-}
-
-bool StarFluid::getVorticityConfinement() {
-    return doVorticityConfinement;
 }
 
 StarFluid& StarFluid::setWrap( bool bx, bool by ) {
@@ -180,21 +157,6 @@ float StarFluid::getVisc() const {
     return viscocity;
 }
 
-StarFluid& StarFluid::setColorDiffusion( float diff )
-{
-    colorDiffusion = diff;
-    return *this;
-}
-
-float	StarFluid::getColorDiffusion()
-{
-    return colorDiffusion;
-}
-
-// returns average density of fluid
-float StarFluid::getAvgDensity() const {
-    return _avgDensity;
-}
 
 // returns average uniformity
 float StarFluid::getUniformity() const {
@@ -205,158 +167,38 @@ float StarFluid::getAvgSpeed() const {
     return _avgSpeed;
 }
 
-// Curl and vorticityConfinement based on code by Alexander McKenzie
-float StarFluid::calcCurl( int i, int j)
-{
-    float du_dy = uv[FLUID_IX(i, j + 1)].x - uv[FLUID_IX(i, j - 1)].x;
-    float dv_dx = uv[FLUID_IX(i + 1, j)].y - uv[FLUID_IX(i - 1, j)].y;
-    return (du_dy - dv_dx) * 0.5f;	// for optimization should be moved to later and done with another operation
-}
-
-void StarFluid::vorticityConfinement(Vec2* Fvc_xy) {
-    float dw_dx, dw_dy;
-    float length;
-    float v;
-    
-    // Calculate magnitude of calcCurl(u,v) for each cell. (|w|)
-    for (int j = _NY; j > 0; --j )
-    {
-        for (int i = _NX; i > 0; --i )
-        {
-            curl[FLUID_IX(i, j)] = fabs(calcCurl(i, j));
-        }
-    }
-    
-    for (int j = _NY-1; j > 1; --j )	//for (int j = 2; j < _NY; j++)
-    {
-        for (int i = _NX-1; i > 1; --i )		//for (int i = 2; i < _NX; i++)
-        {
-            // Find derivative of the magnitude (_N = del |w|)
-            dw_dx = (curl[FLUID_IX(i + 1, j)] - curl[FLUID_IX(i - 1, j)]);	// was * 0.5f; now done later with 2./lenght
-            dw_dy = (curl[FLUID_IX(i, j + 1)] - curl[FLUID_IX(i, j - 1)]);	// was * 0.5f;
-            
-            // Calculate vector length. (|_N|)
-            // Add small factor to prevent divide by zeros.
-            length = (float) sqrt(dw_dx * dw_dx + dw_dy * dw_dy) + 0.000001f;
-            
-            // N = ( _N/|_N| )
-            length = 2./length;	// the 2. come from the previous * 0.5
-            dw_dx *= length;
-            dw_dy *= length;
-            
-            v = calcCurl(i, j);
-            
-            // N x w
-            Fvc_xy[FLUID_IX(i, j)].x = dw_dy * -v;
-            Fvc_xy[FLUID_IX(i, j)].y = dw_dx *  v;
-        }
-    }
-}
 
 void StarFluid::update() {
     if (_isInited) {
 
-    addSource(uv, uvOld);
-    
-    if( doVorticityConfinement )
-    {
-        vorticityConfinement(uvOld);
         addSource(uv, uvOld);
-    }
-    
-    
-    starSwap(uv, uvOld);
-    
-    diffuseUV( viscocity );
-    
-    project(uv, uvOld);
-    
-    starSwap(uv, uvOld);
-    
-    advect2d(uv, uvOld);
-    
-    project(uv, uvOld);
-    
-    if(doRGB)
-    {
+        
+        starSwap(uv, uvOld);
+        
+        diffuseUV( viscocity );
+        
+        project(uv, uvOld);
+        
+        starSwap(uv, uvOld);
+        
+        advect2d(uv, uvOld);
+        
+        project(uv, uvOld);
+        
         addSource(color, colorOld);
+        
         starSwap(color, colorOld);
         
-        if( colorDiffusion!=0. && deltaT!=0. )
-        {
-            diffuseRGB(0, colorDiffusion );
-            starSwap(color, colorOld);
-        }
-        
         advectRGB(0, uv);
+        
         fadeRGB();
-    }
-    else
-    {
-        addSource(density, densityOld);
-        starSwap(density, densityOld);
-        
-        if( colorDiffusion!=0. && deltaT!=0. ) {
-            diffuse(0, density, densityOld, colorDiffusion );
-            starSwap(density, densityOld);
-        }
-        
-        advect(0, density, densityOld, uv);	
-        fadeDensity();
-    }
         
     }
 }
 
 #define ZERO_THRESH		1e-9			// if value falls under this, set to zero (to avoid denormal slowdown)
+//#define ZERO_THRESH		0			// if value falls under this, set to zero (to avoid denormal slowdown)
 #define CHECK_ZERO(p)	if(fabsf(p)<ZERO_THRESH) p = 0
-
-void StarFluid::fadeDensity() {
-    // I want the fluid to gradually fade out so the screen doesn't fill. the amount it fades out depends on how full it is, and how uniform (i.e. boring) the fluid is...
-    //		float holdAmount = 1 - _avgDensity * _avgDensity * fadeSpeed;	// this is how fast the density will decay depending on how full the screen currently is
-    float holdAmount = 1 - fadeSpeed;
-    
-    _avgDensity = 0;
-    _avgSpeed = 0;
-    
-    float totalDeviations = 0;
-    float currentDeviation;
-    float tmp;
-    _avgSpeed = 0;
-    
-    for (int i = _numCells-1; i >=0; --i) {
-        
-        // clear old values
-        uvOld[i].zero();
-        densityOld[i] = 0;
-        
-        // calc avg speed
-        _avgSpeed += uv[i].x * uv[i].x + uv[i].y * uv[i].y;
-        
-        // calc avg density
-        tmp = starMin( 1.0f, density[i]); // CHANGES
-//        tmp = density[i];
-        _avgDensity += tmp;	// add it up
-        
-        // calc deviation (for uniformity)
-        currentDeviation = tmp - _avgDensity;
-        totalDeviations += currentDeviation * currentDeviation;
-        
-        // fade out old
-        density[i] = tmp * holdAmount;
-        
-        CHECK_ZERO(density[i]);
-        CHECK_ZERO(uv[i].x);
-        CHECK_ZERO(uv[i].y);
-        if(doVorticityConfinement) CHECK_ZERO(curl[i]);
-        
-    }
-    _avgDensity *= _invNumCells;
-    _avgSpeed *= _invNumCells;
-    
-    //	println("%.3f\n", _avgSpeed);
-    _uniformity = 1.0f / (1 + totalDeviations * _invNumCells);		// 0: very wide distribution, 1: very uniform
-}
 
 
 void StarFluid::fadeRGB() {
@@ -408,7 +250,7 @@ void StarFluid::fadeRGB() {
         //			CHECK_ZERO(color[i].a);
         CHECK_ZERO(uv[i].x);
         CHECK_ZERO(uv[i].y);
-        if(doVorticityConfinement) CHECK_ZERO(curl[i]);
+//        if(doVorticityConfinement) CHECK_ZERO(curl[i]);
     }
     _avgDensity *= _invNumCells;
     _avgSpeed *= _invNumCells;
