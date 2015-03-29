@@ -65,9 +65,6 @@ public:
     inline void addColorAtCell(int i, int j, const Color3 &color);
     inline void addColorAtPos(const Vec2 &pos, const Color3 &color);
     
-    // add Texture
-    inline void addTextureAtPos(Vec2 pos,int w,int h, char* image);
-    // fill with random color at every cell
     void randomizeColor();
     
     // return number of cells and dimensions
@@ -85,6 +82,43 @@ public:
     StarFluid& setVisc(float newVisc);
     float getVisc() const;
     
+    float *custom_brush[3];
+    unsigned int custom_brush_radius[3];
+    
+    void setBrush(unsigned int default_radius)
+    {
+        
+        default_radius = starConstrain(default_radius, (unsigned int)5, (unsigned int)9);
+        custom_brush_radius[0] = default_radius-2;
+        custom_brush_radius[1] = default_radius;
+        custom_brush_radius[2] = default_radius+2;
+        
+        custom_brush[0]  = new float[custom_brush_radius[0]*custom_brush_radius[0]];
+        custom_brush[1]  = new float[custom_brush_radius[1]*custom_brush_radius[1]];
+        custom_brush[2]  = new float[custom_brush_radius[2]*custom_brush_radius[2]];
+        
+        printf("\n ");
+        for(int a=0;a<3;a++)
+        {
+        int l_radius = custom_brush_radius[a];
+        int start = floorl((l_radius)/2.);
+        for(int i=0;i<(l_radius);i++)
+            for(int j=0;j<(l_radius);j++)
+            {
+               
+                float multi = ((start-abs(start-i))*(1./(2*start))+ (start-abs(start-j))*(1./(2*start)));
+//                if (l_radius==3&&multi==0)
+//                    multi = 0.25;
+//                if (l_radius==3&&multi==1)
+//                    multi = 0.75;
+//               if(a==1)
+//                   printf("%f ",multi*multi);
+//                float multi2 = multi*(multi*2.);
+//                starConstrain(multi2,(float)0.0,(float)1.0);
+                custom_brush[a][i*l_radius+j] = multi*multi;
+            }
+        }
+    }
     // accessors for  color diffusion
     // if diff == 0, color diffusion is not performed
     // ** COLOR DIFFUSION IS SLOW!
@@ -114,10 +148,6 @@ public:
     Color3	*color, *colorOld;			// used for RGB
     Vec2	*uv, *uvOld;
     
-    float	*curl;
-    
-//    bool	doRGB;				// for monochrome, update only density
-//    bool	doVorticityConfinement;
     int		solverIterations;
     
     float	viscocity;
@@ -140,10 +170,9 @@ public:
     float	_uniformity;			// this will hold the _uniformity of the last frame (how uniform the color is);
     float	_avgSpeed;
     
-    void	destroy();
+   
     
-//    inline	float	calcCurl(int i, int j);
-//    void	vorticityConfinement(Vec2 *Fvc_xy);
+    void	destroy();
     
     template<typename T>
     void	addSource(T *x, T *x0);
@@ -170,49 +199,59 @@ public:
     void	fadeDensity();
     void	fadeRGB();
 public:
-    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,Color3& colors,int r=3,float div=0.01)
+    void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,Color3& colors,int a,float div)
     {
-//        if(vel.x >= 0.0 || vel.y >= 0.0)
-//        {
+
+
+        
             pos.x = starConstrain(pos.x, 0.0f, 1.0f);
             pos.y = starConstrain(pos.y, 0.0f, 1.0f);
-            
-            //            const float colorMult = 100;
-//            const float velocityMult = 30;
-            
-            
-            
+//            r = starConstrain(a, 0, 2);
             int index = getIndexForPos(pos);
-//            int index0 = index1-(_NX+2);
-//            int index2 = index1+(_NX+2);
-
+        if(addForce)
+        {
+            
+//                        vel.x = starConstrain(vel.x,-0.01f,0.01f);
+//                        vel.y = starConstrain(vel.y,-0.01f,0.01f);
+//            printf("power %f",vel.length());
+            vel.x = starConstrain(vel.x,-0.005f,0.005f);
+            vel.y = starConstrain(vel.y,-0.005f,0.005f);
+            addForceAtIndex(index, vel);
+        }
+        
             if(addColor)
             {
-                float radius = r;//13.0;
-//                float half_radius = radius *0.5;
-//                float max_long = sqrtf(2*(half_radius)*(half_radius));
+                int radius = custom_brush_radius[a];//13.0;
+//                int radius = 7.0;//test
                 int texwidth = (_NX+2);
-//                int main = ceil(radius/2.);
                 int start = floorl(radius/2.);
+//                        static bool once=true;
+//                if(once)
+//                {
+////                    printf("\n 0------00-----00------ %d\n", 8*(custom_brush_radius[2])+8);
+//                    for(int i=0;i<radius;i++)
+//                        for(int j=0;j<radius;j++)
+//                        {
+//                            printf(" %d ",i*(custom_brush_radius[a])+j);
+//                            float multi = custom_brush[a][i*(custom_brush_radius[a])+j];
+//                            printf(" %f ", multi);
+//
+//                             multi = (start-abs(start-i))*(1./(2*start))+ (start-abs(start-j))*(1./(2*start));
+//                            printf(" %f \n", multi);
+//                            //                            if(j==radius-1)
+//                            //                                printf("\n");
+//                        }
+//                    once = false;
+//                }
                 for(int i=0;i<radius;i++)
                     for(int j=0;j<radius;j++)
                     {
-//                        starLOG("hmm %f",sqrtf((start-i)*(start-i)+(start-j)*(start-j)));
-//                        float multi = 1.0- sqrtf((start-i)*(start-i)+(start-j)*(start-j))/max_long;
-//                        starConstrain(multi, 0.0f,1.0f);
-//                        float minus = (float)abs(start-i)*((0.5)/start)+ abs(start-j)*((0.5)/start);
-//                        float multi = maxim - minus;
-                        float multi = (start-abs(start-i))*(1./(2*start))+ (start-abs(start-j))*(1./(2*start));
-//                        starConstrain(multi, 0.0f,1.0f);
-                        if(index-texwidth*start-start+i+(texwidth*j)>0.0&&index-texwidth*start-start+i+(texwidth*j)<getWidth()*getHeight())
+                        float multi = custom_brush[a][i*(custom_brush_radius[a])+j];
+//                float multi = (start-abs(start-i))*(1./(2*start))+ (start-abs(start-j))*(1./(2*start));
                         addColorAtIndex(index-texwidth*start-start+i+(texwidth*j), colors*multi*div);//0.005
-                        
-                        
                     }
-                
+        
             }
-        if(addForce)
-            addForceAtIndex(index, vel);
         
         }
     
@@ -280,6 +319,8 @@ inline Color3 StarFluid::getColorAtPos(const Vec2 &pos) const {
 
 //-------- add force
 inline void StarFluid::addForceAtIndex(int index, const Vec2 &force) {
+//    starConstrain(force.x, 0.0, 1.0);
+//    starConstrain(force.y, 0.0, 1.0);
     uv[index] += force;
 //    uvOld[index] += force;
 }
@@ -295,21 +336,8 @@ inline void StarFluid::addForceAtPos(const Vec2 &pos, const Vec2 &force) {
 
 //-------- add color
 inline void StarFluid::addColorAtIndex(int index, const Color3 &color) {
+        if(index>=0&&index<_numCells)
         colorOld[index] += Color3(color.r, color.g, color.b);
-}
-inline void StarFluid::addTextureAtPos(Vec2 pos, int w, int h, char *img)
-{
-    const char* _img = img;
-    for(int _h=0;_h<h;_h++)
-    for(int _w=0;_w<w;_w++)
-        {
-//            colorOld[((_w*h)+_h)] += *(img+(_h*w)+_w);
-//            colorOld
-            Vec2 _pos = Vec2(pos.x*getWidth(),pos.y*getHeight());
-            colorOld[(_h+(int)((_pos.y))*(_NX+2))+((int)_pos.x+_w)] = *(_img++);
-//            colorOld[getIndexForPos(pos)] += *(_img++);
-        }
-    
 }
 inline void StarFluid::addColorAtCell(int i, int j, const Color3 &color) {
     addColorAtIndex(getIndexForCell(i, j), color);

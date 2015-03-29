@@ -4,6 +4,7 @@
 #include "../tool/StarUtil.h"
 #include <time.h>
 #include <stdlib.h>
+
 class HSV
 {
 public:
@@ -114,7 +115,7 @@ class Color4
 		{
 			r = rgb;
 			g = rgb;
-			a = rgb;
+			b = rgb;
 
 		}
 		Color4(const __COLOR__TYPE__ _r,const __COLOR__TYPE__ _g,const __COLOR__TYPE__ _b,const __COLOR__TYPE__ _a)
@@ -126,8 +127,8 @@ class Color4
 		}
 
 		Color4(const Color4& newColor)
-		{
-			r = newColor.r;
+    {
+            r = newColor.r;
 			g = newColor.g;
 			b = newColor.b;
 			a = newColor.a;

@@ -48,9 +48,10 @@ class StarTexture
     void createTEXTURE_ANDROID(int* array,unsigned int width, unsigned int height, unsigned int texture_id);
 #endif
     
-    StarImage* createImage(const char* filename);
-    void deleteImage(StarImage* image);
-    
+//#ifndef ANDROID
+//    StarImage* createImage(const char* filename,bool flip);
+//    void deleteImage(StarImage* image);
+//#endif
     void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id);
     void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texutre_id,bool resize=false);
     

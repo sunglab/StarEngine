@@ -43,7 +43,6 @@ Vec2 operator*(const Vec2& in_V,const Matrix& in_M)
 void Matrix_MxM( Matrix& out_M, const Matrix& in_M1, const Matrix& in_M2)
 {
     Matrix temp_M;
-    
 //    printf("works well MAT\n");
 	temp_M.s[_0x0_] = in_M1.s[_0x0_]*in_M2.s[_0x0_] + in_M1.s[_0x1_]*in_M2.s[_1x0_] + in_M1.s[_0x2_]*in_M2.s[_2x0_] + in_M1.s[_0x3_]*in_M2.s[_3x0_];
 	temp_M.s[_0x1_] = in_M1.s[_0x0_]*in_M2.s[_0x1_] + in_M1.s[_0x1_]*in_M2.s[_1x1_] + in_M1.s[_0x2_]*in_M2.s[_2x1_] + in_M1.s[_0x3_]*in_M2.s[_3x1_];
@@ -66,85 +65,87 @@ void Matrix_MxM( Matrix& out_M, const Matrix& in_M1, const Matrix& in_M2)
 	temp_M.s[_3x3_] = in_M1.s[_3x0_]*in_M2.s[_0x3_] + in_M1.s[_3x1_]*in_M2.s[_1x3_] + in_M1.s[_3x2_]*in_M2.s[_2x3_] + in_M1.s[_3x3_]*in_M2.s[_3x3_];
 	
     out_M = temp_M;
-    /*
-#if defined(YES_NEON)
-
-Matrix_MxM_NEON(out_M.s, in_M1.s, in_M2.s);
-
-	//#if defined(IOS)
-	//    printf("YES NEON\n");
-	//#elif defined(ANDROID)
-	//    LOGE("YES NEON\n");
-	//#endif
-
-#else
-out_M.s[_0x0_] = in_M1.s[_0x0_]*in_M2.s[_0x0_] + in_M1.s[_0x1_]*in_M2.s[_1x0_] + in_M1.s[_0x2_]*in_M2.s[_2x0_] + in_M1.s[_0x3_]*in_M2.s[_3x0_];
-out_M.s[_0x1_] = in_M1.s[_0x0_]*in_M2.s[_0x1_] + in_M1.s[_0x1_]*in_M2.s[_1x1_] + in_M1.s[_0x2_]*in_M2.s[_2x1_] + in_M1.s[_0x3_]*in_M2.s[_3x1_];
-out_M.s[_0x2_] = in_M1.s[_0x0_]*in_M2.s[_0x2_] + in_M1.s[_0x1_]*in_M2.s[_1x2_] + in_M1.s[_0x2_]*in_M2.s[_2x2_] + in_M1.s[_0x3_]*in_M2.s[_3x2_];
-out_M.s[_0x3_] = in_M1.s[_0x0_]*in_M2.s[_0x3_] + in_M1.s[_0x1_]*in_M2.s[_1x3_] + in_M1.s[_0x2_]*in_M2.s[_2x3_] + in_M1.s[_0x3_]*in_M2.s[_3x3_];
-
-out_M.s[_1x0_] = in_M1.s[_1x0_]*in_M2.s[_0x0_] + in_M1.s[_1x1_]*in_M2.s[_1x0_] + in_M1.s[_1x2_]*in_M2.s[_2x0_] + in_M1.s[_1x3_]*in_M2.s[_3x0_];
-out_M.s[_1x1_] = in_M1.s[_1x0_]*in_M2.s[_0x1_] + in_M1.s[_1x1_]*in_M2.s[_1x1_] + in_M1.s[_1x2_]*in_M2.s[_2x1_] + in_M1.s[_1x3_]*in_M2.s[_3x1_];
-out_M.s[_1x2_] = in_M1.s[_1x0_]*in_M2.s[_0x2_] + in_M1.s[_1x1_]*in_M2.s[_1x2_] + in_M1.s[_1x2_]*in_M2.s[_2x2_] + in_M1.s[_1x3_]*in_M2.s[_3x2_];
-out_M.s[_1x3_] = in_M1.s[_1x0_]*in_M2.s[_0x3_] + in_M1.s[_1x1_]*in_M2.s[_1x3_] + in_M1.s[_1x2_]*in_M2.s[_2x3_] + in_M1.s[_1x3_]*in_M2.s[_3x3_];
-
-out_M.s[_2x0_] = in_M1.s[_2x0_]*in_M2.s[_0x0_] + in_M1.s[_2x1_]*in_M2.s[_1x0_] + in_M1.s[_2x2_]*in_M2.s[_2x0_] + in_M1.s[_2x3_]*in_M2.s[_3x0_];
-out_M.s[_2x1_] = in_M1.s[_2x0_]*in_M2.s[_0x1_] + in_M1.s[_2x1_]*in_M2.s[_1x1_] + in_M1.s[_2x2_]*in_M2.s[_2x1_] + in_M1.s[_2x3_]*in_M2.s[_3x1_];
-out_M.s[_2x2_] = in_M1.s[_2x0_]*in_M2.s[_0x2_] + in_M1.s[_2x1_]*in_M2.s[_1x2_] + in_M1.s[_2x2_]*in_M2.s[_2x2_] + in_M1.s[_2x3_]*in_M2.s[_3x2_];
-out_M.s[_2x3_] = in_M1.s[_2x0_]*in_M2.s[_0x3_] + in_M1.s[_2x1_]*in_M2.s[_1x3_] + in_M1.s[_2x2_]*in_M2.s[_2x3_] + in_M1.s[_2x3_]*in_M2.s[_3x3_];
-
-out_M.s[_3x0_] = in_M1.s[_3x0_]*in_M2.s[_0x0_] + in_M1.s[_3x1_]*in_M2.s[_1x0_] + in_M1.s[_3x2_]*in_M2.s[_2x0_] + in_M1.s[_3x3_]*in_M2.s[_3x0_];
-out_M.s[_3x1_] = in_M1.s[_3x0_]*in_M2.s[_0x1_] + in_M1.s[_3x1_]*in_M2.s[_1x1_] + in_M1.s[_3x2_]*in_M2.s[_2x1_] + in_M1.s[_3x3_]*in_M2.s[_3x1_];
-out_M.s[_3x2_] = in_M1.s[_3x0_]*in_M2.s[_0x2_] + in_M1.s[_3x1_]*in_M2.s[_1x2_] + in_M1.s[_3x2_]*in_M2.s[_2x2_] + in_M1.s[_3x3_]*in_M2.s[_3x2_];
-out_M.s[_3x3_] = in_M1.s[_3x0_]*in_M2.s[_0x3_] + in_M1.s[_3x1_]*in_M2.s[_1x3_] + in_M1.s[_3x2_]*in_M2.s[_2x3_] + in_M1.s[_3x3_]*in_M2.s[_3x3_];
-
-#endif
-*/
+    // because of android stupid cpus above
+    
+//#if defined(YES_NEON)
+//
+//Matrix_MxM_NEON(out_M.s, in_M1.s, in_M2.s);
+//
+//	#if defined(IOS)
+//	    printf("YES NEON\n");
+//	#elif defined(ANDROID)
+//	    LOGE("YES NEON\n");
+//	#endif
+//
+//#else
+//
+//out_M.s[_0x0_] = in_M1.s[_0x0_]*in_M2.s[_0x0_] + in_M1.s[_0x1_]*in_M2.s[_1x0_] + in_M1.s[_0x2_]*in_M2.s[_2x0_] + in_M1.s[_0x3_]*in_M2.s[_3x0_];
+//out_M.s[_0x1_] = in_M1.s[_0x0_]*in_M2.s[_0x1_] + in_M1.s[_0x1_]*in_M2.s[_1x1_] + in_M1.s[_0x2_]*in_M2.s[_2x1_] + in_M1.s[_0x3_]*in_M2.s[_3x1_];
+//out_M.s[_0x2_] = in_M1.s[_0x0_]*in_M2.s[_0x2_] + in_M1.s[_0x1_]*in_M2.s[_1x2_] + in_M1.s[_0x2_]*in_M2.s[_2x2_] + in_M1.s[_0x3_]*in_M2.s[_3x2_];
+//out_M.s[_0x3_] = in_M1.s[_0x0_]*in_M2.s[_0x3_] + in_M1.s[_0x1_]*in_M2.s[_1x3_] + in_M1.s[_0x2_]*in_M2.s[_2x3_] + in_M1.s[_0x3_]*in_M2.s[_3x3_];
+//
+//out_M.s[_1x0_] = in_M1.s[_1x0_]*in_M2.s[_0x0_] + in_M1.s[_1x1_]*in_M2.s[_1x0_] + in_M1.s[_1x2_]*in_M2.s[_2x0_] + in_M1.s[_1x3_]*in_M2.s[_3x0_];
+//out_M.s[_1x1_] = in_M1.s[_1x0_]*in_M2.s[_0x1_] + in_M1.s[_1x1_]*in_M2.s[_1x1_] + in_M1.s[_1x2_]*in_M2.s[_2x1_] + in_M1.s[_1x3_]*in_M2.s[_3x1_];
+//out_M.s[_1x2_] = in_M1.s[_1x0_]*in_M2.s[_0x2_] + in_M1.s[_1x1_]*in_M2.s[_1x2_] + in_M1.s[_1x2_]*in_M2.s[_2x2_] + in_M1.s[_1x3_]*in_M2.s[_3x2_];
+//out_M.s[_1x3_] = in_M1.s[_1x0_]*in_M2.s[_0x3_] + in_M1.s[_1x1_]*in_M2.s[_1x3_] + in_M1.s[_1x2_]*in_M2.s[_2x3_] + in_M1.s[_1x3_]*in_M2.s[_3x3_];
+//
+//out_M.s[_2x0_] = in_M1.s[_2x0_]*in_M2.s[_0x0_] + in_M1.s[_2x1_]*in_M2.s[_1x0_] + in_M1.s[_2x2_]*in_M2.s[_2x0_] + in_M1.s[_2x3_]*in_M2.s[_3x0_];
+//out_M.s[_2x1_] = in_M1.s[_2x0_]*in_M2.s[_0x1_] + in_M1.s[_2x1_]*in_M2.s[_1x1_] + in_M1.s[_2x2_]*in_M2.s[_2x1_] + in_M1.s[_2x3_]*in_M2.s[_3x1_];
+//out_M.s[_2x2_] = in_M1.s[_2x0_]*in_M2.s[_0x2_] + in_M1.s[_2x1_]*in_M2.s[_1x2_] + in_M1.s[_2x2_]*in_M2.s[_2x2_] + in_M1.s[_2x3_]*in_M2.s[_3x2_];
+//out_M.s[_2x3_] = in_M1.s[_2x0_]*in_M2.s[_0x3_] + in_M1.s[_2x1_]*in_M2.s[_1x3_] + in_M1.s[_2x2_]*in_M2.s[_2x3_] + in_M1.s[_2x3_]*in_M2.s[_3x3_];
+//
+//out_M.s[_3x0_] = in_M1.s[_3x0_]*in_M2.s[_0x0_] + in_M1.s[_3x1_]*in_M2.s[_1x0_] + in_M1.s[_3x2_]*in_M2.s[_2x0_] + in_M1.s[_3x3_]*in_M2.s[_3x0_];
+//out_M.s[_3x1_] = in_M1.s[_3x0_]*in_M2.s[_0x1_] + in_M1.s[_3x1_]*in_M2.s[_1x1_] + in_M1.s[_3x2_]*in_M2.s[_2x1_] + in_M1.s[_3x3_]*in_M2.s[_3x1_];
+//out_M.s[_3x2_] = in_M1.s[_3x0_]*in_M2.s[_0x2_] + in_M1.s[_3x1_]*in_M2.s[_1x2_] + in_M1.s[_3x2_]*in_M2.s[_2x2_] + in_M1.s[_3x3_]*in_M2.s[_3x2_];
+//out_M.s[_3x3_] = in_M1.s[_3x0_]*in_M2.s[_0x3_] + in_M1.s[_3x1_]*in_M2.s[_1x3_] + in_M1.s[_3x2_]*in_M2.s[_2x3_] + in_M1.s[_3x3_]*in_M2.s[_3x3_];
+//
+//#endif
 }
 
-void Matrix_MxM_NEON(__MATRIX__TYPE__ * out_M, const __MATRIX__TYPE__* in_M1, const __MATRIX__TYPE__* in_M2)
-{
-	/*
-		 LOGE("HAHA2");
-#ifdef YES_NEON
-asm volatile
-(
-	//Save 
-	"VLDMIA %1, { q0  -  q3 } \n\t" // M1
-	"VLDMIA %2, { q8  - q11 }\n\t" // M2
-
-	//out_M = 	in_M2 x *(in_M1[row1])
-	"VMUL.f32		q12,		q8,		d0[0]\n\t"
-	"VMUL.f32		q13,		q8,		d2[0]\n\t"
-	"VMUL.f32		q14,		q8,		d4[0]\n\t"
-	"VMUL.f32		q15,		q8,		d6[0]\n\t"
-	//out_M += in_M2 x *(in_M1[row2])
-	"VMLA.f32		q12,		q9,		d0[1]\n\t"
-	"VMLA.f32		q13,		q9,		d2[1]\n\t"
-	"VMLA.f32		q14,		q9,		d4[1]\n\t"
-	"VMLA.f32		q15,		q9,		d6[1]\n\t"
-	//out_M += in_M2 x *(in_M1[row3])
-	"VMLA.f32		q12,		q10,	d1[0]\n\t"
-	"VMLA.f32		q13,		q10,	d3[0]\n\t"
-	"VMLA.f32		q14,		q10,	d5[0]\n\t"
-	"VMLA.f32		q15,		q10,	d7[0]\n\t"
-	//out_M += in_M2 x *(in_M1[row4])
-	"VMLA.f32		q12,		q11,	d1[1]\n\t"
-	"VMLA.f32		q13,		q11,	d3[1]\n\t"
-	"VMLA.f32		q14,		q11,	d5[1]\n\t"
-	"VMLA.f32		q15,		q11, 	d7[1]\n\t"
-
-	//Store
-	"VSTMIA %0, { q12	-	q15 }"
-
-	// output : input : lobber
-	:
-	: "r" (out_M),"r" (in_M1), "r" (in_M2)
-	: "memory", "q0", "q1", "q2", "q3", "q8", "q9", "q10", "q11", "q12", "q13", "q14", "q15"
-	);
-#endif
-*/
-}
+//void Matrix_MxM_NEON(__MATRIX__TYPE__ * out_M, const __MATRIX__TYPE__* in_M1, const __MATRIX__TYPE__* in_M2)
+//{
+//#ifdef YES_NEON
+//    
+//asm volatile
+//(
+//	//Save
+//	"VLDMIA %1, { q8  - q11 }\n\t" // M1
+//	"VLDMIA %2, { q0  -  q3 } \n\t" // M2
+// 
+//	//out_M = 	in_M1 first row x in_M2 first col
+//	"VMUL.f32		q12,		q8,		d0[0]\n\t"
+//	"VMUL.f32		q13,		q8,		d2[0]\n\t"
+//	"VMUL.f32		q14,		q8,		d4[0]\n\t"
+//	"VMUL.f32		q15,		q8,		d6[0]\n\t"
+// 
+//	//out_M = 	in_M1 seond row x in_M2 second col
+//	"VMLA.f32		q12,		q9,		d0[1]\n\t"
+//	"VMLA.f32		q13,		q9,		d2[1]\n\t"
+//	"VMLA.f32		q14,		q9,		d4[1]\n\t"
+//	"VMLA.f32		q15,		q9,		d6[1]\n\t"
+// 
+//	//out_M = 	in_M1 third row x in_M2 third col
+//	"VMLA.f32		q12,		q10,        d1[0]\n\t"
+//	"VMLA.f32		q13,		q10,        d3[0]\n\t"
+//	"VMLA.f32		q14,		q10,        d5[0]\n\t"
+//	"VMLA.f32		q15,		q10,        d7[0]\n\t"
+// 
+//	//out_M = 	in_M1 last row x in_M2 last col
+//	"VMLA.f32		q12,		q11,        d1[1]\n\t"
+//	"VMLA.f32		q13,		q11,        d3[1]\n\t"
+//	"VMLA.f32		q14,		q11,        d5[1]\n\t"
+//	"VMLA.f32		q15,		q11,        d7[1]\n\t"
+//
+//	//Store
+//	"VSTMIA %0, { q12	-	q15 }"
+//
+//	// output : input : lobber
+//	:
+//	: "r" (out_M),"r" (in_M1), "r" (in_M2)
+//	: "memory", "q0", "q1", "q2", "q3", "q8", "q9", "q10", "q11", "q12", "q13", "q14", "q15"
+//	);
+//#endif
+//}
 
 void Matrix_MxV( Vec4& out_V, const Vec4& in_V, const Matrix& in_M)
 {
@@ -156,16 +157,14 @@ void Matrix_MxV( Vec4& out_V, const Vec4& in_V, const Matrix& in_M)
 	temp_V.w = in_V.x * in_M.s[_0x3_] + in_V.y * in_M.s[_1x3_] + in_V.z * in_M.s[_2x3_] + in_V.w * in_M.s[_3x3_];
     
     out_V = temp_V;
-	/*
-#ifdef YES_NEON
-Matrix_MxV_NEON(&out_V.x, &in_V.x, in_M.s);
-#else
-out_V.x = in_V.x * in_M.s[_0x0_] + in_V.y * in_M.s[_1x0_] + in_V.z * in_M.s[_2x0_] + in_V.w * in_M.s[_3x0_];
-out_V.y = in_V.x * in_M.s[_0x1_] + in_V.y * in_M.s[_1x1_] + in_V.z * in_M.s[_2x1_] + in_V.w * in_M.s[_3x1_];
-out_V.z = in_V.x * in_M.s[_0x2_] + in_V.y * in_M.s[_1x2_] + in_V.z * in_M.s[_2x2_] + in_V.w * in_M.s[_3x2_];
-out_V.w = in_V.x * in_M.s[_0x3_] + in_V.y * in_M.s[_1x3_] + in_V.z * in_M.s[_2x3_] + in_V.w * in_M.s[_3x3_];
-#endif
-*/
+//#ifdef YES_NEON
+//Matrix_MxV_NEON(&out_V.x, &in_V.x, in_M.s);
+//#else
+//out_V.x = in_V.x * in_M.s[_0x0_] + in_V.y * in_M.s[_1x0_] + in_V.z * in_M.s[_2x0_] + in_V.w * in_M.s[_3x0_];
+//out_V.y = in_V.x * in_M.s[_0x1_] + in_V.y * in_M.s[_1x1_] + in_V.z * in_M.s[_2x1_] + in_V.w * in_M.s[_3x1_];
+//out_V.z = in_V.x * in_M.s[_0x2_] + in_V.y * in_M.s[_1x2_] + in_V.z * in_M.s[_2x2_] + in_V.w * in_M.s[_3x2_];
+//out_V.w = in_V.x * in_M.s[_0x3_] + in_V.y * in_M.s[_1x3_] + in_V.z * in_M.s[_2x3_] + in_V.w * in_M.s[_3x3_];
+//#endif
 }
 
 // Added w value to be used with the Traslate function

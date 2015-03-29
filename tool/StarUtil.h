@@ -71,6 +71,16 @@ T starConstrain(T c, T a, T b)
         return c;
 }
 
+template<typename T>
+void starDeleteArray(T bye)
+{
+    if(bye) delete[] bye;
+}
 
+template<typename T>
+void starDeleteVar(T bye)
+{
+    if(bye) delete bye;
+}
 
 #endif

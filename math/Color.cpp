@@ -119,7 +119,7 @@ void Color3::lerp(float t,Color3& newColor)
 
 void Color3::genColor()
 {
-	srand((unsigned)time(NULL));
+//	srand((unsigned)time(NULL));
 	this->r = rand()%100*0.01;
 	this->g = rand()%100*0.01;
 	this->b = rand()%100*0.01;
@@ -318,7 +318,7 @@ void Color4::lerp(float t,Color3& newColor)
 }
 void Color4::genColor()
 {
-    srand((unsigned)time(NULL));
+//    srand((unsigned)time(NULL));
 	this->r = rand()%100*0.01;
 	this->g = rand()%100*0.01;
 	this->b = rand()%100*0.01;
