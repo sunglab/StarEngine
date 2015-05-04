@@ -256,7 +256,7 @@ void Matrix_Look_At( Matrix& out_M, const Vec3& in_EYE, const Vec3& in_AT,const 
     yAxis.normalize();
     
     xAxis = zAxis.cross(yAxis) ;
-    yAxis = xAxis.cross(zAxis); // because temporary y-axis could be not right-angled
+    yAxis = xAxis.cross(zAxis); // because temporary y-axis could be not right-angled(90)
 
     out_M.s[_0x0_] = xAxis.x; out_M.s[_0x1_] = yAxis.x; out_M.s[_0x2_] = -zAxis.x; out_M.s[_0x3_] = 0;//-in_EYE.x;//-(xAxis.dot(in_EYE));
     out_M.s[_1x0_] = xAxis.y; out_M.s[_1x1_] = yAxis.y; out_M.s[_1x2_] = -zAxis.y; out_M.s[_1x3_] = 0;//-in_EYE.y;//-(yAxis.dot(in_EYE));
@@ -265,6 +265,7 @@ void Matrix_Look_At( Matrix& out_M, const Vec3& in_EYE, const Vec3& in_AT,const 
 //    out_M.s[_3x0_] = -in_EYE.x;           out_M.s[_3x1_] =  -in_EYE.y;            out_M.s[_3x2_] =  -in_EYE.z;            out_M.s[_3x3_] = 1;
 //    out_M.s[_3x0_] = -xAxis.dot(in_EYE);           out_M.s[_3x1_] =  -yAxis.dot(in_EYE);            out_M.s[_3x2_] =  -zAxis.dot(in_EYE);            out_M.s[_3x3_] = 1;
 
+    Matrix_Identity(t);
 	Matrix_Translation(t, -in_EYE.x, -in_EYE.y, -in_EYE.z);
 	Matrix_MxM(out_M, t, out_M);
 }
@@ -393,14 +394,44 @@ void Matrix_PerspectiveProjection
 
 void Matrix_OrthoProjection( Matrix& out_M, const float width, const float height, const float nZ, const float fZ)
 {
-	out_M.s[_0x0_] = 2 / width; out_M.s[_0x1_] = 0;                 	out_M.s[_0x2_] = 0;                                 out_M.s[_0x3_] = 0;
+    out_M.s[_0x0_] = 2 / width; out_M.s[_0x1_] = 0;                 	out_M.s[_0x2_] = 0;                                 out_M.s[_0x3_] = 0;
 	out_M.s[_1x0_] = 0;             out_M.s[_1x1_] = 2 / height;     out_M.s[_1x2_] = 0;                                out_M.s[_1x3_] = 0;
-    out_M.s[_2x0_] = 0;             	out_M.s[_2x1_] = 0;                     out_M.s[_2x2_] =1.0 / (fZ - nZ);      out_M.s[_2x3_] = nZ / (nZ - fZ);
-	out_M.s[_3x0_] = 0;             	out_M.s[_3x1_] = 0;                     out_M.s[_3x2_] = 0;                         	out_M.s[_3x3_] = 1;
+    out_M.s[_2x0_] = 0;             	out_M.s[_2x1_] = 0;                     out_M.s[_2x2_] =-2.0 / (fZ - nZ);      out_M.s[_2x3_] =0;
+	out_M.s[_3x0_] = -1;             	out_M.s[_3x1_] = -1;                     out_M.s[_3x2_] = - (fZ+nZ)/(fZ-nZ);                         	out_M.s[_3x3_] = 1.;
 }
 
-////////////////
-/* Quaternion */
-////////////////
+/*
+ * Quaternion
+ */
+void Matrix_Quarternion_Indentity(Quaternion& out_Q)
+{
+    out_Q.x = 0.0;
+    out_Q.y = 0.0;
+    out_Q.z = 0.0;
+    out_Q.w = 1.0;
+}
 
+void Matrix_Quaternion_Normalize(Quaternion& out_Q)
+{
+    double t_BigMag =  out_Q.x*out_Q.x + out_Q.y*out_Q.y + out_Q.z*out_Q.z + out_Q.w*out_Q.w;
+    float t_Mag = (float)sqrt(t_BigMag);
+    
+    if(t_Mag!=0.0f)
+    {
+        t_Mag = 1.0f / t_Mag;
+        out_Q.x *= t_Mag;
+        out_Q.y *= t_Mag;
+        out_Q.z *= t_Mag;
+        out_Q.w *= t_Mag;
+    }
+}
+void Matrix_Quaternion_Rotation_Axis(Quaternion& out_Q,Vec3& axis, float angle)
+{
+    float  t_Sin = (float)sin(angle*0.5f);
+    float  t_Cos = (float)cos(angle*0.5f);
+    out_Q.x = axis.x*t_Sin;
+    out_Q.y = axis.y*t_Sin;
+    out_Q.z = axis.z*t_Sin;
+    out_Q.w = t_Cos;
+}
 

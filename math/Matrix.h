@@ -55,11 +55,13 @@ void Matrix_MxM_NEON(__MATRIX__TYPE__ * out_M, const __MATRIX__TYPE__* in_M1, co
 void Matrix_MxV_NEON(__VERTEX__TYPE__* out_V, const __VERTEX__TYPE__* in_V1, const __MATRIX__TYPE__* in_M);
 
 // Quaternion
+void Matrix_Quaternion_Identiy(Quaternion& out_Q);
+void Matrix_Quaternion_Normalize(Quaternion& out_Q);
+void Matrix_Quarternion_Rotation_Axis(Quaternion &out_Q, Vec3 &axis,float angle);
 //void Matrix_Quaternion_Identity(Quaternion& out_Q);
 //void Matrix_Quaternion_RotationAxis(Quaternion& out_Q,const Vec3& in_Axis, const float angle);
 //void Matrix_Quaternion_ToAxisAngle(Quaternion&	in_Q,Vec3& in_Axis, float& angle);
 //void Matrix_Quaternion_Slerp(Quaternion& out_Q, const Quaternion& in_Q1, const Quaternion& in_Q2, const float t);
-//void Matrix_Quaternion_Normalize(Quaternion& in_Q);
 //void Matrix_Rotation_Quaternion(Matrix& out_M,const Quaternion& in_Q);
 //void Matrix_Quaternion_Multiply(Quaternion& out_Q,const Quaternion& in_Q1,const Quaternion& in_Q2);
 

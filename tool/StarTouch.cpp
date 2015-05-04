@@ -60,10 +60,11 @@ void starTUIO::updateTuioCursor(TuioCursor *tcur) {
         float starWidth = startouch->starRect.x;
         float starHeight = startouch->starRect.y;
         int index = tuioCursor->getCursorID();
-//        printf("xpos:%f ypos:%f index:%d\n", xpos, ypos,index);
+        printf("xpos:%f ypos:%f index:%d\n", xpos, ypos,index);
         startouch->prePos[index] = startouch->nowPos[index];
         startouch->nowPos[index] = Vec2(starWidth*xpos,starHeight-starHeight*ypos);
     }
+//    printf("i = %d", i);
     startouch->fingers = i;
     tuioClient->unlockCursorList();
      startouch->callbackMove();

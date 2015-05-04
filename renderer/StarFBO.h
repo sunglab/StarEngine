@@ -14,28 +14,28 @@ class StarFBO
 {
     
 public:
-		// IDs for fbo, vao and vbo
+    // IDs for fbo, vao and vbo
     unsigned int* fbo;
     unsigned int* rboColor;
     unsigned int* rboDepth;
-//    unsigned int* rboStencil;
+    //    unsigned int* rboStencil;
     
     unsigned int* vao;
     unsigned int* vbo;
-		
+    
     StarFBO(void);
     StarFBO( unsigned int fbo_number, unsigned int vbo_number, unsigned int vao_number);
     
-		//ETC Renderbuffers and Framebuffer Setting
-		void createFBO( bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id);
-        void bindFBO( unsigned int object_id);
-        void unbindFBO();
-        void bindRBO( unsigned int object_id);
+    //ETC Renderbuffers and Framebuffer Setting
+    void createFBO( bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id);
+    void bindFBO( unsigned int object_id);
+    void unbindFBO();
+    void bindRBO( unsigned int object_id);
     void unbindRBO();
     
-		void createVAO( unsigned int object_id);
-		void bindVAO( unsigned object_id);
-        void unbindVAO();
+    void createVAO( unsigned int object_id);
+    void bindVAO( unsigned object_id);
+    void unbindVAO();
     
     void createVBOsub(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int dataType, unsigned int object_id);
     void createVBO( unsigned int target, unsigned int size, void* data, unsigned int dataType, unsigned int object_id);

@@ -8,6 +8,7 @@ class Quaternion
 	float y;
 	float z;
 	float w;
+    
 };
 
 #endif
