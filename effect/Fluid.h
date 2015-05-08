@@ -214,8 +214,11 @@ public:
 //                        vel.x = starConstrain(vel.x,-0.01f,0.01f);
 //                        vel.y = starConstrain(vel.y,-0.01f,0.01f);
 //            printf("power %f",vel.length());
+            
             vel.x = starConstrain(vel.x,-0.005f,0.005f);
             vel.y = starConstrain(vel.y,-0.005f,0.005f);
+//             vel.x = starConstrain(vel.x,-0.08f,0.08f);
+//            vel.y = starConstrain(vel.y,-0.08f,0.08f);
             addForceAtIndex(index, vel);
         }
         
