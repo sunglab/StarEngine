@@ -40,9 +40,54 @@ void starTUIO::addTuioCursor(TuioCursor *tcur) {
     
     if (verbose)
         std::cout << "add cur " << tcur->getCursorID() << " (" <<  tcur->getSessionID() << "/"<<  tcur->getTuioSourceID() << ") " << tcur->getX() << " " << tcur->getY() << std::endl;
-    if(tcur->getCursorID()==0)
-        startouch->callbackBegin();
     
+//    if(tcur->getCursorID()==0)
+//    {
+////        std::list<TuioCursor*> cursorList = tuioClient->getTuioCursors();
+////        tuioClient->lockCursorList();
+////        int i = 0;
+////        for (std::list<TuioCursor*>::iterator iter = cursorList.begin(); iter!=cursorList.end(); iter++,i++) {
+////            TuioCursor *tuioCursor = (*iter);
+//            float xpos  = tcur->getPosition().getX();
+//            float ypos  = tcur->getPosition().getY();
+//            float starWidth = startouch->starRect.x;
+//            float starHeight = startouch->starRect.y;
+////            int index = tuioCursor->getCursorID();
+////            //        printf("xpos:%f ypos:%f index:%d\n", xpos, ypos,index);
+//            startouch->prePos[0] = startouch->nowPos[0];
+//            startouch->nowPos[0] = Vec2(starWidth*xpos,starHeight-starHeight*ypos);
+//        
+//        startouch->callbackBegin();
+//    }
+    
+    if(tcur->getCursorID()<10)
+    {
+    float xpos  = tcur->getPosition().getX();
+    float ypos  = tcur->getPosition().getY();
+    float starWidth = startouch->starRect.x;
+    float starHeight = startouch->starRect.y;
+    //            int index = tuioCursor->getCursorID();
+    //            //        printf("xpos:%f ypos:%f index:%d\n", xpos, ypos,index);
+    startouch->prePos[tcur->getCursorID()] = startouch->nowPos[tcur->getCursorID()];
+    startouch->nowPos[tcur->getCursorID()] = Vec2(starWidth*xpos,starHeight-starHeight*ypos);
+    
+    }
+    
+//    std::list<TuioCursor*> cursorList = tuioClient->getTuioCursors();
+//    tuioClient->lockCursorList();
+//    int i = 0;
+//    for (std::list<TuioCursor*>::iterator iter = cursorList.begin(); iter!=cursorList.end(); iter++,i++) {
+//        TuioCursor *tuioCursor = (*iter);
+//        float xpos  = tuioCursor->getPosition().getX();
+//        float ypos  = tuioCursor->getPosition().getY();
+//        float starWidth = startouch->starRect.x;
+//        float starHeight = startouch->starRect.y;
+//        int index = tuioCursor->getCursorID();
+//        
+//        startouch->nowPos[index] = Vec2(starWidth*xpos,starHeight-starHeight*ypos);
+//    }
+    
+    startouch->callbackBegin();
 }
 
 void starTUIO::updateTuioCursor(TuioCursor *tcur) {
@@ -60,7 +105,7 @@ void starTUIO::updateTuioCursor(TuioCursor *tcur) {
         float starWidth = startouch->starRect.x;
         float starHeight = startouch->starRect.y;
         int index = tuioCursor->getCursorID();
-        printf("xpos:%f ypos:%f index:%d\n", xpos, ypos,index);
+//        printf("xpos:%f ypos:%f index:%d\n", xpos, ypos,index);
         startouch->prePos[index] = startouch->nowPos[index];
         startouch->nowPos[index] = Vec2(starWidth*xpos,starHeight-starHeight*ypos);
     }

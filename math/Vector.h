@@ -202,4 +202,6 @@ class Vec4
 		{(*this) = 0.f;}
 };
 
+void trackBall( Vec3& out_V, Vec2& in_V_Center_Touch,  float trackball_R);
+
 #endif

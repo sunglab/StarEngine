@@ -3,7 +3,33 @@
 
 #include "../star.h"
 #include "./Vector.h"
-#include "./Quaternion.h"
+//#include "./Quaternion.h"
+class Quaternion
+{
+public:
+    float w;
+    float x;
+    float y;
+    float z;
+    Quaternion():w(1),x(0),y(0),z(0)
+    {}
+    Quaternion(float _w,float _x, float _y, float _z)
+    {w = _w; x = _x; y = _y; z = _z;}
+    
+    Quaternion operator+(const float& in_Scalar) const;
+    Quaternion operator-(const float& in_Scalar) const;
+    Quaternion operator*(const float& in_Scalar) const;
+    Quaternion operator/(const float& in_Scalar) const;
+    
+    
+    Quaternion operator+(const Quaternion& in_Q) const;
+    Quaternion operator-(const Quaternion& in_Q) const;
+    
+    float dot(const Quaternion& in_Q);
+    void lerp(float t,const Quaternion& in_Q);
+    
+    
+};
 class Matrix
 {
 	public:
@@ -55,9 +81,12 @@ void Matrix_MxM_NEON(__MATRIX__TYPE__ * out_M, const __MATRIX__TYPE__* in_M1, co
 void Matrix_MxV_NEON(__VERTEX__TYPE__* out_V, const __VERTEX__TYPE__* in_V1, const __MATRIX__TYPE__* in_M);
 
 // Quaternion
-void Matrix_Quaternion_Identiy(Quaternion& out_Q);
-void Matrix_Quaternion_Normalize(Quaternion& out_Q);
-void Matrix_Quarternion_Rotation_Axis(Quaternion &out_Q, Vec3 &axis,float angle);
+void Quaternion_Identiy(Quaternion& out_Q);
+void Quaternion_Normalize(Quaternion& out_Q);
+void Quaternion_Rotation_Axis(Quaternion &out_Q, const Vec3 &axis, float angle);
+void Quaternion_Rotation_Vector(Quaternion& out_Q, const  Vec3& in_V1,const  Vec3& in_V2);
+void Quaternion_Rotation_Quaternion(Quaternion& out_Q, const Quaternion& in_Q1,const Quaternion& in_Q2);
+void Quaternion_to_Matrix(Matrix& out_M, const Quaternion& in_Q);
 //void Matrix_Quaternion_Identity(Quaternion& out_Q);
 //void Matrix_Quaternion_RotationAxis(Quaternion& out_Q,const Vec3& in_Axis, const float angle);
 //void Matrix_Quaternion_ToAxisAngle(Quaternion&	in_Q,Vec3& in_Axis, float& angle);

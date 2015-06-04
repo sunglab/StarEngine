@@ -400,10 +400,70 @@ void Matrix_OrthoProjection( Matrix& out_M, const float width, const float heigh
 	out_M.s[_3x0_] = -1;             	out_M.s[_3x1_] = -1;                     out_M.s[_3x2_] = - (fZ+nZ)/(fZ-nZ);                         	out_M.s[_3x3_] = 1.;
 }
 
+
 /*
  * Quaternion
  */
-void Matrix_Quarternion_Indentity(Quaternion& out_Q)
+
+Quaternion Quaternion::operator+(const float& in_Scalar) const
+{
+    return Quaternion(this->w+in_Scalar, this->x+in_Scalar, this->y+in_Scalar, this->z+in_Scalar);
+}
+Quaternion Quaternion::operator-(const float& in_Scalar) const
+{
+    return Quaternion(this->w-in_Scalar, this->x-in_Scalar, this->y-in_Scalar, this->z-in_Scalar);
+}
+Quaternion Quaternion::operator*(const float& in_Scalar) const
+{
+    return Quaternion(this->w*in_Scalar, this->x*in_Scalar, this->y*in_Scalar, this->z*in_Scalar);
+}
+Quaternion Quaternion::operator/(const float& in_Scalar) const
+{
+    return Quaternion(this->w/in_Scalar, this->x/in_Scalar, this->y/in_Scalar, this->z/in_Scalar);
+}
+
+
+Quaternion Quaternion::operator+(const Quaternion& in_Q) const
+{
+    return Quaternion(this->w+in_Q.w, this->x+in_Q.x, this->y+in_Q.y, this->z+in_Q.z);
+}
+Quaternion Quaternion::operator-(const Quaternion& in_Q) const
+{
+    return Quaternion(this->w-in_Q.w, this->x-in_Q.x, this->y-in_Q.y, this->z-in_Q.z);
+}
+
+
+
+float Quaternion::dot(const Quaternion& in_Q)
+{
+    return w*in_Q.w + x*in_Q.x + y*in_Q.y + z*in_Q.z;
+}
+
+void Quaternion::lerp(const float t,const Quaternion& in_Q)
+{
+    const float epsilon = .0005f;
+    float dot  = this->dot(in_Q);
+    
+    if (dot > 1.-epsilon)
+    {
+        Quaternion result = in_Q + (*this - in_Q)*t;
+        Quaternion_Normalize(result);
+        (*this) = result;
+    }
+    
+    starConstrain((float)dot, (float)0.0, (float)1.0);
+    
+    float theta = acos(dot)*t;
+    Quaternion temp_Q1 = in_Q - (*this) * (dot);
+    Quaternion_Normalize(temp_Q1);
+    
+    Quaternion temp_Q2 = (*this) * cos(theta) + (temp_Q1) * sin(theta);
+    Quaternion_Normalize(temp_Q2);
+    
+    (*this)  = temp_Q2;
+}
+
+void Quarternion_Indentity(Quaternion& out_Q)
 {
     out_Q.x = 0.0;
     out_Q.y = 0.0;
@@ -411,10 +471,10 @@ void Matrix_Quarternion_Indentity(Quaternion& out_Q)
     out_Q.w = 1.0;
 }
 
-void Matrix_Quaternion_Normalize(Quaternion& out_Q)
+void Quaternion_Normalize(Quaternion& out_Q)
 {
     double t_BigMag =  out_Q.x*out_Q.x + out_Q.y*out_Q.y + out_Q.z*out_Q.z + out_Q.w*out_Q.w;
-    float t_Mag = (float)sqrt(t_BigMag);
+    double t_Mag = (float)sqrt(t_BigMag);
     
     if(t_Mag!=0.0f)
     {
@@ -425,7 +485,8 @@ void Matrix_Quaternion_Normalize(Quaternion& out_Q)
         out_Q.w *= t_Mag;
     }
 }
-void Matrix_Quaternion_Rotation_Axis(Quaternion& out_Q,Vec3& axis, float angle)
+
+void Quaternion_Rotation_Axis(Quaternion& out_Q,const Vec3& axis, float angle)
 {
     float  t_Sin = (float)sin(angle*0.5f);
     float  t_Cos = (float)cos(angle*0.5f);
@@ -435,3 +496,63 @@ void Matrix_Quaternion_Rotation_Axis(Quaternion& out_Q,Vec3& axis, float angle)
     out_Q.w = t_Cos;
 }
 
+void Quaternion_Rotation_Vector(Quaternion& out_Q, const Vec3& in_V1, const Vec3& in_V2)
+{
+    Vec3 temp_V = in_V2 * -1.f;
+ if (in_V1.x==temp_V.x&&in_V1.y==temp_V.y&&in_V1.z==temp_V.z)
+    {
+        starLOG("change rotation quaternion\n");
+    Vec3 zAxis = Vec3( 1.0, 0.0, 0.0);
+     Quaternion_Rotation_Axis(out_Q, zAxis,(float)M_PI);
+}
+    Vec3 cross = in_V1.cross(in_V2);
+    float dot = in_V1.dot(in_V2);
+    double s = sqrt((1.0f + dot) * 2.0f);
+//    starLOG("vec x : %f y : x: %f y :%f%f\n", in_V1.x,in_V1.y , in_V2.x, in_V2.y);
+//    starLOG("dot %f\n cross %f %f\n", dot, cross.x, cross.y);
+//    starLOG("what is S:%f\n",s);
+    
+    out_Q.x = cross.x / s;
+    out_Q.y = cross.y / s;
+    out_Q.z = cross.z / s;
+    out_Q.w = s *   0.5f;
+    
+//    starLOG("delta %f %f\n", out_Q.x, out_Q.y);
+}
+
+void Quaternion_Rotation_Quaternion(Quaternion& out_Q, const Quaternion& in_Q1,const Quaternion& in_Q2)
+{
+    Quaternion temp_Q;
+    temp_Q.w = in_Q1.w * in_Q2.w - in_Q1.x * in_Q2.x - in_Q1.y * in_Q2.y - in_Q1.z * in_Q2.z;
+    temp_Q.x = in_Q1.w * in_Q2.x + in_Q1.x * in_Q2.w + in_Q1.y * in_Q2.z - in_Q1.z * in_Q2.y;
+    temp_Q.y = in_Q1.w * in_Q2.y + in_Q1.y * in_Q2.w + in_Q1.z * in_Q2.x - in_Q1.x * in_Q2.z;
+    temp_Q.z = in_Q1.w * in_Q2.z + in_Q1.z * in_Q2.w + in_Q1.x * in_Q2.y - in_Q1.y * in_Q2.x;
+//    starLOG("hmm %f %f %f %f",temp_Q.x,temp_Q.y,temp_Q.z,temp_Q.w);
+    Quaternion_Normalize(temp_Q);
+    out_Q = temp_Q;
+}
+
+void Quaternion_to_Matrix(Matrix& out_M, const Quaternion& in_Q)
+{
+    
+//    Quaternion_Normalize(in_Q);
+    // in_Q must be normalized
+    const float s = 2.f;
+    
+    float xs, ys, zs;
+    float wx, wy, wz;
+    float xx, xy, xz;
+    float yy, yz, zz;
+    
+    xs = in_Q.x * s;    ys = in_Q.y * s;    zs = in_Q.z * s;
+    wx = in_Q.w * xs;   wy = in_Q.w * ys;   wz = in_Q.w * zs;
+    xx = in_Q.x * xs;   xy = in_Q.x * ys;   xz = in_Q.x * zs;
+    yy = in_Q.y * ys;   yz = in_Q.y * zs;   zz = in_Q.z * zs;
+    
+    out_M.s[_0x0_] = 1.-(xx+zz);    out_M.s[_0x1_] = xy+wz;          out_M.s[_0x2_] = xz-wy;         out_M.s[_0x3_] = 0.;
+    out_M.s[_1x0_] = xy-wz;         out_M.s[_1x1_] = 1.-(xx+zz);     out_M.s[_1x2_] = yz+wx;         out_M.s[_1x3_] = 0.;
+    out_M.s[_2x0_] = xz+wy;         out_M.s[_2x1_] = yz-wx;          out_M.s[_2x2_] = 1.-(xx+yy);    out_M.s[_2x3_] = 0.;
+    out_M.s[_3x0_] = 0.;           	out_M.s[_3x1_] = 0.;             out_M.s[_3x2_] = 0.;            out_M.s[_3x3_] = 1.;
+
+    
+}

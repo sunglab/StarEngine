@@ -1,6 +1,9 @@
 
 #include "Vector.h"
 
+/*
+ *      Vec2
+ */
 Vec2 Vec2::operator+(const Vec2& in_Vec)const
 {
 	Vec2 out_Vector;
@@ -118,7 +121,7 @@ Vec2& Vec2::operator=(const __VERTEX__TYPE__& in_Scalar)
     return (*this);
 }
 
-//FUNCs
+
 __VERTEX__TYPE__ Vec2::length() const
 {
  return sqrtf((x*x)+(y*y));
@@ -144,9 +147,10 @@ void Vec2::lerp(float t, Vec2& in_Vec)
 	this->x = (1.-t)*(this->x) + (t)*(in_Vec.x);
 	this->y = (1.-t)*(this->y) + (t)*(in_Vec.y);
 }
-//////////////////////////////////////////////
-/////////////////VEC3/////////////////////////
-//////////////////////////////////////////////
+
+/*
+ *      Vec3
+ */
 Vec3 Vec3::operator+(const Vec3& in_Vec)const
 {
     Vec3 out_Vector;
@@ -264,7 +268,7 @@ const Vec3& Vec3::operator[](int index) const
     return (this)[index];
 }
 
-//FUNCs
+
 __VERTEX__TYPE__ Vec3::length() const
 {
  return sqrtf((x*x)+(y*y)+(z*z));
@@ -287,7 +291,7 @@ Vec3& Vec3::normalize()
 
 Vec3 Vec3::cross(const Vec3& in_Vec)const
 {
-	return Vec3(y * in_Vec.z - z * in_Vec.y, (z * in_Vec.x) - (x * in_Vec.z), x * in_Vec.y - y * in_Vec.x);
+	return Vec3((y * in_Vec.z - z * in_Vec.y), (z * in_Vec.x - x * in_Vec.z), (x * in_Vec.y - y * in_Vec.x));
 }
 
 void Vec3::lerp(float t, Vec3& in_Vec)
@@ -296,9 +300,10 @@ void Vec3::lerp(float t, Vec3& in_Vec)
 	this->y = (1.-t)*(this->y) + (t)*(in_Vec.y);
 	this->z = (1.-t)*(this->z) + (t)*(in_Vec.z);
 }
-////////////////////////////////////////////
-///////////////////VEC4/////////////////////
-////////////////////////////////////////////
+
+/*
+ *      Vec4
+ */
 Vec4 Vec4::operator+(const Vec4& in_Vec)const
 {
 	Vec4 out_Vector;
@@ -419,19 +424,21 @@ Vec4& Vec4::operator=(const __VERTEX__TYPE__& in_Scalar)
     return (*this);
 }
 
-//FUNCs
 __VERTEX__TYPE__ Vec4::length() const
 {
  return sqrtf((x*x)+(y*y)+(z*z)+(w*w));
 }
+
 __VERTEX__TYPE__ Vec4::lengthSquared() const
 {
 	return (x*x)+(y*y)+(z*z)+(w*w);
-} 
+}
+
 __VERTEX__TYPE__ Vec4::dot(const Vec4& in_Vec) const
 {
 	return (x*in_Vec.x)+(y*in_Vec.y)+(z*in_Vec.z)+(w*in_Vec.w);
 }
+
 Vec4& Vec4::normalize() 
 {
 	return (*this) /= length();
@@ -450,4 +457,29 @@ void Vec4::lerp(float t, Vec4& in_Vec)
 	this->y = (1.-t)*(this->y) + (t)*(in_Vec.y);
 	this->z = (1.-t)*(this->z) + (t)*(in_Vec.z);
 	this->w = (1.-t)*(this->w) + (t)*(in_Vec.w);
+}
+
+
+/*
+ *      Support
+ */
+
+void trackBall( Vec3& out_V, Vec2& in_V_Center_Touch,  float trackball_R)
+{
+    Vec2 point = in_V_Center_Touch;
+//    point.y = -point.y;
+    
+    const float radius = trackball_R;
+    const float safeRadius = radius - 1.f;
+    
+    if (point.length() > safeRadius)
+    {
+        float angle = atan2(point.y, point.x);
+        point.x = safeRadius * cos(angle);
+        point.y = safeRadius * sin(angle);
+    }
+    
+    float z = sqrt(radius*radius - point.lengthSquared()); // may be not correct
+//    float z = radius - point.length();
+    out_V = Vec3(point.x, point.y, z) / radius;
 }
