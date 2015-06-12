@@ -394,10 +394,10 @@ void Matrix_PerspectiveProjection
 
 void Matrix_OrthoProjection( Matrix& out_M, const float width, const float height, const float nZ, const float fZ)
 {
-    out_M.s[_0x0_] = 2 / width; out_M.s[_0x1_] = 0;                 	out_M.s[_0x2_] = 0;                                 out_M.s[_0x3_] = 0;
-	out_M.s[_1x0_] = 0;             out_M.s[_1x1_] = 2 / height;     out_M.s[_1x2_] = 0;                                out_M.s[_1x3_] = 0;
-    out_M.s[_2x0_] = 0;             	out_M.s[_2x1_] = 0;                     out_M.s[_2x2_] =-2.0 / (fZ - nZ);      out_M.s[_2x3_] =0;
-	out_M.s[_3x0_] = -1;             	out_M.s[_3x1_] = -1;                     out_M.s[_3x2_] = - (fZ+nZ)/(fZ-nZ);                         	out_M.s[_3x3_] = 1.;
+    out_M.s[_0x0_] = 2./width; out_M.s[_0x1_] = 0;              out_M.s[_0x2_] = 0;                    out_M.s[_0x3_] = 0;
+	out_M.s[_1x0_] = 0;         out_M.s[_1x1_] = 2./height;     out_M.s[_1x2_] = 0;                    out_M.s[_1x3_] = 0;
+    out_M.s[_2x0_] = 0;         out_M.s[_2x1_] = 0;              out_M.s[_2x2_] = -2./(fZ-nZ);         out_M.s[_2x3_] = 0;
+	out_M.s[_3x0_] = -1;        out_M.s[_3x1_] = -1;            out_M.s[_3x2_] = -(fZ+nZ)/(fZ-nZ);      out_M.s[_3x3_] = 1.;
 }
 
 
@@ -441,7 +441,7 @@ float Quaternion::dot(const Quaternion& in_Q)
 
 void Quaternion::lerp(const float t,const Quaternion& in_Q)
 {
-    const float epsilon = .0005f;
+    const float epsilon = .0001f;
     float dot  = this->dot(in_Q);
     
     if (dot > 1.-epsilon)
@@ -498,17 +498,18 @@ void Quaternion_Rotation_Axis(Quaternion& out_Q,const Vec3& axis, float angle)
 
 void Quaternion_Rotation_Vector(Quaternion& out_Q, const Vec3& in_V1, const Vec3& in_V2)
 {
-    Vec3 temp_V = in_V2 * -1.f;
- if (in_V1.x==temp_V.x&&in_V1.y==temp_V.y&&in_V1.z==temp_V.z)
-    {
-        starLOG("change rotation quaternion\n");
-    Vec3 zAxis = Vec3( 1.0, 0.0, 0.0);
-     Quaternion_Rotation_Axis(out_Q, zAxis,(float)M_PI);
-}
+//    Vec3 temp_V = in_V2 * -1.f;
+// if (in_V1.x==temp_V.x&&in_V1.y==temp_V.y&&in_V1.z==temp_V.z)
+//    {
+//        starLOG("change rotation quaternion\n");
+//    Vec3 zAxis = Vec3( 1.0, 0.0, 0.0);
+//     Quaternion_Rotation_Axis(out_Q, zAxis,(float)M_PI);
+//}
     Vec3 cross = in_V1.cross(in_V2);
     float dot = in_V1.dot(in_V2);
-    double s = sqrt((1.0f + dot) * 2.0f);
-//    starLOG("vec x : %f y : x: %f y :%f%f\n", in_V1.x,in_V1.y , in_V2.x, in_V2.y);
+    float s = sqrt((1.0f + dot) * 2.0f);
+    starLOG("vec x : %f y : x: %f z :%f\n",  in_V1.x, in_V1.y, in_V1.z);
+    starLOG("vec x : %f y : x: %f z :%f\n",  in_V2.x, in_V2.y, in_V2.z);
 //    starLOG("dot %f\n cross %f %f\n", dot, cross.x, cross.y);
 //    starLOG("what is S:%f\n",s);
     
@@ -517,7 +518,6 @@ void Quaternion_Rotation_Vector(Quaternion& out_Q, const Vec3& in_V1, const Vec3
     out_Q.z = cross.z / s;
     out_Q.w = s *   0.5f;
     
-//    starLOG("delta %f %f\n", out_Q.x, out_Q.y);
 }
 
 void Quaternion_Rotation_Quaternion(Quaternion& out_Q, const Quaternion& in_Q1,const Quaternion& in_Q2)
@@ -536,7 +536,7 @@ void Quaternion_to_Matrix(Matrix& out_M, const Quaternion& in_Q)
 {
     
 //    Quaternion_Normalize(in_Q);
-    // in_Q must be normalized
+    // in_Q must be normalized before
     const float s = 2.f;
     
     float xs, ys, zs;
@@ -549,7 +549,7 @@ void Quaternion_to_Matrix(Matrix& out_M, const Quaternion& in_Q)
     xx = in_Q.x * xs;   xy = in_Q.x * ys;   xz = in_Q.x * zs;
     yy = in_Q.y * ys;   yz = in_Q.y * zs;   zz = in_Q.z * zs;
     
-    out_M.s[_0x0_] = 1.-(xx+zz);    out_M.s[_0x1_] = xy+wz;          out_M.s[_0x2_] = xz-wy;         out_M.s[_0x3_] = 0.;
+    out_M.s[_0x0_] = 1.-(yy+zz);    out_M.s[_0x1_] = xy+wz;          out_M.s[_0x2_] = xz-wy;         out_M.s[_0x3_] = 0.;
     out_M.s[_1x0_] = xy-wz;         out_M.s[_1x1_] = 1.-(xx+zz);     out_M.s[_1x2_] = yz+wx;         out_M.s[_1x3_] = 0.;
     out_M.s[_2x0_] = xz+wy;         out_M.s[_2x1_] = yz-wx;          out_M.s[_2x2_] = 1.-(xx+yy);    out_M.s[_2x3_] = 0.;
     out_M.s[_3x0_] = 0.;           	out_M.s[_3x1_] = 0.;             out_M.s[_3x2_] = 0.;            out_M.s[_3x3_] = 1.;
