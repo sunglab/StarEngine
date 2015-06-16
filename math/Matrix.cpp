@@ -508,8 +508,8 @@ void Quaternion_Rotation_Vector(Quaternion& out_Q, const Vec3& in_V1, const Vec3
     Vec3 cross = in_V1.cross(in_V2);
     float dot = in_V1.dot(in_V2);
     float s = sqrt((1.0f + dot) * 2.0f);
-    starLOG("vec x : %f y : x: %f z :%f\n",  in_V1.x, in_V1.y, in_V1.z);
-    starLOG("vec x : %f y : x: %f z :%f\n",  in_V2.x, in_V2.y, in_V2.z);
+//    starLOG("vec x : %f y : x: %f z :%f\n",  in_V1.x, in_V1.y, in_V1.z);
+//    starLOG("vec x : %f y : x: %f z :%f\n",  in_V2.x, in_V2.y, in_V2.z);
 //    starLOG("dot %f\n cross %f %f\n", dot, cross.x, cross.y);
 //    starLOG("what is S:%f\n",s);
     
