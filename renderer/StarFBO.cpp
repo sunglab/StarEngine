@@ -157,6 +157,8 @@ void StarFBO::createFBO(bool depth, bool stencil,unsigned int width, unsigned in
 void StarFBO::bindFBO(unsigned int object_id)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
+    
+    
 }
 void StarFBO::unbindFBO()
 {
@@ -165,6 +167,7 @@ void StarFBO::unbindFBO()
 void StarFBO::bindRBO(unsigned int object_id)
 {
     glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
+    glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
 }
 void StarFBO::unbindRBO()
 {
