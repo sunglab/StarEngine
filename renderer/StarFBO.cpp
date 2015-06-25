@@ -56,11 +56,11 @@ StarFBO::StarFBO(unsigned int fbo_number,unsigned int vbo_number,unsigned int va
 
 StarFBO::~StarFBO()
 {
-    //    delete vbo[];
-    //    delete vao[];
-    //    delete fbo[];
-    //    delete rboColor[];
-    //    delete rboDepth[];
+    delete[] vbo;
+    delete[] vao;
+    delete[] fbo;
+    delete[] rboColor;
+    delete[] rboDepth;
 }
 
 void StarFBO::createFBO(bool depth, bool stencil,unsigned int width, unsigned int height,unsigned int object_id )
@@ -154,6 +154,7 @@ void StarFBO::createFBO(bool depth, bool stencil,unsigned int width, unsigned in
     glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
     
 }
+
 void StarFBO::bindFBO(unsigned int object_id)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
@@ -164,6 +165,11 @@ void StarFBO::unbindFBO()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+
+
+/*
+ RBO
+ */
 void StarFBO::bindRBO(unsigned int object_id)
 {
     glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
@@ -172,6 +178,25 @@ void StarFBO::bindRBO(unsigned int object_id)
 void StarFBO::unbindRBO()
 {
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
+}
+
+void StarFBO::resizeRBO(unsigned int width, unsigned int height)
+{
+#ifdef ANDROID
+    glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8_OES, width, height);
+#elif IOS
+    glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8_OES, width, height);
+#else
+    glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8, width, height);
+#endif
+    
+#ifdef ANDROID
+    glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH24_STENCIL8_OES, width, height);
+#elif IOS
+    glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH24_STENCIL8_OES, width, height);
+#else
+    glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH24_STENCIL8, width, height);
+#endif
 }
 
 /*

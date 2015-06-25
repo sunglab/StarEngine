@@ -30,8 +30,10 @@ public:
     void createFBO( bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id);
     void bindFBO( unsigned int object_id);
     void unbindFBO();
+    
     void bindRBO( unsigned int object_id);
     void unbindRBO();
+    void resizeRBO(unsigned int, unsigned int);
     
     void createVAO( unsigned int object_id);
     void bindVAO( unsigned object_id);
