@@ -133,7 +133,7 @@ void StarFBO::createFBO(bool depth, bool stencil,unsigned int width, unsigned in
             //                glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX8,width, height);
         }
         glGenFramebuffers(1, &fbo[object_id]);
-        //    glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
+        //        glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
 #elif MAC
         fbo[object_id] = 0;
 #elif ANDROID
@@ -172,8 +172,17 @@ void StarFBO::unbindFBO()
  */
 void StarFBO::bindRBO(unsigned int object_id)
 {
-    glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
-    glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
+    if(object_id)
+    {
+        glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
+        glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
+    }
+    else
+    {
+        glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
+        if(depth)
+            glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
+    }
 }
 void StarFBO::unbindRBO()
 {

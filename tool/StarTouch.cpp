@@ -1,12 +1,20 @@
 #include "StarTouch.h"
 
 
-void StarTouch::init()
+
+
+StarTouch::StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect,bool TUIO)
+{
+    delegate = _delegate; starRect= _starRect; init(TUIO);
+}
+
+void StarTouch::init(bool TUIO)
 {
 #ifdef MAC
-    starTUIO*app = new starTUIO(3333,this);
-//    app->run();
-//    delete app;
+    if(TUIO)
+    StarTUIO* app = new StarTUIO(3333,this);
+    //    app->run();
+    //    delete app;
 #endif
     
     for(int i = 0;i<MAX_FINGERS;i++)
@@ -17,26 +25,27 @@ void StarTouch::init()
     }
     fingers = 0;
 }
+
 #ifdef MAC
-void starTUIO::addTuioObject(TuioObject *tobj) {
+void StarTUIO::addTuioObject(TuioObject *tobj) {
     if (verbose)
         std::cout << "add obj " << tobj->getSymbolID() << " (" << tobj->getSessionID() << "/"<<  tobj->getTuioSourceID() << ") "<< tobj->getX() << " " << tobj->getY() << " " << tobj->getAngle() << std::endl;
 }
 
-void starTUIO::updateTuioObject(TuioObject *tobj) {
+void StarTUIO::updateTuioObject(TuioObject *tobj) {
     
     if (verbose)
         std::cout << "set obj " << tobj->getSymbolID() << " (" << tobj->getSessionID() << "/"<<  tobj->getTuioSourceID() << ") "<< tobj->getX() << " " << tobj->getY() << " " << tobj->getAngle()
         << " " << tobj->getMotionSpeed() << " " << tobj->getRotationSpeed() << " " << tobj->getMotionAccel() << " " << tobj->getRotationAccel() << std::endl;
 }
 
-void starTUIO::removeTuioObject(TuioObject *tobj) {
+void StarTUIO::removeTuioObject(TuioObject *tobj) {
     
     if (verbose)
         std::cout << "del obj " << tobj->getSymbolID() << " (" << tobj->getSessionID() << "/"<<  tobj->getTuioSourceID() << ")" << std::endl;
 }
 
-void starTUIO::addTuioCursor(TuioCursor *tcur) {
+void StarTUIO::addTuioCursor(TuioCursor *tcur) {
     
     if (verbose)
         std::cout << "add cur " << tcur->getCursorID() << " (" <<  tcur->getSessionID() << "/"<<  tcur->getTuioSourceID() << ") " << tcur->getX() << " " << tcur->getY() << std::endl;
@@ -90,7 +99,7 @@ void starTUIO::addTuioCursor(TuioCursor *tcur) {
     startouch->callbackBegin();
 }
 
-void starTUIO::updateTuioCursor(TuioCursor *tcur) {
+void StarTUIO::updateTuioCursor(TuioCursor *tcur) {
     
     if (verbose)
         std::cout << "set cur " << tcur->getCursorID() << " (" <<  tcur->getSessionID() << "/"<<  tcur->getTuioSourceID() << ") " << tcur->getX() << " " << tcur->getY()
@@ -115,7 +124,7 @@ void starTUIO::updateTuioCursor(TuioCursor *tcur) {
      startouch->callbackMove();
 }
 
-void starTUIO::removeTuioCursor(TuioCursor *tcur) {
+void StarTUIO::removeTuioCursor(TuioCursor *tcur) {
     
     if (verbose)
         std::cout << "del cur " << tcur->getCursorID() << " (" <<  tcur->getSessionID() << "/"<<  tcur->getTuioSourceID() << ")" << std::endl;
@@ -124,30 +133,30 @@ void starTUIO::removeTuioCursor(TuioCursor *tcur) {
         startouch->callbackEnd();
 }
 
-void starTUIO::addTuioBlob(TuioBlob *tblb) {
+void StarTUIO::addTuioBlob(TuioBlob *tblb) {
     
     if (verbose)
         std::cout << "add blb " << tblb->getBlobID() << " (" << tblb->getSessionID()  << "/"<<  tblb->getTuioSourceID()<< ") "<< tblb->getX() << " " << tblb->getY() << " " << tblb->getAngle() << " " << tblb->getWidth() << " " << tblb->getHeight() << " " << tblb->getArea() << std::endl;
 }
 
-void starTUIO::updateTuioBlob(TuioBlob *tblb) {
+void StarTUIO::updateTuioBlob(TuioBlob *tblb) {
     
     if (verbose)
         std::cout << "set blb " << tblb->getBlobID() << " (" << tblb->getSessionID() << "/"<<  tblb->getTuioSourceID() << ") "<< tblb->getX() << " " << tblb->getY() << " " << tblb->getAngle() << " "<< tblb->getWidth() << " " << tblb->getHeight() << " " << tblb->getArea()
         << " " << tblb->getMotionSpeed() << " " << tblb->getRotationSpeed() << " " << tblb->getMotionAccel() << " " << tblb->getRotationAccel() << std::endl;
 }
 
-void starTUIO::removeTuioBlob(TuioBlob *tblb) {
+void StarTUIO::removeTuioBlob(TuioBlob *tblb) {
     
     if (verbose)
         std::cout << "del blb " << tblb->getBlobID() << " (" << tblb->getSessionID() << "/"<<  tblb->getTuioSourceID() << ")" << std::endl;
 }
 
 
-void starTUIO::refresh(TuioTime frameTime) {
+void StarTUIO::refresh(TuioTime frameTime) {
 }
 
-void starTUIO::run()
+void StarTUIO::run()
 {
         running=true;
         while (running)

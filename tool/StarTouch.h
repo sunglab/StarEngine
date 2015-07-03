@@ -1,3 +1,7 @@
+
+#ifndef STARTOUCH_H
+#define STARTOUCH_H
+
 #include "../star.h"
 #include "../math/StarMath.h"
 
@@ -19,19 +23,22 @@ class StarTouchDelegate
     virtual void CallbackTouchMove(){};
     virtual void CallbackTouchCancel(){};
 };
-
+//class StarTUIO;
 class StarTouch
 {
 public:
+    
     StarTouchDelegate* delegate;
-    StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect){delegate = _delegate; starRect= _starRect; init();}
+    
 	Vec2 nowPos[MAX_FINGERS];
 	Vec2 prePos[MAX_FINGERS];
     Vec2 starRect;
 	unsigned int fingers;
 	bool end;
     
-    void init();
+    StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect,bool TUIO=true);
+    void init(bool TUIO=true);
+    
     void callbackBegin(){delegate->CallbackTouchBegin();}
     void callbackMove(){delegate->CallbackTouchMove();}
     void callbackEnd(){delegate->CallbackTouchEnd();}
@@ -40,10 +47,10 @@ public:
 
 #ifdef MAC
 using namespace TUIO;
-class starTUIO : public TuioListener {
+class StarTUIO : public TuioListener {
     
 public:
-    starTUIO(int port,StarTouch* _startouch): verbose (false),running(false)
+    StarTUIO(int port,StarTouch* _startouch): verbose (false),running(false)
     {
         osc_receiver = new UdpReceiver(3333);
         tuioClient = new TuioClient(osc_receiver);
@@ -51,7 +58,7 @@ public:
         tuioClient->connect();
         this->startouch = _startouch;
     }
-    ~starTUIO() {
+    ~StarTUIO() {
         tuioClient->disconnect();
         delete tuioClient;
         delete osc_receiver;
@@ -80,4 +87,5 @@ private:
     OscReceiver *osc_receiver;
     StarTouch *startouch;
 };
+#endif
 #endif

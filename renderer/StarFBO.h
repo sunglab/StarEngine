@@ -23,6 +23,9 @@ public:
     unsigned int* vao;
     unsigned int* vbo;
     
+    bool depth;
+    bool stencil;
+    
     StarFBO(void);
     StarFBO( unsigned int fbo_number, unsigned int vbo_number, unsigned int vao_number);
     
