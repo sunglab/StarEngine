@@ -170,18 +170,22 @@ void StarFBO::unbindFBO()
 /*
  RBO
  */
-void StarFBO::bindRBO(unsigned int object_id)
+void StarFBO::bindRBO(unsigned int object_id, bool depth, bool stencil)
 {
     if(object_id)
     {
         glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
-        glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
+        if(depth)
+            glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
     }
     else
     {
         glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
-        if(depth)
+#ifndef IOS
+        if(depth) 
             glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
+#endif
+        
     }
 }
 void StarFBO::unbindRBO()

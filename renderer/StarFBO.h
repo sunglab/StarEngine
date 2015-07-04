@@ -23,9 +23,6 @@ public:
     unsigned int* vao;
     unsigned int* vbo;
     
-    bool depth;
-    bool stencil;
-    
     StarFBO(void);
     StarFBO( unsigned int fbo_number, unsigned int vbo_number, unsigned int vao_number);
     
@@ -34,7 +31,7 @@ public:
     void bindFBO( unsigned int object_id);
     void unbindFBO();
     
-    void bindRBO( unsigned int object_id);
+    void bindRBO( unsigned int object_id, bool depth = false, bool stencil = false);
     void unbindRBO();
     void resizeRBO(unsigned int, unsigned int);
     
