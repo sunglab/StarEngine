@@ -202,7 +202,7 @@ void StarFBO::resizeRBO(unsigned int width, unsigned int height)
 #else
     glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8, width, height);
 #endif
-    
+   // maybe an error if has not depth
 #ifdef ANDROID
     glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH24_STENCIL8_OES, width, height);
 #elif IOS
