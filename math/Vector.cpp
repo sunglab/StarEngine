@@ -470,7 +470,8 @@ void trackBall( Vec3& out_V, Vec2& in_V_Center_Touch,  float trackball_R)
 //    point.y = -point.y;
     
     const float radius = trackball_R;
-    const float safeRadius = radius - 1.f;
+    const float safeRadius = radius - 1.f; // to avoid z = non;
+//    const float safeRadius = radius;
     
     if (point.length() > safeRadius)
     {
@@ -480,6 +481,9 @@ void trackBall( Vec3& out_V, Vec2& in_V_Center_Touch,  float trackball_R)
     }
     
     float z = sqrt(radius*radius - point.lengthSquared()); // may be not correct
+//    printf("x y z = %f,  %f %f %f\n",,point.x/radius, point.y/radius, z/radius);
 //    float z = radius - point.length();
-    out_V = Vec3(point.x, point.y, z) / radius;
+    out_V = Vec3(point.x, point.y, z) / radius; //normalize
+//    out_V = Vec3(point.x, point.y, z);
+//    printf("x y z = %f, %f %f %f\n",out_V.length(),point.x/radius, point.y/radius, z/radius);
 }

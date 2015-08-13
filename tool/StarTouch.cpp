@@ -120,6 +120,7 @@ void StarTUIO::updateTuioCursor(TuioCursor *tcur) {
     }
 //    printf("i = %d", i);
     startouch->fingers = i;
+     startouch->end = false;
     tuioClient->unlockCursorList();
      startouch->callbackMove();
 }
@@ -129,7 +130,10 @@ void StarTUIO::removeTuioCursor(TuioCursor *tcur) {
     if (verbose)
         std::cout << "del cur " << tcur->getCursorID() << " (" <<  tcur->getSessionID() << "/"<<  tcur->getTuioSourceID() << ")" << std::endl;
     if(tcur->getCursorID()==0)
-         startouch->fingers = 0;
+    {   //printf("why false?\n");
+         startouch->end = true;
+        startouch->fingers = 0;
+    }
         startouch->callbackEnd();
 }
 

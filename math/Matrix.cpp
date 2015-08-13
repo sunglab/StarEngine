@@ -3,7 +3,11 @@
 #include <math.h>
 #include "../StarMain.h"
 
-
+Vec3 operator*(const Vec3& in_V, const Matrix3& in_M)
+{
+    Vec3 abc = Vec3(0,0);
+    return abc;
+}
 Matrix Matrix::operator*(const Matrix& in_M)const
 {
 	Matrix out_M;
@@ -35,11 +39,23 @@ Vec2 operator*(const Vec2& in_V,const Matrix& in_M)
 	return out_V;
 //	Vec4 temp_V;
 //	Vec2 out_V;
-//	Vec4 in_V2 = Vec4((in_V),0.0,0.0);
+//	Vec4 in_V2 = Vec4((in_V),0.0.0);
 //	Matrix_MxV(temp_V,in_V2,in_M);
 //	return out_V= Vec2(temp_V.x,temp_V.y);
 }
 
+void Matrix_to_Matrix3( Matrix3& out_M, const Matrix& in_M)
+{
+    out_M.s[0] = in_M.s[_0x0_];
+    out_M.s[1] = in_M.s[_1x0_];
+    out_M.s[2] = in_M.s[_2x0_];
+    out_M.s[3] = in_M.s[_0x1_];
+    out_M.s[4] = in_M.s[_1x1_];
+    out_M.s[5] = in_M.s[_2x1_];
+    out_M.s[6] = in_M.s[_0x2_];
+    out_M.s[7] = in_M.s[_1x2_];
+    out_M.s[8] = in_M.s[_2x2_];
+}
 void Matrix_MxM( Matrix& out_M, const Matrix& in_M1, const Matrix& in_M2)
 {
     Matrix temp_M;
@@ -311,93 +327,278 @@ void Matrix_Transpose(Matrix& out_M,const Matrix& in_M)
     out_M = t;
 }
 
-void Matrix_Inverse(Matrix& out_M, const Matrix& in_M)
+void Matrix3_Inverse(Matrix3& out_M, const Matrix3& in_M)
 {
-    Matrix	mDummyMatrix;
-    double		det_1;
-    double		pos, neg, temp;
     
-    /* Calculate the determinant of submatrix A and determine if the
-     the matrix is singular as limited by the double precision
-     floating-point data representation. */
-    pos = neg = 0.0;
-    temp =  in_M.s[ 0] * in_M.s[ 5] * in_M.s[10];
-    if (temp >= 0.0) pos += temp; else neg += temp;
-    temp =  in_M.s[ 4] * in_M.s[ 9] * in_M.s[ 2];
-    if (temp >= 0.0) pos += temp; else neg += temp;
-    temp =  in_M.s[ 8] * in_M.s[ 1] * in_M.s[ 6];
-    if (temp >= 0.0) pos += temp; else neg += temp;
-    temp = -in_M.s[ 8] * in_M.s[ 5] * in_M.s[ 2];
-    if (temp >= 0.0) pos += temp; else neg += temp;
-    temp = -in_M.s[ 4] * in_M.s[ 1] * in_M.s[10];
-    if (temp >= 0.0) pos += temp; else neg += temp;
-    temp = -in_M.s[ 0] * in_M.s[ 9] * in_M.s[ 6];
-    if (temp >= 0.0) pos += temp; else neg += temp;
-    det_1 = pos + neg;
+    Matrix3 temp_M;
     
-    /* Is the submatrix A singular? */
-    if ((det_1 == 0.0) || (abs(det_1 / (pos - neg)) < 1.0e-15))
+    double determinant =    +in_M.s[0]*(in_M.s[4]*in_M.s[8]-in_M.s[7]*in_M.s[5])
+    -in_M.s[1]*(in_M.s[3]*in_M.s[8]-in_M.s[5]*in_M.s[6])
+    +in_M.s[2]*(in_M.s[3]*in_M.s[7]-in_M.s[4]*in_M.s[6]);
+    if(determinant==0)
     {
-        /* Matrix M has no inverse */
-        printf("Matrix has no inverse : singular matrix\n");
+        starLOG("oop det is zero\n");
         return;
     }
-    else
-    {
-        /* Calculate inverse(A) = adj(A) / det(A) */
-        det_1 = 1.0 / det_1;
-        mDummyMatrix.s[ 0] =   ( in_M.s[ 5] * in_M.s[10] - in_M.s[ 9] * in_M.s[ 6] ) * (float)det_1;
-        mDummyMatrix.s[ 1] = - ( in_M.s[ 1] * in_M.s[10] - in_M.s[ 9] * in_M.s[ 2] ) * (float)det_1;
-        mDummyMatrix.s[ 2] =   ( in_M.s[ 1] * in_M.s[ 6] - in_M.s[ 5] * in_M.s[ 2] ) * (float)det_1;
-        mDummyMatrix.s[ 4] = - ( in_M.s[ 4] * in_M.s[10] - in_M.s[ 8] * in_M.s[ 6] ) * (float)det_1;
-        mDummyMatrix.s[ 5] =   ( in_M.s[ 0] * in_M.s[10] - in_M.s[ 8] * in_M.s[ 2] ) * (float)det_1;
-        mDummyMatrix.s[ 6] = - ( in_M.s[ 0] * in_M.s[ 6] - in_M.s[ 4] * in_M.s[ 2] ) * (float)det_1;
-        mDummyMatrix.s[ 8] =   ( in_M.s[ 4] * in_M.s[ 9] - in_M.s[ 8] * in_M.s[ 5] ) * (float)det_1;
-        mDummyMatrix.s[ 9] = - ( in_M.s[ 0] * in_M.s[ 9] - in_M.s[ 8] * in_M.s[ 1] ) * (float)det_1;
-        mDummyMatrix.s[10] =   ( in_M.s[ 0] * in_M.s[ 5] - in_M.s[ 4] * in_M.s[ 1] ) * (float)det_1;
-        
-        /* Calculate -C * inverse(A) */
-        mDummyMatrix.s[12] = - ( in_M.s[12] * mDummyMatrix.s[ 0] + in_M.s[13] * mDummyMatrix.s[ 4] + in_M.s[14] * mDummyMatrix.s[ 8] );
-        mDummyMatrix.s[13] = - ( in_M.s[12] * mDummyMatrix.s[ 1] + in_M.s[13] * mDummyMatrix.s[ 5] + in_M.s[14] * mDummyMatrix.s[ 9] );
-        mDummyMatrix.s[14] = - ( in_M.s[12] * mDummyMatrix.s[ 2] + in_M.s[13] * mDummyMatrix.s[ 6] + in_M.s[14] * mDummyMatrix.s[10] );
-        
-        /* Fill in last row */
-        mDummyMatrix.s[ 3] = 0.0f;
-        mDummyMatrix.s[ 7] = 0.0f;
-        mDummyMatrix.s[11] = 0.0f;
-        mDummyMatrix.s[15] = 1.0f;
-    }
     
-   	/* Copy contents of dummy matrix in pfMatrix */
-    out_M = mDummyMatrix;
+    double invdet = 1/determinant;
+    temp_M.s[0] =  (in_M.s[4]*in_M.s[8]-in_M.s[7]*in_M.s[5])*invdet;
+    temp_M.s[3] = -(in_M.s[1]*in_M.s[8]-in_M.s[2]*in_M.s[7])*invdet;
+    temp_M.s[6] =  (in_M.s[1]*in_M.s[5]-in_M.s[2]*in_M.s[4])*invdet;
+    temp_M.s[1] = -(in_M.s[3]*in_M.s[8]-in_M.s[5]*in_M.s[6])*invdet;
+    temp_M.s[4] =  (in_M.s[0]*in_M.s[8]-in_M.s[2]*in_M.s[6])*invdet;
+    temp_M.s[7] = -(in_M.s[0]*in_M.s[5]-in_M.s[3]*in_M.s[2])*invdet;
+    temp_M.s[2] =  (in_M.s[3]*in_M.s[7]-in_M.s[6]*in_M.s[4])*invdet;
+    temp_M.s[5] = -(in_M.s[0]*in_M.s[7]-in_M.s[6]*in_M.s[1])*invdet;
+    temp_M.s[8] =  (in_M.s[0]*in_M.s[4]-in_M.s[3]*in_M.s[1])*invdet;
+    
+    out_M = temp_M;
+}
+void Matrix3_Transpose(Matrix3& out_M, const Matrix3& in_M)
+{
+    Matrix3 t;
+    t.s[0] = in_M.s[0]; t.s[3] = in_M.s[1]; t.s[6] = in_M.s[2];
+    t.s[1] = in_M.s[3]; t.s[4] = in_M.s[4]; t.s[7] = in_M.s[5];
+    t.s[2] = in_M.s[6]; t.s[5] = in_M.s[7]; t.s[8] = in_M.s[8];
+    out_M = t;
+}
+
+
+void Matrix_Inverse(Matrix& out_M, const Matrix& in_M)
+{
+    double inv[16], det;
+    int i;
+   
+    inv[0] = in_M.s[5]  * in_M.s[10] * in_M.s[15] -
+    in_M.s[5]  * in_M.s[11] * in_M.s[14] -
+    in_M.s[9]  * in_M.s[6]  * in_M.s[15] +
+    in_M.s[9]  * in_M.s[7]  * in_M.s[14] +
+    in_M.s[13] * in_M.s[6]  * in_M.s[11] -
+    in_M.s[13] * in_M.s[7]  * in_M.s[10];
+    
+    inv[4] = -in_M.s[4]  * in_M.s[10] * in_M.s[15] +
+    in_M.s[4]  * in_M.s[11] * in_M.s[14] +
+    in_M.s[8]  * in_M.s[6]  * in_M.s[15] -
+    in_M.s[8]  * in_M.s[7]  * in_M.s[14] -
+    in_M.s[12] * in_M.s[6]  * in_M.s[11] +
+    in_M.s[12] * in_M.s[7]  * in_M.s[10];
+    
+    inv[8] = in_M.s[4]  * in_M.s[9] * in_M.s[15] -
+    in_M.s[4]  * in_M.s[11] * in_M.s[13] -
+    in_M.s[8]  * in_M.s[5] * in_M.s[15] +
+    in_M.s[8]  * in_M.s[7] * in_M.s[13] +
+    in_M.s[12] * in_M.s[5] * in_M.s[11] -
+    in_M.s[12] * in_M.s[7] * in_M.s[9];
+    
+    inv[12] = -in_M.s[4]  * in_M.s[9] * in_M.s[14] +
+    in_M.s[4]  * in_M.s[10] * in_M.s[13] +
+    in_M.s[8]  * in_M.s[5] * in_M.s[14] -
+    in_M.s[8]  * in_M.s[6] * in_M.s[13] -
+    in_M.s[12] * in_M.s[5] * in_M.s[10] +
+    in_M.s[12] * in_M.s[6] * in_M.s[9];
+    
+    inv[1] = -in_M.s[1]  * in_M.s[10] * in_M.s[15] +
+    in_M.s[1]  * in_M.s[11] * in_M.s[14] +
+    in_M.s[9]  * in_M.s[2] * in_M.s[15] -
+    in_M.s[9]  * in_M.s[3] * in_M.s[14] -
+    in_M.s[13] * in_M.s[2] * in_M.s[11] +
+    in_M.s[13] * in_M.s[3] * in_M.s[10];
+    
+    inv[5] = in_M.s[0]  * in_M.s[10] * in_M.s[15] -
+    in_M.s[0]  * in_M.s[11] * in_M.s[14] -
+    in_M.s[8]  * in_M.s[2] * in_M.s[15] +
+    in_M.s[8]  * in_M.s[3] * in_M.s[14] +
+    in_M.s[12] * in_M.s[2] * in_M.s[11] -
+    in_M.s[12] * in_M.s[3] * in_M.s[10];
+    
+    inv[9] = -in_M.s[0]  * in_M.s[9] * in_M.s[15] +
+    in_M.s[0]  * in_M.s[11] * in_M.s[13] +
+    in_M.s[8]  * in_M.s[1] * in_M.s[15] -
+    in_M.s[8]  * in_M.s[3] * in_M.s[13] -
+    in_M.s[12] * in_M.s[1] * in_M.s[11] +
+    in_M.s[12] * in_M.s[3] * in_M.s[9];
+    
+    inv[13] = in_M.s[0]  * in_M.s[9] * in_M.s[14] -
+    in_M.s[0]  * in_M.s[10] * in_M.s[13] -
+    in_M.s[8]  * in_M.s[1] * in_M.s[14] +
+    in_M.s[8]  * in_M.s[2] * in_M.s[13] +
+    in_M.s[12] * in_M.s[1] * in_M.s[10] -
+    in_M.s[12] * in_M.s[2] * in_M.s[9];
+    
+    inv[2] = in_M.s[1]  * in_M.s[6] * in_M.s[15] -
+    in_M.s[1]  * in_M.s[7] * in_M.s[14] -
+    in_M.s[5]  * in_M.s[2] * in_M.s[15] +
+    in_M.s[5]  * in_M.s[3] * in_M.s[14] +
+    in_M.s[13] * in_M.s[2] * in_M.s[7] -
+    in_M.s[13] * in_M.s[3] * in_M.s[6];
+    
+    inv[6] = -in_M.s[0]  * in_M.s[6] * in_M.s[15] +
+    in_M.s[0]  * in_M.s[7] * in_M.s[14] +
+    in_M.s[4]  * in_M.s[2] * in_M.s[15] -
+    in_M.s[4]  * in_M.s[3] * in_M.s[14] -
+    in_M.s[12] * in_M.s[2] * in_M.s[7] +
+    in_M.s[12] * in_M.s[3] * in_M.s[6];
+    
+    inv[10] = in_M.s[0]  * in_M.s[5] * in_M.s[15] -
+    in_M.s[0]  * in_M.s[7] * in_M.s[13] -
+    in_M.s[4]  * in_M.s[1] * in_M.s[15] +
+    in_M.s[4]  * in_M.s[3] * in_M.s[13] +
+    in_M.s[12] * in_M.s[1] * in_M.s[7] -
+    in_M.s[12] * in_M.s[3] * in_M.s[5];
+    
+    inv[14] = -in_M.s[0]  * in_M.s[5] * in_M.s[14] +
+    in_M.s[0]  * in_M.s[6] * in_M.s[13] +
+    in_M.s[4]  * in_M.s[1] * in_M.s[14] -
+    in_M.s[4]  * in_M.s[2] * in_M.s[13] -
+    in_M.s[12] * in_M.s[1] * in_M.s[6] +
+    in_M.s[12] * in_M.s[2] * in_M.s[5];
+    
+    inv[3] = -in_M.s[1] * in_M.s[6] * in_M.s[11] +
+    in_M.s[1] * in_M.s[7] * in_M.s[10] +
+    in_M.s[5] * in_M.s[2] * in_M.s[11] -
+    in_M.s[5] * in_M.s[3] * in_M.s[10] -
+    in_M.s[9] * in_M.s[2] * in_M.s[7] +
+    in_M.s[9] * in_M.s[3] * in_M.s[6];
+    
+    inv[7] = in_M.s[0] * in_M.s[6] * in_M.s[11] -
+    in_M.s[0] * in_M.s[7] * in_M.s[10] -
+    in_M.s[4] * in_M.s[2] * in_M.s[11] +
+    in_M.s[4] * in_M.s[3] * in_M.s[10] +
+    in_M.s[8] * in_M.s[2] * in_M.s[7] -
+    in_M.s[8] * in_M.s[3] * in_M.s[6];
+    
+    inv[11] = -in_M.s[0] * in_M.s[5] * in_M.s[11] +
+    in_M.s[0] * in_M.s[7] * in_M.s[9] +
+    in_M.s[4] * in_M.s[1] * in_M.s[11] -
+    in_M.s[4] * in_M.s[3] * in_M.s[9] -
+    in_M.s[8] * in_M.s[1] * in_M.s[7] +
+    in_M.s[8] * in_M.s[3] * in_M.s[5];
+    
+    inv[15] = in_M.s[0] * in_M.s[5] * in_M.s[10] -
+    in_M.s[0] * in_M.s[6] * in_M.s[9] -
+    in_M.s[4] * in_M.s[1] * in_M.s[10] +
+    in_M.s[4] * in_M.s[2] * in_M.s[9] +
+    in_M.s[8] * in_M.s[1] * in_M.s[6] -
+    in_M.s[8] * in_M.s[2] * in_M.s[5];
+    
+    det = in_M.s[0] * inv[0] + in_M.s[1] * inv[4] + in_M.s[2] * inv[8] + in_M.s[3] * inv[12];
+    
+    if (det == 0)
+        return ;
+    
+    det = 1.0 / det;
+    
+    for (i = 0; i < 16; i++)
+        out_M.s[i] = inv[i] * det;
   
 }
 
+void Matrix_Scaling_By_Perspective(Matrix& out_M, const float FOV, const float ASPECT)
+{
+    
+//    float fov = 1.0f / (float)tan(FOV * 0.5f); // 1/tan(theta/2)
+//    
+//    out_M.s[_0x0_] = ASPECT/fov;
+//    out_M.s[_1x0_] = 0;
+//    out_M.s[_2x0_] = 0;
+//    out_M.s[_3x0_] = 0;
+//    
+//    out_M.s[_0x1_] = 0.0;
+//    out_M.s[_1x1_] = 1./fov;
+//    out_M.s[_2x1_] = 0.0;
+//    out_M.s[_3x1_] = 0.0;
+//    
+//    out_M.s[_0x2_] = 0.0;
+//    out_M.s[_1x2_] = 0.0;
+//    out_M.s[_2x2_] = 1.0;
+//    out_M.s[_3x2_] = 0.0;
+//    
+//    out_M.s[_0x3_] = 0.0;
+//    out_M.s[_1x3_] = 0.0;
+//    out_M.s[_2x3_] = 1.0;
+//    out_M.s[_3x3_] = 0.0;
+}
 void Matrix_PerspectiveProjection
 (Matrix& out_M,
-  const __VERTEX__TYPE__ FOV,
-  const __VERTEX__TYPE__ ASPECT,
-  const __VERTEX__TYPE__ NEAR,
-  const __VERTEX__TYPE__ FAR)
+ const __VERTEX__TYPE__ FOV,
+ const __VERTEX__TYPE__ ASPECT,
+ const __VERTEX__TYPE__ NEAR,
+ const __VERTEX__TYPE__ FAR)
 {
-    float f, n;
     
-    f = 1.0f / (float)tan(FOV * 0.5f); // 1/tan(theta/2)
-    n = 1.0f / (NEAR - FAR);
+    float fov = 1.0f / (float)tan(FOV * 0.5f); // 1/tan(theta/2)
+    float nf = 1.0f / (NEAR - FAR);
     
-    out_M.s[_0x0_] = f/ASPECT;    out_M.s[_0x1_] = 0.0;                       out_M.s[_0x2_] = 0.0;                           out_M.s[_0x3_] = 0.0;
-    out_M.s[_1x0_] = 0;                         out_M.s[_1x1_] =     f;                          out_M.s[_1x2_] = 0.0;                           out_M.s[_1x3_] = 0.0;
-    out_M.s[_2x0_] = 0;                     out_M.s[_2x1_] = 0.0;                        out_M.s[_2x2_] = (FAR+NEAR)*n;             out_M.s[_2x3_] = -1.0;
-    out_M.s[_3x0_] = 0;                     out_M.s[_3x1_] = 0.0;                        out_M.s[_3x2_] =  2*(FAR*NEAR)*n;         out_M.s[_3x3_] = 0.0;
-
+    out_M.s[_0x0_] = fov/ASPECT;
+    out_M.s[_1x0_] = 0;
+    out_M.s[_2x0_] = 0;
+    out_M.s[_3x0_] = 0;
+    
+    out_M.s[_0x1_] = 0.0;
+    out_M.s[_1x1_] = fov;
+    out_M.s[_2x1_] = 0.0;
+    out_M.s[_3x1_] = 0.0;
+    
+    out_M.s[_0x2_] = 0.0;
+    out_M.s[_1x2_] = 0.0;
+    out_M.s[_2x2_] = (NEAR+FAR) * nf;
+    out_M.s[_3x2_] = (2.f*NEAR*FAR) * nf;
+    
+    out_M.s[_0x3_] = 0.0;
+    out_M.s[_1x3_] = 0.0;
+    out_M.s[_2x3_] = -1.0;
+    out_M.s[_3x3_] = 0.0;
+    
 }
 
+//void Matrix_PerspectiveProjection
+//(Matrix& out_M,
+//  const __VERTEX__TYPE__ FOV,
+//  const __VERTEX__TYPE__ ASPECT,
+//  const __VERTEX__TYPE__ NEAR,
+//  const __VERTEX__TYPE__ FAR)
+//{
+//    
+//    float fov = 1.0f / (float)tan(FOV * 0.5f); // 1/tan(theta/2)
+////    float nf = 1.0ff / (NEAR - FAR);
+//    
+//    out_M.s[_0x0_] = fov*ASPECT;
+//    out_M.s[_1x0_] = 0;
+//    out_M.s[_2x0_] = 0;
+//    out_M.s[_3x0_] = 0;
+//
+//    out_M.s[_0x1_] = 0.0;
+//    out_M.s[_1x1_] = fov;
+//    out_M.s[_2x1_] = 0.0;
+//    out_M.s[_3x1_] = 0.0;
+//
+//    out_M.s[_0x2_] = 0.0;
+//    out_M.s[_1x2_] = 0.0;
+//    out_M.s[_2x2_] = (FAR+NEAR)/ (FAR-NEAR);
+//    out_M.s[_3x2_] = (2*NEAR*FAR)/(NEAR-FAR);
+//
+//    out_M.s[_0x3_] = 0.0;
+//    out_M.s[_1x3_] = 0.0;
+//    out_M.s[_2x3_] = 1.0;
+//    out_M.s[_3x3_] = 0.0;
+//
+//}
+
+//void Matrix_OrthoProjection( Matrix& out_M, const float width, const float height, const float nZ, const float fZ)
+//{
+//    // asumed r-l = width , t-b = height
+//    out_M.s[_0x0_] = 2./width; out_M.s[_0x1_] = 0;              out_M.s[_0x2_] = 0;                    out_M.s[_0x3_] = 0;
+//    out_M.s[_1x0_] = 0;         out_M.s[_1x1_] = 2./height;     out_M.s[_1x2_] = 0;                    out_M.s[_1x3_] = 0;
+//    out_M.s[_2x0_] = 0;         out_M.s[_2x1_] = 0;              out_M.s[_2x2_] = 1./(nZ-fZ);         out_M.s[_2x3_] = 0;
+//    out_M.s[_3x0_] = 0;        out_M.s[_3x1_] = 0;            out_M.s[_3x2_] = nZ/(nZ-fZ);      out_M.s[_3x3_] = 1.;
+//}
 void Matrix_OrthoProjection( Matrix& out_M, const float width, const float height, const float nZ, const float fZ)
 {
+    // asumed r-l = width , t-b = height
     out_M.s[_0x0_] = 2./width; out_M.s[_0x1_] = 0;              out_M.s[_0x2_] = 0;                    out_M.s[_0x3_] = 0;
 	out_M.s[_1x0_] = 0;         out_M.s[_1x1_] = 2./height;     out_M.s[_1x2_] = 0;                    out_M.s[_1x3_] = 0;
     out_M.s[_2x0_] = 0;         out_M.s[_2x1_] = 0;              out_M.s[_2x2_] = -2./(fZ-nZ);         out_M.s[_2x3_] = 0;
-	out_M.s[_3x0_] = -1;        out_M.s[_3x1_] = -1;            out_M.s[_3x2_] = -(fZ+nZ)/(fZ-nZ);      out_M.s[_3x3_] = 1.;
+	out_M.s[_3x0_] = 0;        out_M.s[_3x1_] = 0;            out_M.s[_3x2_] = -(fZ+nZ)/(fZ-nZ);      out_M.s[_3x3_] = 1.;
 }
 
 
@@ -463,7 +664,7 @@ void Quaternion::lerp(const float t,const Quaternion& in_Q)
     (*this)  = temp_Q2;
 }
 
-void Quarternion_Indentity(Quaternion& out_Q)
+void  Quaternion_Identity(Quaternion& out_Q)
 {
     out_Q.x = 0.0;
     out_Q.y = 0.0;
@@ -519,7 +720,6 @@ void Quaternion_Rotation_Vector(Quaternion& out_Q, const Vec3& in_V1, const Vec3
     out_Q.w = s *   0.5f;
     
 }
-
 void Quaternion_Rotation_Quaternion(Quaternion& out_Q, const Quaternion& in_Q1,const Quaternion& in_Q2)
 {
     Quaternion temp_Q;

@@ -30,6 +30,17 @@ public:
     
     
 };
+class Matrix3
+{
+public:
+    __MATRIX__TYPE__* operator[] (const unsigned int row)
+    { return &s[row*3]; }
+    
+		__MATRIX__TYPE__ s[9];
+    
+    Matrix3 operator*(const Matrix3& in_M)const;
+    friend Vec3 operator*(const Vec3& in_V, const Matrix3& in_M);
+};
 class Matrix
 {
 	public:
@@ -48,7 +59,7 @@ class Matrix
 //        out_M = *this;
 //    }
 };
-
+void Matrix_to_Matrix3( Matrix3& out_M, const Matrix& in_M);
 void Matrix_MxM( Matrix& out_M, const Matrix& in_M1, const Matrix& in_M2);
 
 void Matrix_MxV( Vec4& out_V, const Vec4& in_V, const Matrix& in_M);
@@ -58,6 +69,8 @@ void Matrix_MxV( Vec2& out_V, const Vec2& in_V, const Matrix& in_M);
 void Matrix_Translation( Matrix& out_M, const float x, const float y, const float z);
 
 void Matrix_Scaling( Matrix& out_M, const float x, const float y, const float z);
+
+void Matrix_Scaling_By_Perspective(Matrix& out_M, const float FOV, const float ASPECT);
 
 void Matrix_Rotation_X( Matrix& out_M, const float angle);
 
@@ -75,13 +88,19 @@ void Matrix_OrthoProjection( Matrix& out_M, const float width, const float heigh
 void Matrix_Transpose( Matrix& out_M, const Matrix& in_M);
 void Matrix_Inverse( Matrix& out_M, const Matrix& in_M);
 
+/*
+ * 3X3
+ */
+void Matrix3_Inverse( Matrix3& out_M, const Matrix3& in_M);
+void Matrix3_Transpose(Matrix3& out_M, const Matrix3& in_M);
+
 // NEON SIMD
 void Matrix_MxM_NEON(__MATRIX__TYPE__ * out_M, const __MATRIX__TYPE__* in_M1, const __MATRIX__TYPE__* in_M2);
 
 void Matrix_MxV_NEON(__VERTEX__TYPE__* out_V, const __VERTEX__TYPE__* in_V1, const __MATRIX__TYPE__* in_M);
 
 // Quaternion
-void Quaternion_Identiy(Quaternion& out_Q);
+void Quaternion_Identity(Quaternion& out_Q);
 void Quaternion_Normalize(Quaternion& out_Q);
 void Quaternion_Rotation_Axis(Quaternion &out_Q, const Vec3 &axis, float angle);
 void Quaternion_Rotation_Vector(Quaternion& out_Q, const  Vec3& in_V1,const  Vec3& in_V2);
