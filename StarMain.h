@@ -66,6 +66,7 @@
 #include "./effect/StarEffect.h"
 #include "./geometry/StarStructure.h"
 #include "./geometry/StarOBJ.h"
+#include "./geometry/StarGEO.h"
 
 #define STRINGIFY(A)  #A
 

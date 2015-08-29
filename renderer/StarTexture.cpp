@@ -28,23 +28,28 @@ StarTexture::StarTexture(unsigned int texture_number)
 void StarTexture::createTEXTURE_IOS(NSString *filename, unsigned int texture_id)
 {
     
-	CGImageRef image;
+	CGImageRef imageRef;
+	UIImage *image;
 	CGContextRef context;
 	GLubyte *imageData;
 
-	image = [UIImage imageNamed:filename].CGImage;
-	texture[texture_id].texture_width= CGImageGetWidth(image);
-	texture[texture_id].texture_height = CGImageGetHeight(image);
+//	image = [UIImage imageNamed:filename].CGImage;
+	image = [UIImage imageNamed:filename];
+    imageRef = image.CGImage;
+    texture[texture_id].texture_width =  image.size.width;
+    texture[texture_id].texture_height = image.size.width;
+//	texture[texture_id].texture_width= CGImageGetWidth(image);
+//	texture[texture_id].texture_height = CGImageGetHeight(image);
 
 	if(image)
 	{
         
 		imageData = (GLubyte *) malloc(texture[texture_id].texture_width * texture[texture_id].texture_height * 4);
 		// Uses the bitmatp creation function provided by the Core Graphics framework. 
-		context = CGBitmapContextCreate(image, texture[texture_id].texture_width, texture[texture_id].texture_height,  CGImageGetBitsPerComponent(image),texture[texture_id].texture_width * 4,
-		CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast	);
+		context = CGBitmapContextCreate(image, texture[texture_id].texture_width, texture[texture_id].texture_height,  CGImageGetBitsPerComponent(imageRef),texture[texture_id].texture_width * 4,
+		CGImageGetColorSpace(imageRef), kCGImageAlphaPremultipliedLast	);
 		// After you create the context, you can draw the sprite image to the context.
-		CGContextDrawImage(context, CGRectMake(0.0, 0.0, (CGFloat)texture[texture_id].texture_width, (CGFloat)texture[texture_id].texture_height), image);
+		CGContextDrawImage(context, CGRectMake(0.0, 0.0, (CGFloat)texture[texture_id].texture_width, (CGFloat)texture[texture_id].texture_height), image.CGImage);
 		// You don't need the context at this point, so you need to release it to avoid memory leaks.
 		CGContextRelease(context);
 

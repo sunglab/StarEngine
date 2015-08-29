@@ -27,7 +27,12 @@ void PerlinNoise::Set(double _persistence, double _frequency, double _amplitude,
     randomseed = 2 + _randomseed * _randomseed;
 }
 
-double PerlinNoise::GetHeight(double x, double y) const
+//double PerlinNoise::getHeight(double x) const
+//{
+//    return amplitude* Total(x);
+//}
+
+double PerlinNoise::getHeight(double x, double y) const
 {
     return amplitude * Total(x, y);
 }
