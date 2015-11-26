@@ -103,36 +103,43 @@ class Color4
 		__COLOR__TYPE__ b;
 		__COLOR__TYPE__ a;
 
-		Color4()
-		{
-			r = 0.f;
-			g = 0.f;
-			b = 0.f;
-			a = 0.f;
-		}
-
-		Color4(float rgb)
-		{
-			r = rgb;
-			g = rgb;
-			b = rgb;
-
-		}
-		Color4(const __COLOR__TYPE__ _r,const __COLOR__TYPE__ _g,const __COLOR__TYPE__ _b,const __COLOR__TYPE__ _a)
-		{
-			r = _r;
-			g = _g;
-			b = _b;
-			a = _a;
-		}
-
-		Color4(const Color4& newColor)
+    Color4()
     {
-            r = newColor.r;
-			g = newColor.g;
-			b = newColor.b;
-			a = newColor.a;
-		}
+        r = 0.f;
+        g = 0.f;
+        b = 0.f;
+        a = 0.f;
+    }
+    
+    Color4(float rgb)
+    {
+        r = rgb;
+        g = rgb;
+        b = rgb;
+        
+    }
+    Color4(const __COLOR__TYPE__ _r,const __COLOR__TYPE__ _g,const __COLOR__TYPE__ _b,const __COLOR__TYPE__ _a)
+    {
+        r = _r;
+        g = _g;
+        b = _b;
+        a = _a;
+    }
+    
+    Color4(const Color4& newColor)
+    {
+        r = newColor.r;
+        g = newColor.g;
+        b = newColor.b;
+        a = newColor.a;
+    }
+    Color4(const Color3& newColor, float alpha)
+    {
+        r = newColor.r;
+        g = newColor.g;
+        b = newColor.b;
+        a = alpha;
+    }
 
 		Color4 operator+(const Color4& inColor)const;
 		Color4 operator-(const Color4& inColor)const;

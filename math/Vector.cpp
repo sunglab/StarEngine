@@ -1,6 +1,7 @@
 
 #include "Vector.h"
-
+#include "StarTouch.h"
+#include "StarEngine.h"
 /*
  *      Vec2
  */
@@ -147,6 +148,10 @@ void Vec2::lerp(float t, Vec2& in_Vec)
 	this->x = (1.-t)*(this->x) + (t)*(in_Vec.x);
 	this->y = (1.-t)*(this->y) + (t)*(in_Vec.y);
 }
+//Vec2 Vec2::lerp(float t, Vec2& in_Vec)
+//{
+//    return Vec2((1.-t)*(this->x) + (t)*(in_Vec.x), (1.-t)*(this->y) + (t)*(in_Vec.y));
+//}
 
 /*
  *      Vec3
@@ -219,6 +224,19 @@ Vec3& Vec3::operator-=(const Vec3& in_Vec)
 	y -= in_Vec.y;
 	z -= in_Vec.z;
 	return *this;
+}
+Vec3& Vec3::operator+=(const Vec2& in_Vec)
+{
+    x += in_Vec.x;
+    y += in_Vec.y;
+    return *this;
+}
+
+Vec3& Vec3::operator-=(const Vec2& in_Vec)
+{
+    x -= in_Vec.x;
+    y -= in_Vec.y;
+    return *this;
 }
 
 Vec3& Vec3::operator+=(const __VERTEX__TYPE__& in_Scalar)
@@ -364,6 +382,21 @@ Vec4 Vec4::operator/(const __VERTEX__TYPE__& in_Scalar)const
 	return out_Vector;
 }
 
+Vec4& Vec4::operator+=(const Vec2& in_Vec)
+{
+    x += in_Vec.x;
+    y += in_Vec.y;
+    return *this;
+}
+
+Vec4& Vec4::operator+=(const Vec3& in_Vec)
+{
+    x += in_Vec.x;
+    y += in_Vec.y;
+    z += in_Vec.z;
+    return *this;
+}
+
 Vec4& Vec4::operator+=(const Vec4& in_Vec)
 { 
 	x += in_Vec.x;
@@ -373,12 +406,27 @@ Vec4& Vec4::operator+=(const Vec4& in_Vec)
 	return *this;
 }
 
+Vec4& Vec4::operator-=(const Vec2& in_Vec)
+{
+    x -= in_Vec.x;
+    y -= in_Vec.y;
+    return *this;
+}
+
+Vec4& Vec4::operator-=(const Vec3& in_Vec)
+{
+    x -= in_Vec.x;
+    y -= in_Vec.y;
+    z -= in_Vec.z;
+    return *this;
+}
+
 Vec4& Vec4::operator-=(const Vec4& in_Vec)
 {
 	x -= in_Vec.x;
 	y -= in_Vec.y;
 	z -= in_Vec.z;
-	w -= in_Vec.z;
+	w -= in_Vec.w;
 	return *this;
 }
 
@@ -487,3 +535,47 @@ void trackBall( Vec3& out_V, Vec2& in_V_Center_Touch,  float trackball_R)
 //    out_V = Vec3(point.x, point.y, z);
 //    printf("x y z = %f, %f %f %f\n",out_V.length(),point.x/radius, point.y/radius, z/radius);
 }
+
+//void trackBall_Power(StarTouch* startouch,
+//                     Star* star,
+//                     Vec3& touch_start3D_out,
+//                     Vec3& touch_end3D_out,
+//                     
+//                     Vec2& vec_center_to_start,
+//                     Vec2& vec_center_to_end,
+//                     Vec2& vec_center_power_out,
+//                     
+//                     Vec2* savedTouchPos,
+//                     
+//                     float& sideOfRect,
+//                     Vec2& centerOfRect,
+//                     
+//                     float& scale,
+//                     float& old_scale)
+//{
+//    
+//
+//    
+//    if(savedTouchPos[1].length()==0.0)
+//    {
+//        old_scale = scale;
+//        prev_Quat = now_Quat; // change the value that was used at the last cycle
+//        savedTouchPos= startouch->nowPos[0];
+//        temp2= startouch->nowPos[1];
+//        //            NSLog(@"gg");
+//    }
+//    
+//    int num = startouch->fingers;
+//    if (num)
+//    {
+//       // must be used based on num
+//    }
+//    
+//    scale = old_scale * (float)(startouch->nowPos[1]-startouch->nowPos[0]).length()/(float)((savedTouchPos[0]-savedTouchPos[1]).length());
+//    vec_center_to_start = (startouch->prePos[0]+startouch->prePos[1])*0.5 - centerOfRect;//from center
+//    vec_center_to_end = (startouch->nowPos[0]+startouch->nowPos[1])*0.5- centerOfRect;
+//    
+//    trackBall(touch_start3D_out, vec_center_to_start,sideOfRect);
+//    trackBall(touch_end3D_out, vec_center_to_end, sideOfRect);//
+//    vec_center_power_out += (vec_center_to_end - vec_center_to_start)*1.5;//long += okay???
+//}

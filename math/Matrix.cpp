@@ -184,6 +184,17 @@ void Matrix_MxV( Vec4& out_V, const Vec4& in_V, const Matrix& in_M)
 }
 
 // Added w value to be used with the Traslate function
+void Matrix_MxV( Vec3& out_V, const Vec3& in_V, const Matrix3& in_M)
+{
+    Vec3 temp_V;
+    
+    temp_V.x = in_V.x * in_M.s[0] + in_V.y * in_M.s[1] + in_V.z * in_M.s[2];
+    temp_V.y = in_V.x * in_M.s[3] + in_V.y * in_M.s[4] + in_V.z * in_M.s[5];
+    temp_V.z = in_V.x * in_M.s[6] + in_V.y * in_M.s[7] + in_V.z * in_M.s[8];
+    
+    out_V = temp_V;
+}
+
 void Matrix_MxV( Vec3& out_V, const Vec3& in_V, const Matrix& in_M)
 {
     Vec3 temp_V;
@@ -250,6 +261,13 @@ void Matrix_Scaling( Matrix& out_M, const float x, const float y, const float z)
 	out_M.s[_1x0_] = 0.f; out_M.s[_1x1_] =   y; out_M.s[_1x2_] = 0.f; out_M.s[_1x3_] = 0.f;
 	out_M.s[_2x0_] = 0.f; out_M.s[_2x1_] = 0.f; out_M.s[_2x2_] =   z; out_M.s[_2x3_] = 0.f;
 	out_M.s[_3x0_] = 0.f; out_M.s[_3x1_] = 0.f; out_M.s[_3x2_] = 0.f; out_M.s[_3x3_] = 1.f;
+}
+
+void Matrix3_Scaling( Matrix3& out_M, const float x, const float y, const float z)
+{
+    out_M.s[0] =   x; out_M.s[3] = 0.f; out_M.s[6] = 0.f;
+    out_M.s[1] = 0.f; out_M.s[4] =   y; out_M.s[7] = 0.f;
+    out_M.s[2] = 0.f; out_M.s[5] = 0.f; out_M.s[8] =   z;
 }
 
 void Matrix_Identity( Matrix& out_M)

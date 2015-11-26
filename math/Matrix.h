@@ -93,7 +93,8 @@ void Matrix_Inverse( Matrix& out_M, const Matrix& in_M);
  */
 void Matrix3_Inverse( Matrix3& out_M, const Matrix3& in_M);
 void Matrix3_Transpose(Matrix3& out_M, const Matrix3& in_M);
-
+void Matrix3_Scaling( Matrix3& out_M, const float x, const float y, const float z);
+void Matrix_MxV( Vec3& out_V, const Vec3& in_V, const Matrix3& in_M);
 // NEON SIMD
 void Matrix_MxM_NEON(__MATRIX__TYPE__ * out_M, const __MATRIX__TYPE__* in_M1, const __MATRIX__TYPE__* in_M2);
 

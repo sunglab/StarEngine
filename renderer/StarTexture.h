@@ -41,7 +41,7 @@ class StarTexture
     StarTexture(unsigned int texture_number);
 
 #ifdef IOS
-    void createTEXTURE_IOS(NSString *filename, unsigned texture_id);
+    void createTEXTURE_IOS(const char*, unsigned texture_id);
 #elif MAC
     void createTEXTURE_MAC(NSString *filename, unsigned texture_id,bool repeat = false);
 #elif ANDROID

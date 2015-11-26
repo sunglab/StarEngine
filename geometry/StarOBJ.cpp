@@ -57,13 +57,23 @@ StarOBJ::StarOBJ(const string& path, vector<Vec3>& position, vector<Vec2>& texco
             
             else if( lineType == "f" )
             {
-                string i,j,k;
+                string i,j,k,l;
                 //            string m,n,o;
-                lineSS >> i >> j >> k;
+                lineSS >> i >> j >> k >> l;
                 parseFace(i,index);
                 parseFace(j,index);
                 parseFace(k,index);
                 
+               
+                parseFace(i,index);
+                parseFace(k,index);
+                parseFace(l,index);
+                
+//                parseFace(i,index);
+//                parseFace(k,index);
+//                parseFace(j,index);
+               
+//                starLOG("haha\n");
                 //           if((!vn) && (!vt))
                 //           {
                 //            lineSS >> i >> j >> k;

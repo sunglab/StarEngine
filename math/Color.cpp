@@ -117,6 +117,8 @@ void Color3::lerp(float t,Color3& newColor)
 	(this->b) = (1.f-t)*(this->b) + newColor.b * t;
 }
 
+
+
 void Color3::genColor()
 {
 //	srand((unsigned)time(NULL));

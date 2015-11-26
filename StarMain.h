@@ -64,6 +64,7 @@
 #include "./tool/StarTouch.h"
 #include "./tool/StarUtil.h"
 #include "./effect/StarEffect.h"
+#include "./effect/StarParticle.h"
 #include "./geometry/StarStructure.h"
 #include "./geometry/StarOBJ.h"
 #include "./geometry/StarGEO.h"

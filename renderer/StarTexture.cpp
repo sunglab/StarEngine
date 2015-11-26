@@ -25,53 +25,62 @@ StarTexture::StarTexture(unsigned int texture_number)
 }
 
 #ifdef IOS
-void StarTexture::createTEXTURE_IOS(NSString *filename, unsigned int texture_id)
+void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id)
 {
     
 	CGImageRef imageRef;
 	UIImage *image;
 	CGContextRef context;
 	GLubyte *imageData;
-
-//	image = [UIImage imageNamed:filename].CGImage;
-	image = [UIImage imageNamed:filename];
+    
+    NSString *filepathString = [[NSString alloc] initWithUTF8String:filename];
+//	image = [[UIImage alloc] initWithContentsOfFile:filepathString];
+    image = [UIImage imageNamed:filepathString];
+    if(!image)
+    {
+        starLOG("why?\n");
+        return;
+    }
     imageRef = image.CGImage;
-    texture[texture_id].texture_width =  image.size.width;
-    texture[texture_id].texture_height = image.size.width;
-//	texture[texture_id].texture_width= CGImageGetWidth(image);
-//	texture[texture_id].texture_height = CGImageGetHeight(image);
+    if(!imageRef)
+    {
+        starLOG("why??\n");
+        return;
+    }
+    texture[texture_id].texture_width =  (GLuint)CGImageGetWidth(imageRef);
+    texture[texture_id].texture_height = (GLuint)CGImageGetHeight(imageRef);
+    
+    CGRect texRect = CGRectMake(0.0, 0.0, (CGFloat)(texture[texture_id].texture_width), (CGFloat)(texture[texture_id].texture_height));
+    
+    starLOG("\ngoood texture %d %d\n", texture[texture_id].texture_width,texture[texture_id].texture_height);
+    
+    imageData = (GLubyte *) malloc(texture[texture_id].texture_width * texture[texture_id].texture_height * 4);
+    
+    context = CGBitmapContextCreate(image, texture[texture_id].texture_width, texture[texture_id].texture_height, 8, texture[texture_id].texture_width*4, CGImageGetColorSpace(imageRef), kCGBitmapAlphaInfoMask & kCGImageAlphaNoneSkipLast);
+//    CGContextSetBlendMode(context, kCGBlendModeCopy);
+    CGContextDrawImage(context, texRect, imageRef);
+//    CGContextRelease(context);
+    
+    glGenTextures(1, &texture[texture_id].texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture[texture_id].texture_width, texture[texture_id].texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+    free(imageData);
 
-	if(image)
-	{
-        
-		imageData = (GLubyte *) malloc(texture[texture_id].texture_width * texture[texture_id].texture_height * 4);
-		// Uses the bitmatp creation function provided by the Core Graphics framework. 
-		context = CGBitmapContextCreate(image, texture[texture_id].texture_width, texture[texture_id].texture_height,  CGImageGetBitsPerComponent(imageRef),texture[texture_id].texture_width * 4,
-		CGImageGetColorSpace(imageRef), kCGImageAlphaPremultipliedLast	);
-		// After you create the context, you can draw the sprite image to the context.
-		CGContextDrawImage(context, CGRectMake(0.0, 0.0, (CGFloat)texture[texture_id].texture_width, (CGFloat)texture[texture_id].texture_height), image.CGImage);
-		// You don't need the context at this point, so you need to release it to avoid memory leaks.
-		CGContextRelease(context);
-
-		glGenTextures(1, &texture[texture_id].texture_id);
-		glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture[texture_id].texture_width, texture[texture_id].texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-		free(imageData);
-
-
-	}
+//	}
 }
 #elif MAC
 
 void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, bool repeat)
 {
-    CFURLRef url = (CFURLRef)[NSURL fileURLWithPath:filename];
+//    CFURLRef url = (CFURLRef)[NSURL fileURLWithPath:filename];
+//    CFURLRef url = [NSURL fileURLWithPath:filename];
+    CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:filename];
     CGImageSourceRef myImageSourceRef = CGImageSourceCreateWithURL(url, NULL);
     CGImageRef myImageRef = CGImageSourceCreateImageAtIndex (myImageSourceRef, 0, NULL);
     
@@ -125,8 +134,6 @@ void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, boo
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height,0, GL_BGRA_EXT, GL_UNSIGNED_INT_8_8_8_8_REV, myData);
     
     free(myData);
-    
-
 }
 #elif ANDROID
 //
