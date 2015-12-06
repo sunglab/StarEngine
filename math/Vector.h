@@ -55,7 +55,7 @@ public:
     __VERTEX__TYPE__ lengthSquared()const;
     __VERTEX__TYPE__ dot(const Vec2&)const;
     
-    Vec2& normalize();
+    void normalize();
     
     void lerp(float, Vec2&);
 //    Vec2 lerp(float, Vec2&);
@@ -127,7 +127,7 @@ public:
     __VERTEX__TYPE__ length()const;
     __VERTEX__TYPE__ lengthSquared()const;
     __VERTEX__TYPE__ dot(const Vec3& in_V)const;
-    Vec3& normalize();
+    void normalize();
     Vec3 cross(const Vec3& in_V)const;
     
     
@@ -207,7 +207,7 @@ public:
     __VERTEX__TYPE__ length()const;
     __VERTEX__TYPE__ lengthSquared()const;
     __VERTEX__TYPE__ dot(const Vec4&)const;
-    Vec4& normalize();
+    void normalize();
     Vec4 cross()const;
     
     
@@ -219,5 +219,11 @@ public:
 };
 
 void trackBall( Vec3& out_V, Vec2& in_V_Center_Touch,  float trackball_R);
+
+
+
+Vec2 Normalize(Vec2 vec2);
+Vec3 Normalize(Vec3 vec3);
+Vec4 Normalize(Vec4 vec4);
 
 #endif

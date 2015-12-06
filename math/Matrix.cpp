@@ -281,27 +281,57 @@ void Matrix_Identity( Matrix& out_M)
 void Matrix_Look_At( Matrix& out_M, const Vec3& in_EYE, const Vec3& in_AT,const Vec3& in_UP)
 {
     Vec3 zAxis, yAxis, xAxis;
-    Matrix 	t;
-
+//    Matrix 	t;
 //    zAxis = Vec3(in_AT.x - in_EYE.x,in_AT.y - in_EYE.y, in_AT.z - in_EYE.z);
 
-    zAxis = (in_AT-in_EYE).normalize();
-    yAxis = in_UP;
-    yAxis.normalize();
+//    zAxis = Normalize(in_EYE-in_AT);
     
-    xAxis = zAxis.cross(yAxis) ;
-    yAxis = xAxis.cross(zAxis); // because temporary y-axis could be not right-angled(90)
+//    zAxis = Normalize(in_AT-in_EYE); // a direction vector
+//    yAxis = Normalize(in_UP); // no need
+//    xAxis = Normalize(zAxis.cross(in_UP));
+//    yAxis = xAxis.cross(zAxis);// because temporary y-axis could be not right-angled(90)
+    
+    zAxis = Normalize(in_EYE-in_AT); // a direction vector
+//    yAxis = Normalize(in_UP); // no need
+    xAxis = Normalize(in_UP.cross(zAxis));
+    yAxis = Normalize(zAxis.cross(xAxis));// because temporary y-axis could be not right-angled(90)
+    
+    // according to the book
+//    zAxis = Normalize(in_AT-in_EYE); // a direction vector
+//    yAxis = Normalize(in_UP-(zAxis * (in_UP.dot(zAxis))));
+//    xAxis = zAxis.cross(yAxis);
+    
+//    starLOG("xxx %f %f %f\n",xAxis.x, xAxis.y, xAxis.z);
+//    starLOG("yyy %f %f %f\n",yAxis.x, yAxis.y, yAxis.z);
+//    starLOG("zzz %f %f %f\n",zAxis.x, zAxis.y, zAxis.z);
+    
+    out_M.s[_0x0_] = xAxis.x; out_M.s[_0x1_] = yAxis.x; out_M.s[_0x2_] = zAxis.x; out_M.s[_0x3_] = 0;//-(xAxis.dot(in_EYE));
+    out_M.s[_1x0_] = xAxis.y; out_M.s[_1x1_] = yAxis.y; out_M.s[_1x2_] = zAxis.y; out_M.s[_1x3_] = 0;//-(yAxis.dot(in_EYE));
+    out_M.s[_2x0_] = xAxis.z; out_M.s[_2x1_] = yAxis.z; out_M.s[_2x2_] = zAxis.z; out_M.s[_2x3_] = 0;//-(zAxis.dot(in_EYE));
+    out_M.s[_3x0_] = -((xAxis).dot(in_EYE));
+    out_M.s[_3x1_] = -((yAxis).dot(in_EYE));
+    out_M.s[_3x2_] = -((zAxis).dot(in_EYE));
+    out_M.s[_3x3_] = 1;
+    
+//    Matrix_Transpose(out_M, out_M);
+    
+  
 
-    out_M.s[_0x0_] = xAxis.x; out_M.s[_0x1_] = yAxis.x; out_M.s[_0x2_] = -zAxis.x; out_M.s[_0x3_] = 0;//-in_EYE.x;//-(xAxis.dot(in_EYE));
-    out_M.s[_1x0_] = xAxis.y; out_M.s[_1x1_] = yAxis.y; out_M.s[_1x2_] = -zAxis.y; out_M.s[_1x3_] = 0;//-in_EYE.y;//-(yAxis.dot(in_EYE));
-    out_M.s[_2x0_] = xAxis.z; out_M.s[_2x1_] = yAxis.z;  out_M.s[_2x2_] = -zAxis.z; out_M.s[_2x3_] = 0;//-in_EYE.z;//-(zAxis.dot(in_EYE));
-    out_M.s[_3x0_] = 0;           out_M.s[_3x1_] =  0;            out_M.s[_3x2_] =  0;            out_M.s[_3x3_] = 1;
-//    out_M.s[_3x0_] = -in_EYE.x;           out_M.s[_3x1_] =  -in_EYE.y;            out_M.s[_3x2_] =  -in_EYE.z;            out_M.s[_3x3_] = 1;
-//    out_M.s[_3x0_] = -xAxis.dot(in_EYE);           out_M.s[_3x1_] =  -yAxis.dot(in_EYE);            out_M.s[_3x2_] =  -zAxis.dot(in_EYE);            out_M.s[_3x3_] = 1;
+//    Matrix temp;
+//    out_M.s[_0x0_] = xAxis.x; out_M.s[_0x1_] = yAxis.x; out_M.s[_0x2_] = -zAxis.x; out_M.s[_0x3_] = 0;//-(xAxis.dot(in_EYE));
+//    out_M.s[_1x0_] = xAxis.y; out_M.s[_1x1_] = yAxis.y; out_M.s[_1x2_] = -zAxis.y; out_M.s[_1x3_] = 0;//-(yAxis.dot(in_EYE));
+//    out_M.s[_2x0_] = xAxis.z; out_M.s[_2x1_] = yAxis.z; out_M.s[_2x2_] = -zAxis.z; out_M.s[_2x3_] = 0;//-(zAxis.dot(in_EYE));
+//    out_M.s[_3x0_] = 0;
+//    out_M.s[_3x1_] = 0;
+//    out_M.s[_3x2_] = 0;
+//    out_M.s[_3x3_] = 1;
+    
+//    Vec4 eyeInv;
+//    Matrix_MxV(eyeInv, eyeInv, out_M);
 
-    Matrix_Identity(t);
-	Matrix_Translation(t, -in_EYE.x, -in_EYE.y, -in_EYE.z);
-	Matrix_MxM(out_M, t, out_M);
+//    Matrix_Identity(t);
+//	Matrix_Translation(t, -in_EYE.x, -in_EYE.y, -in_EYE.z);
+//	Matrix_MxM(out_M, t, out_M);
 }
 
 void Matrix_Rotation_X(Matrix	&out_M,const float angle)
@@ -345,6 +375,20 @@ void Matrix_Transpose(Matrix& out_M,const Matrix& in_M)
     out_M = t;
 }
 
+void Matrix3_Identity(Matrix3& out_M)
+{
+    out_M.s[0]=1.;
+    out_M.s[1]=0.;
+    out_M.s[2]=0.;
+    
+    out_M.s[3]=0.;
+    out_M.s[4]=1.;
+    out_M.s[5]=0.;
+    
+    out_M.s[6]=0.;
+    out_M.s[7]=0.;
+    out_M.s[8]=0.;
+}
 void Matrix3_Inverse(Matrix3& out_M, const Matrix3& in_M)
 {
     

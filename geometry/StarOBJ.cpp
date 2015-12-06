@@ -52,7 +52,8 @@ StarOBJ::StarOBJ(const string& path, vector<Vec3>& position, vector<Vec2>& texco
                 vn++;
                 float x = 0, y = 0, z = 0;
                 lineSS >> x >> y >> z;
-                temp_normal.push_back(Vec3( x, y, z ).normalize());
+//                temp_normal.push_back(Vec3( x, y, z ).normalize());
+                temp_normal.push_back(Normalize(Vec3( x, y, z )));
             }
             
             else if( lineType == "f" )
@@ -64,10 +65,13 @@ StarOBJ::StarOBJ(const string& path, vector<Vec3>& position, vector<Vec2>& texco
                 parseFace(j,index);
                 parseFace(k,index);
                 
-               
+              if(l.size())
+              {
+            //if rectangle
                 parseFace(i,index);
                 parseFace(k,index);
                 parseFace(l,index);
+              }
                 
 //                parseFace(i,index);
 //                parseFace(k,index);
@@ -120,7 +124,10 @@ StarOBJ::StarOBJ(const string& path, vector<Vec3>& position, vector<Vec2>& texco
     else if((offset==1) && vn)
     {
         for(vector<unsigned short>::iterator itr=temp_index.begin(); itr!=temp_index.end();itr++)
+        {
             normal.push_back(temp_normal[*itr]);
+        starLOG("normall %f %f %f \n",temp_normal[*itr].x,temp_normal[*itr].y, temp_normal[*itr].z);
+        }
     }
     else if(offset==2)
     {

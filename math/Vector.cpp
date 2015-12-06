@@ -1,7 +1,15 @@
 
 #include "Vector.h"
-#include "StarTouch.h"
-#include "StarEngine.h"
+//#include "StarTouch.h"
+//#include "StarEngine.h"
+
+Vec2 Normalize(Vec2 vec2)
+{return vec2/vec2.length();}
+Vec3 Normalize(Vec3 vec3)
+{return vec3/vec3.length();}
+Vec4 Normalize(Vec4 vec4)
+{return vec4/vec4.length();}
+
 /*
  *      Vec2
  */
@@ -138,9 +146,9 @@ __VERTEX__TYPE__ Vec2::dot(const Vec2& in_Vec) const
 	return (x*in_Vec.x)+(y*in_Vec.y);
 }
 
-Vec2& Vec2::normalize() 
+void Vec2::normalize()
 {
-	return (*this) /= length();
+	(*this) /= length();
 }
 
 void Vec2::lerp(float t, Vec2& in_Vec)
@@ -302,9 +310,9 @@ __VERTEX__TYPE__ Vec3::dot(const Vec3& in_Vec) const
 	return (x*in_Vec.x)+(y*in_Vec.y)+(z*in_Vec.z);
 }
 
-Vec3& Vec3::normalize() 
+void Vec3::normalize()
 {
-	return (*this) /= length();
+    (*this) /= length();
 }
 
 Vec3 Vec3::cross(const Vec3& in_Vec)const
@@ -487,9 +495,9 @@ __VERTEX__TYPE__ Vec4::dot(const Vec4& in_Vec) const
 	return (x*in_Vec.x)+(y*in_Vec.y)+(z*in_Vec.z)+(w*in_Vec.w);
 }
 
-Vec4& Vec4::normalize() 
+void Vec4::normalize()
 {
-	return (*this) /= length();
+	(*this) /= length();
 }
 
 void Vec4::lerp(float t, Vec3& in_Vec)

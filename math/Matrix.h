@@ -91,6 +91,7 @@ void Matrix_Inverse( Matrix& out_M, const Matrix& in_M);
 /*
  * 3X3
  */
+void Matrix3_Identity(Matrix3& out_M);
 void Matrix3_Inverse( Matrix3& out_M, const Matrix3& in_M);
 void Matrix3_Transpose(Matrix3& out_M, const Matrix3& in_M);
 void Matrix3_Scaling( Matrix3& out_M, const float x, const float y, const float z);
