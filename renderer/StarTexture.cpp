@@ -34,8 +34,10 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
 	GLubyte *imageData;
     
     NSString *filepathString = [[NSString alloc] initWithUTF8String:filename];
+    
 //	image = [[UIImage alloc] initWithContentsOfFile:filepathString];
     image = [UIImage imageNamed:filepathString];
+    
     if(!image)
     {
         starLOG("why?\n");
@@ -47,6 +49,8 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
         starLOG("why??\n");
         return;
     }
+    else
+    {
     texture[texture_id].texture_width =  (GLuint)CGImageGetWidth(imageRef);
     texture[texture_id].texture_height = (GLuint)CGImageGetHeight(imageRef);
     
@@ -55,11 +59,24 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
     starLOG("\ngoood texture %d %d\n", texture[texture_id].texture_width,texture[texture_id].texture_height);
     
     imageData = (GLubyte *) malloc(texture[texture_id].texture_width * texture[texture_id].texture_height * 4);
+//    imageData = (GLubyte *) calloc(texture[texture_id].texture_width * texture[texture_id].texture_height * 4,sizeof(GLubyte));
     
-    context = CGBitmapContextCreate(image, texture[texture_id].texture_width, texture[texture_id].texture_height, 8, texture[texture_id].texture_width*4, CGImageGetColorSpace(imageRef), kCGBitmapAlphaInfoMask & kCGImageAlphaNoneSkipLast);
-//    CGContextSetBlendMode(context, kCGBlendModeCopy);
+//    context = CGBitmapContextCreate(image, texture[texture_id].texture_width, texture[texture_id].texture_height, 8, texture[texture_id].texture_width*4, CGImageGetColorSpace(imageRef), kCGBitmapAlphaInfoMask & kCGImageAlphaNoneSkipLast);
+    
+//           brushContext = CGBitmapContextCreate(brushData, width, height, 8, width * 4, CGImageGetColorSpace(brushImage), kCGImageAlphaPremultipliedLast);
+//      brushContext = CGBitmapContextCreate(brushData, width, height, 8, width * 4, CGImageGetColorSpace(brushImage), kCGImageAlphaPremultipliedLast);
+    
+     context = CGBitmapContextCreate(imageData,
+                                     texture[texture_id].texture_width,
+                                     texture[texture_id].texture_height,
+                                     8,
+                                     texture[texture_id].texture_width*4,
+                                     CGImageGetColorSpace(imageRef),
+                                     kCGImageAlphaPremultipliedLast);
+    
+    CGContextSetBlendMode(context, kCGBlendModeCopy);
     CGContextDrawImage(context, texRect, imageRef);
-//    CGContextRelease(context);
+    CGContextRelease(context);
     
     glGenTextures(1, &texture[texture_id].texture_id);
     glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
@@ -71,8 +88,7 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture[texture_id].texture_width, texture[texture_id].texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
     free(imageData);
-
-//	}
+	}
 }
 #elif MAC
 

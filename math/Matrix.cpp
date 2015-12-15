@@ -707,15 +707,27 @@ void Quaternion::lerp(const float t,const Quaternion& in_Q)
     const float epsilon = .0001f;
     float dot  = this->dot(in_Q);
     
+//    if((this->w)!=(this->w))
+//    {
+//        starLOG("start");
+//    }
     if (dot > 1.-epsilon)
     {
         Quaternion result = in_Q + (*this - in_Q)*t;
         Quaternion_Normalize(result);
+        if((this->w)!=(this->w))
+        {
+           starLOG("stop");
+        }
+        
+//           starLOG("man");
         (*this) = result;
     }
-    
-    starConstrain((float)dot, (float)0.0, (float)1.0);
-    
+//   if((this->w)!=(this->w))
+//      {
+//          starLOG("stop");
+//      }
+    dot = starConstrain((float)dot, (float)0.0, (float)1.0);
     float theta = acos(dot)*t;
     Quaternion temp_Q1 = in_Q - (*this) * (dot);
     Quaternion_Normalize(temp_Q1);

@@ -240,7 +240,8 @@ void StarFluid::fadeRGB() {
         
         //			float density = max(tmp.a, max( tmp.r, max( tmp.g, tmp.b ) ) );
         //			float density = max( tmp.r, max( tmp.g, tmp.b ) );
-        float density = starMax( tmp.r, starMax( tmp.g, tmp.b ) );
+        float t = starMax( tmp.g, tmp.b);
+        float density = starMax( tmp.r, t );
         _avgDensity += density;	// add it up
         
         // calc deviation (for _uniformity)

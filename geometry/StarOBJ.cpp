@@ -126,7 +126,7 @@ StarOBJ::StarOBJ(const string& path, vector<Vec3>& position, vector<Vec2>& texco
         for(vector<unsigned short>::iterator itr=temp_index.begin(); itr!=temp_index.end();itr++)
         {
             normal.push_back(temp_normal[*itr]);
-        starLOG("normall %f %f %f \n",temp_normal[*itr].x,temp_normal[*itr].y, temp_normal[*itr].z);
+//        starLOG("normall %f %f %f \n",temp_normal[*itr].x,temp_normal[*itr].y, temp_normal[*itr].z);
         }
     }
     else if(offset==2)
