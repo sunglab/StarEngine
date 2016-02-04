@@ -39,6 +39,27 @@ typedef struct Vertex_Particle_
     Color3 color;
 }Vertex_Particle;
 
+
+static GLfloat fish_Vertex[] = {
+//    -1., -1., -1.,
+//    1., -1., -1.,
+//    
+//    1.,  1., -1.,
+//    -1.,  1., -1.,
+};
+
+static GLfloat fish_Index[] = {
+    
+    0, 1, 3,
+    0, 3, 2,
+    
+    2, 3, 5,
+    2, 5, 4,
+    
+    4, 5, 7,
+    4, 7, 6,
+};
+
 static GLfloat cube_Vertex[] = {
     -1., -1., -1.,
     1., -1., -1.,
@@ -54,6 +75,7 @@ static GLfloat cube_Vertex[] = {
 }; // 24
 
 static float cube_Normal[] = {
+    
     0.57    , 0.57      , 0.57,
     0.57    , -0.57     , 0.57,
     -0.57   , -0.57     , 0.57,
@@ -65,7 +87,9 @@ static float cube_Normal[] = {
     -0.57   , 0.57      , -0.57
 };
 
+
 static GLushort cube_Index[] = {
+    
     0,2,1,
     0,3,2,
     

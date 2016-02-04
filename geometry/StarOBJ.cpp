@@ -9,6 +9,7 @@
 #include "StarOBJ.h"
 
 #include <boost/tokenizer.hpp>
+#include <string>
 using namespace std;
 using namespace boost;
 

@@ -202,8 +202,6 @@ public:
     void addToFluid( Vec2 pos, Vec2 vel, int id, bool addColor, bool addForce,Color3& colors,int a,float div)
     {
 
-
-        
             pos.x = starConstrain(pos.x, 0.0f, 1.0f);
             pos.y = starConstrain(pos.y, 0.0f, 1.0f);
 //            r = starConstrain(a, 0, 2);
@@ -218,8 +216,8 @@ public:
 //            vel.x = starConstrain(vel.x,-0.005f,0.005f);
 //            vel.y = starConstrain(vel.y,-0.005f,0.005f);
             
-             vel.x = starConstrain(vel.x,-0.07f,0.07f);
-            vel.y = starConstrain(vel.y,-0.07f,0.07f);
+            vel.x = starConstrain(vel.x,-0.003f,0.003f);
+            vel.y = starConstrain(vel.y,-0.003f,0.003f);
             addForceAtIndex(index, vel);
         }
         
@@ -256,13 +254,11 @@ public:
                     }
         
             }
-        
         }
-    
 };
 
 
-//-------- get index
+//get index
 inline int StarFluid::getIndexForCell(int i, int j) const {
     i = starConstrain(i, 1, _NX);
     j = starConstrain(j, 1, _NY);
@@ -277,7 +273,7 @@ inline int StarFluid::getIndexForPos(const Vec2 &pos) const {
 
 
 
-//-------- get info
+//get info
 inline	void StarFluid::getInfoAtIndex(int index, Vec2 *vel, Color3 *color) const {
     if(vel) *vel = getVelocityAtIndex(index);
     if(color) *color = getColorAtIndex(index);
@@ -293,7 +289,7 @@ inline void StarFluid::getInfoAtPos(const Vec2 &pos, Vec2 *vel, Color3 *color) c
 }
 
 
-//-------- get velocity
+//get velocity
 inline Vec2 StarFluid::getVelocityAtIndex(int index) const {
     return uv[index];
 }
@@ -321,7 +317,7 @@ inline Color3 StarFluid::getColorAtPos(const Vec2 &pos) const {
 }
 
 
-//-------- add force
+//add force
 inline void StarFluid::addForceAtIndex(int index, const Vec2 &force) {
 //    starConstrain(force.x, 0.0, 1.0);
 //    starConstrain(force.y, 0.0, 1.0);
@@ -338,7 +334,7 @@ inline void StarFluid::addForceAtPos(const Vec2 &pos, const Vec2 &force) {
 }
 
 
-//-------- add color
+//add color
 inline void StarFluid::addColorAtIndex(int index, const Color3 &color) {
         if(index>=0&&index<_numCells)
         colorOld[index] += Color3(color.r, color.g, color.b);
