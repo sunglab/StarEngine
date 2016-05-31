@@ -118,14 +118,17 @@ void StarTUIO::updateTuioCursor(TuioCursor *tcur) {
         startouch->prePos[index] = startouch->nowPos[index];
         startouch->nowPos[index] = Vec2(starWidth*xpos,starHeight-starHeight*ypos);
     }
-//    printf("i = %d", i);
+    
+    //    printf("i = %d", i);
     startouch->fingers = i;
-     startouch->end = false;
+    startouch->end = false;
     tuioClient->unlockCursorList();
-     startouch->callbackMove();
+    startouch->callbackMove();
 }
 
 void StarTUIO::removeTuioCursor(TuioCursor *tcur) {
+    
+     startouch->callbackEnd();// to notice how many fingers
     
     if (verbose)
         std::cout << "del cur " << tcur->getCursorID() << " (" <<  tcur->getSessionID() << "/"<<  tcur->getTuioSourceID() << ")" << std::endl;
@@ -134,7 +137,7 @@ void StarTUIO::removeTuioCursor(TuioCursor *tcur) {
          startouch->end = true;
         startouch->fingers = 0;
     }
-        startouch->callbackEnd();
+    
 }
 
 void StarTUIO::addTuioBlob(TuioBlob *tblb) {

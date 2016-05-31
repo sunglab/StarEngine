@@ -68,6 +68,7 @@ void Matrix_MxV( Vec2& out_V, const Vec2& in_V, const Matrix& in_M);
 
 void Matrix_Translation( Matrix& out_M, const float x, const float y, const float z);
 
+void Matrix_Viewport(Matrix& out_M, const Vec2& in_Rect, const Matrix& in_M);
 void Matrix_Scaling( Matrix& out_M, const float x, const float y, const float z);
 
 void Matrix_Scaling_By_Perspective(Matrix& out_M, const float FOV, const float ASPECT);

@@ -25,7 +25,7 @@ StarTexture::StarTexture(unsigned int texture_number)
 }
 
 #ifdef IOS
-void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id)
+void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id, bool repeat)
 {
     
 	CGImageRef imageRef;
@@ -40,13 +40,13 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
     
     if(!image)
     {
-        starLOG("why?\n");
+        starLOG("if no image why 1?\n");
         return;
     }
     imageRef = image.CGImage;
     if(!imageRef)
     {
-        starLOG("why??\n");
+        starLOG("if no image why 2?\n");
         return;
     }
     else
@@ -81,11 +81,21 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
     glGenTextures(1, &texture[texture_id].texture_id);
     glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
     
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
+        if(repeat)
+        {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        }
+        else
+        {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        }
+        
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture[texture_id].texture_width, texture[texture_id].texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
     free(imageData);
 	}
@@ -93,9 +103,11 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
 #elif MAC
 
 void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, bool repeat)
+
 {
 //    CFURLRef url = (CFURLRef)[NSURL fileURLWithPath:filename];
 //    CFURLRef url = [NSURL fileURLWithPath:filename];
+    
     CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:filename];
     CGImageSourceRef myImageSourceRef = CGImageSourceCreateWithURL(url, NULL);
     CGImageRef myImageRef = CGImageSourceCreateImageAtIndex (myImageSourceRef, 0, NULL);
@@ -152,25 +164,42 @@ void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, boo
     free(myData);
 }
 #elif ANDROID
-//
-//void StarTexture::createTEXTURE_ANDROID( void* array, unsigned int texture_width, unsigned int texture_height, unsigned int texture_id)
-//{
-//	
-//	texture[texture_id].texture_width  = texture_width;
-//	texture[texture_id].texture_height = texture_height;
-//
-//	glGenTextures(1, &texture[texture_id].texture_id);
-//	glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
-//
+
+void StarTexture::createTEXTURE_ANDROID( void* array, unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat)
+{
+	
+	texture[texture_id].texture_width  = texture_width;
+	texture[texture_id].texture_height = texture_height;
+    
+	glGenTextures(1, &texture[texture_id].texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
+
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//
-//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0,GL_RGBA, GL_UNSIGNED_BYTE, array); 
-//
-//
-//}
+//    
+    if(repeat)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
+    else
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }
+    
+    starLOG("1here?");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0,GL_RGBA, GL_UNSIGNED_BYTE, array);
+    starLOG("2here?");
+
+
+}
 #endif
 
 // it should know what it is the number of User defined texture ID ( userDefined TexID != computerDefined TexID);
@@ -185,10 +214,13 @@ void StarTexture::createTEXTURE_DATA( void* data, unsigned int camera_width, uns
     
     glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
 
+//                starLOG("gg");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+//                starLOG("gg");
 if(alpha)
 {
 #ifdef ANDROID
@@ -201,6 +233,8 @@ if(alpha)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0,GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glTexSubImage2D(GL_TEXTURE_2D, 0,0,0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 #endif
+    
+//                starLOG("gg");
 }
 else
 {
@@ -215,7 +249,6 @@ else
     glTexSubImage2D(GL_TEXTURE_2D, 0,0,0, camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, data);
 #endif
 }
-    
 //    glEnable(GL_TEXTURE_2D);
 }
 
@@ -249,7 +282,6 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
       glBindTexture(GL_TEXTURE_2D,texture[texture_id].texture_id);
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
   }
-    
 }
 
 Texture* StarTexture::getTEXTURE(unsigned int texture_id)
@@ -259,9 +291,18 @@ Texture* StarTexture::getTEXTURE(unsigned int texture_id)
 
 void StarTexture::bindTEXTURE(unsigned int texture_unit, unsigned int texture_id)
 {
+    int err =0;
 //    if(texture_unit)
     glActiveTexture(texture_unit);
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        printf("\n\nOpenGL proof-00:%d err%x\n\n", texture_id,err);
+    }
+    
     glBindTexture( GL_TEXTURE_2D, texture[texture_id].texture_id);
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        printf("\n\nOpenGL proof-01: %x\n\n",err);
+    }
+    
 }
 
 void StarTexture::deleteTEXTURE(unsigned int texture_id)

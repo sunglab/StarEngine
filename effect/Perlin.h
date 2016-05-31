@@ -9,9 +9,7 @@ public:
     PerlinNoise(double _persistence, double _frequency, double _amplitude, int _octaves, int _randomseed);
     
     // Get Height
-    double getHeight(double x, double y, double z) const;
     double getHeight(double x, double y) const;
-    double getHeight(double x) const;
     
     // Get
     double Persistence() const { return persistence; }
@@ -30,7 +28,6 @@ public:
     void SetRandomSeed( int    _randomseed)  { randomseed = _randomseed;   }
     
 private:
-    double Total(double i)const;
     double Total(double i, double j) const;
     double GetValue(double x, double y) const;
     double Interpolate(double x, double y, double a) const;

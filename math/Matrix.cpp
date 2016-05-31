@@ -215,38 +215,45 @@ void Matrix_MxV( Vec2& out_V, const Vec2& in_V, const Matrix& in_M)
 }
 void Matrix_MxV_NEON(__VERTEX__TYPE__* out_V, const __VERTEX__TYPE__* in_V, const __MATRIX__TYPE__* in_M)
 {
-	/*
-#ifdef YES_NEON
-asm volatile
-(
-	// Store m & v - avoiding q4-q7 which need to be preserved - q0 = result
-	"vldmia %1, { q8-q11 }	\n\t"	// q8-q11 = m
-	"vldmia %2, { q1 }		\n\t"	// q1     = v
-
-	// result = first column of A x V.x
-	"vmul.f32 q0, q8, d2[0]\n\t"
-
-	// result += second column of A x V.y
-	"vmla.f32 q0, q9, d2[1]\n\t"
-
-	// result += third column of A x V.z
-	"vmla.f32 q0, q10, d3[0]\n\t"
-
-	// result += last column of A x V.w
-	"vmla.f32 q0, q11, d3[1]\n\t"
-
-	// output = result registers
-	"vstmia %0, { q0 }"
-
-	: // no output
-	: "r" (out_V), "r" (in_V), "r" (in_M) 	// input - note *value* of pointer doesn't change
-	: "memory", "q0", "q1", "q8", "q9", "q10", "q11" //clobber
-	);
-
-#endif
+/*
+//#ifdef YES_NEON
+//asm volatile
+//(
+//	// Store m & v - avoiding q4-q7 which need to be preserved - q0 = result
+//	"vldmia %1, { q8-q11 }	\n\t"	// q8-q11 = m
+//	"vldmia %2, { q1 }		\n\t"	// q1     = v
+//
+//	// result = first column of A x V.x
+//	"vmul.f32 q0, q8, d2[0]\n\t"
+//
+//	// result += second column of A x V.y
+//	"vmla.f32 q0, q9, d2[1]\n\t"
+//
+//	// result += third column of A x V.z
+//	"vmla.f32 q0, q10, d3[0]\n\t"
+//
+//	// result += last column of A x V.w
+//	"vmla.f32 q0, q11, d3[1]\n\t"
+//
+//	// output = result registers
+//	"vstmia %0, { q0 }"
+//
+//	: // no output
+//	: "r" (out_V), "r" (in_V), "r" (in_M) 	// input - note *value* of pointer doesn't change
+//	: "memory", "q0", "q1", "q8", "q9", "q10", "q11" //clobber
+//	);
+//
+//#endif
 */
 }
 
+void Matrix_Viewport(Matrix& out_M, const Vec2& in_Rect, const Matrix& in_M)
+{
+//    out_M.s[_0x0_] = 1.f; out_M.s[_0x1_] = 0.f; out_M.s[_0x2_] = 0.f; out_M.s[_0x3_] = 0.f;
+//    out_M.s[_1x0_] = 0.f; out_M.s[_1x1_] = 1.f; out_M.s[_1x2_] = 0.f; out_M.s[_1x3_] = 0.f;
+//    out_M.s[_2x0_] = 0.f; out_M.s[_2x1_] = 0.f; out_M.s[_2x2_] = 1.f; out_M.s[_2x3_] = 0.f;
+//    out_M.s[_3x0_] =   x; out_M.s[_3x1_] =   y; out_M.s[_3x2_] =   z; out_M.s[_3x3_] = 1.f;
+}
 void Matrix_Translation( Matrix& out_M, const float x, const float y, const float z)
 {
 	out_M.s[_0x0_] = 1.f; out_M.s[_0x1_] = 0.f; out_M.s[_0x2_] = 0.f; out_M.s[_0x3_] = 0.f;
@@ -360,9 +367,9 @@ void Matrix_Rotation_Z( Matrix	&out_M, const float angle)
 	float COS =	(float)cos(angle);
 	float SIN =	(float)sin(angle);
 	out_M.s[_0x0_]=  COS;		out_M.s[_0x1_]= SIN;	out_M.s[_0x2_]= 0.f;	out_M.s[_0x3_]= 0.f;
-	out_M.s[_1x0_]=  -SIN;	out_M.s[_1x1_]= COS;	out_M.s[_1x2_]= 0.f;	out_M.s[_1x3_]= 0.f;
+	out_M.s[_1x0_]=  -SIN;      out_M.s[_1x1_]= COS;	out_M.s[_1x2_]= 0.f;	out_M.s[_1x3_]= 0.f;
 	out_M.s[_2x0_]=  0.f;		out_M.s[_2x1_]=	0.f;	out_M.s[_2x2_]= 1.f;	out_M.s[_2x3_]=	0.f;
-	out_M.s[_3x0_]=	 0.f;		out_M.s[_3x1_]= 0.f;     out_M.s[_3x2_]= 0.f;out_M.s[_3x3_]= 1.f;
+	out_M.s[_3x0_]=	 0.f;		out_M.s[_3x1_]= 0.f;    out_M.s[_3x2_]= 0.f;    out_M.s[_3x3_]= 1.f;
 }
 
 void Matrix_Transpose(Matrix& out_M,const Matrix& in_M)

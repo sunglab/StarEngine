@@ -6,27 +6,32 @@
 #include "../math/StarMath.h"
 
 #ifdef MAC
+
 #include "TuioListener.h"
 #include "TuioClient.h"
 #include "UdpReceiver.h"
 #include "TcpReceiver.h"
 #include <list>
+
 #endif
 
 
 #define MAX_FINGERS 10
 
 class StarTouchDelegate
-{public:
+{
+    public:
+    
     virtual void CallbackTouchEnd(){};
     virtual void CallbackTouchBegin(){};
     virtual void CallbackTouchMove(){};
     virtual void CallbackTouchCancel(){};
 };
+
 //class StarTUIO;
 class StarTouch
 {
-public:
+    public:
     
     StarTouchDelegate* delegate;
     

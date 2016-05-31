@@ -6,6 +6,14 @@
 //  Copyright (c) 2015 SungLab. All rights reserved.
 //
 
+
+
+/*
+ *
+ *   Naming geo's namel _ format (rect_texvertex)
+ *
+ */
+
 #ifndef STRUCTURE_H
 #define STRUCTURE_H
 
