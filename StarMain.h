@@ -51,6 +51,12 @@
 #import <Cocoa/Cocoa.h>
 //#import "GLView.h"
 
+#else //Windows
+#include <SDL.h>
+#include <GL/glew.h>
+#include <SDL_opengl.h>
+#include <gl/glu.h>
+
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -284,14 +284,14 @@ Vec3& Vec3::operator[](int index)
     return (this)[index];
 }
 
+const Vec3& Vec3::operator[](int index) const
+{
+    return (this)[index];
+}
 Vec3& Vec3::operator=(const __VERTEX__TYPE__& in_Scalar)
 {
     x = in_Scalar; y = in_Scalar; z = in_Scalar;
     return (*this);
-}
-const Vec3& Vec3::operator[](int index) const
-{
-    return (this)[index];
 }
 
 
@@ -472,6 +472,16 @@ Vec4& Vec4::operator/=(const __VERTEX__TYPE__& in_Scalar)
 	z /= in_Scalar;
 	w /= in_Scalar;
 	return *this;
+}
+
+Vec4& Vec4::operator[](int index)
+{
+    return (this)[index];
+}
+
+const Vec4& Vec4::operator[](int index) const
+{
+    return (this)[index];
 }
 
 Vec4& Vec4::operator=(const __VERTEX__TYPE__& in_Scalar)
