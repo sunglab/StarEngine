@@ -81,7 +81,6 @@
 //#include "./ui/StarBar.h"
 
 
-#define STRINGIFY(A)  #A
 
 #ifdef IOS
 #define starLOG printf
