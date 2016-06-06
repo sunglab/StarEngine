@@ -1,6 +1,6 @@
 
-#ifndef  _Included_Shader
-#define _Included_Shader
+#ifndef  STARSHADER_H
+#define STARSHADER_H
 
 #include "../StarMain.h"
 

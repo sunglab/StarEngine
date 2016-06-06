@@ -126,9 +126,8 @@ public:
     
     __VERTEX__TYPE__ length()const;
     __VERTEX__TYPE__ lengthSquared()const;
-    __VERTEX__TYPE__ dot(const Vec3& in_V)const;
-    void normalize();
-    Vec3 cross(const Vec3& in_V)const;
+	__VERTEX__TYPE__ dot(const Vec3& in_V)const; 
+	void normalize(); Vec3 cross(const Vec3& in_V)const;
     
     
     void lerp(float, Vec3&);

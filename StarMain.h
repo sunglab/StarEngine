@@ -18,7 +18,7 @@
 #import <UIKit/UIKit.h>
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
-#include  <iostream>
+#include <iostream>
  #endif
 
 
@@ -80,7 +80,6 @@
 //#include "./ui/StarButton.h"
 //#include "./ui/StarBar.h"
 
-
 #define STRINGIFY(A)  #A
 
 #ifdef IOS
@@ -89,6 +88,8 @@
 #define starLOG printf
 #elif ANDROID
 #define starLOG LOGE
+#elif _WIN32
+#define starLOG dprintf
 #endif
 
 //#ifdef IOS

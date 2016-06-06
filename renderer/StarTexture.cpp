@@ -20,7 +20,6 @@
 StarTexture::StarTexture(unsigned int texture_number)
 {
     texture = new Texture[texture_number];
-    
 //    starLOG("is it emphy? %d\n", texture_number);
 }
 

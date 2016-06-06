@@ -39,7 +39,6 @@ unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,
 		printf("Shader compile log\n %s", log);
 		free(log);
 
-        
 		// There was an error here, first get the length of the log message.
 		int i32InfoLogLength, i32CharsWritten;
 		glGetShaderiv(*pObject, GL_INFO_LOG_LENGTH, &i32InfoLogLength);

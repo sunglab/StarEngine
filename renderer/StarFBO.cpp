@@ -26,6 +26,7 @@ StarFBO::StarFBO()
     glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
 #elif MAC
 #elif ANDROID
+#elif WIN
 #endif
 }
 
@@ -43,11 +44,14 @@ StarFBO::StarFBO(unsigned int fbo_number,unsigned int vbo_number,unsigned int va
 #ifdef IOS
     glGenRenderbuffers(1, &rboColor[0]);
     glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
+#elif ANDROID
+    glGenRenderbuffers(1, &rboColor[0]);
+    glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
 #elif MAC
     glGenRenderbuffers(1, &rboColor[0]);
     glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
-#elif ANDROID
-    glGenRenderbuffers(1, &rboColor[0]);
+#elif WIN
+	glGenRenderbuffers(1, &rboColor[0]);
     glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
 #endif
     // After that, It might be called [context renderbufferstorage]  // IOS
@@ -66,7 +70,7 @@ StarFBO::~StarFBO()
 void StarFBO::createFBO(bool depth, bool stencil,unsigned int width, unsigned int height,unsigned int object_id )
 {
     
-    if (object_id) // Not a main on buffer
+    if (object_id) // if it >= 0, it means 'main'
     {
         glGenFramebuffers(1, &fbo[object_id]);
         glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
@@ -78,7 +82,7 @@ void StarFBO::createFBO(bool depth, bool stencil,unsigned int width, unsigned in
         glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8_OES, width, height);
 #elif IOS
         glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8_OES, width, height);
-#else
+#else // windows & osx
         glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8, width, height);
 #endif
         
@@ -101,7 +105,6 @@ void StarFBO::createFBO(bool depth, bool stencil,unsigned int width, unsigned in
             //            glBindRenderbuffer(GL_RENDERBUFFER, rboStencil[object_id]);
             //            glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_IN, width, height);
         }
-        
         glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
         
         // Attach ColorRenderbuffers
@@ -134,9 +137,7 @@ void StarFBO::createFBO(bool depth, bool stencil,unsigned int width, unsigned in
         }
         glGenFramebuffers(1, &fbo[object_id]);
         //        glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
-#elif MAC
-        fbo[object_id] = 0;
-#elif ANDROID
+#else // if not IOS
         fbo[object_id] = 0;
 #endif
 #ifdef IOS
@@ -158,9 +159,8 @@ void StarFBO::createFBO(bool depth, bool stencil,unsigned int width, unsigned in
 void StarFBO::bindFBO(unsigned int object_id)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
-    
-    
 }
+
 void StarFBO::unbindFBO()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -172,43 +172,45 @@ void StarFBO::unbindFBO()
  */
 void StarFBO::bindRBO(unsigned int object_id, bool depth, bool stencil)
 {
-    if(object_id)
-    {
-        glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
-        if(depth)
-            glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
-    }
-    else
-    {
-        glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
+	if (object_id)
+	{
+		glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
+		if (depth)
+			glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
+	}
+	else
+	{
+		glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
 #ifndef IOS
-        if(depth) 
-            glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
+		if (depth)
+			glBindRenderbuffer(GL_RENDERBUFFER, rboDepth[object_id]);
 #endif
-        
-    }
+
+	}
 }
+
 void StarFBO::unbindRBO()
 {
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
 void StarFBO::resizeRBO(unsigned int width, unsigned int height)
 {
 #ifdef ANDROID
-    glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8_OES, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8_OES, width, height);
 #elif IOS
-    glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8_OES, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8_OES, width, height);
 #else
-    glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA8, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
 #endif
-   // maybe an error if has not depth
+
+	// maybe an error if has not depth
 #ifdef ANDROID
-    glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH24_STENCIL8_OES, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8_OES, width, height);
 #elif IOS
-    glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH24_STENCIL8_OES, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8_OES, width, height);
 #else
-    glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH24_STENCIL8, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
 #endif
 }
 
@@ -217,61 +219,69 @@ void StarFBO::resizeRBO(unsigned int width, unsigned int height)
  */
 void StarFBO::createVAO(unsigned int object_id)
 {
-    // 'cuase it doesn't support opengl es 2.0
+	// 'cuase it doesn't support opengl es 2.0
 #ifdef MAC
-    glGenVertexArrays(1,&vao[object_id]);
-    glBindVertexArray(vao[object_id]);
+	glGenVertexArrays(1, &vao[object_id]);
+	glBindVertexArray(vao[object_id]);
+#elif WIN
+	glGenVertexArrays(1, &vao[object_id]);
+	glBindVertexArray(vao[object_id]);
 #elif IOS
-    glGenVertexArraysOES(1,&vao[object_id]);
-    glBindVertexArrayOES(vao[object_id]);
-#elif ANDROID
-    //    glGenVertexArraysOES(1,&vao[object_id]);
-    //	glBindVertexArrayOES(vao[object_id]);
+	glGenVertexArraysOES(1, &vao[object_id]);
+	glBindVertexArrayOES(vao[object_id]);
+#elif ANDROID  // only supports VBO
+	//    glGenVertexArraysOES(1,&vao[object_id]);
+	//	glBindVertexArrayOES(vao[object_id]);
 #endif
 }
+
 void StarFBO::bindVAO(unsigned int object_id)
 {
 #ifdef MAC
-    glBindVertexArray(vao[object_id]);
+	glBindVertexArray(vao[object_id]);
+#elif WIN
+	glBindVertexArray(vao[object_id]);
 #elif IOS
-    glBindVertexArrayOES(vao[object_id]);
+	glBindVertexArrayOES(vao[object_id]);
 #elif ANDROID
-    //    glBindVertexArrayOES(vao[object_id]);
+	//    glBindVertexArrayOES(vao[object_id]);
 #endif
 }
 void StarFBO::unbindVAO()
 {
 #ifdef MAC
-    glBindVertexArray(0);
+	glBindVertexArray(0);
+#elif WIN
+	glBindVertexArray(0);
 #elif IOS
-    glBindVertexArrayOES(0);
+	glBindVertexArrayOES(0);
 #elif ANDROID
-    //    glBindVertexArrayOES(0);
+	//    glBindVertexArrayOES(0);
 #endif
 }
 
 /*
  VBO
  */
-void StarFBO::createVBO(unsigned int target,unsigned int size, void* data, unsigned int dataType, unsigned int object_id)
+void StarFBO::createVBO(unsigned int target, unsigned int size, void* data, unsigned int dataType, unsigned int object_id)
 {
-    glGenBuffers( 1, &vbo[object_id]);
-    glBindBuffer( target, vbo[object_id]);
-    glBufferData( target, size, data, dataType);
+	glGenBuffers(1, &vbo[object_id]);
+	glBindBuffer(target, vbo[object_id]);
+	glBufferData(target, size, data, dataType);
 }
-void StarFBO::createVBOsub(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int dataType,unsigned int object_id)
+void StarFBO::createVBOsub(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int dataType, unsigned int object_id)
 {
-    glGenBuffers( 1, &vbo[object_id]);
-    glBindBuffer( target, vbo[object_id]);
-    glBufferData( target, size, (void*)0, dataType);
-    glBufferSubData(target, offset, size, data);
+	glGenBuffers(1, &vbo[object_id]);
+	glBindBuffer(target, vbo[object_id]);
+	glBufferData(target, size, (void*)0, dataType);
+	glBufferSubData(target, offset, size, data);
 }
 void StarFBO::bindVBO(unsigned int target, unsigned int object_id)
 {
-    glBindBuffer( target, vbo[object_id]);
+	glBindBuffer(target, vbo[object_id]);
 }
 void StarFBO::unbindVBO(unsigned int target)
 {
-    glBindBuffer(target,0);
+	glBindBuffer(target, 0);
 }
 
