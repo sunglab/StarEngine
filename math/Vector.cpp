@@ -114,14 +114,22 @@ Vec2& Vec2::operator/=(const __VERTEX__TYPE__& in_Scalar)
 	return *this;
 }
 
-Vec2& Vec2::operator[](int index)
+__VERTEX__TYPE__& Vec2::operator[](int index)
 {
-    return (this)[index];
+	if(index==0)
+    return (*this).x;
+	else
+    return (*this).y;
 }
 
-const Vec2& Vec2::operator[](int index) const
+const __VERTEX__TYPE__& Vec2::operator[](int index) const
 {
-    return (this)[index];
+//    return (*this)[index];
+	if(index==0)
+    return (*this).x;
+	else
+    return (*this).y;
+
 }
 
 Vec2& Vec2::operator=(const __VERTEX__TYPE__& in_Scalar)
@@ -279,14 +287,27 @@ Vec3& Vec3::operator/=(const __VERTEX__TYPE__& in_Scalar)
 	return *this;
 }
 
-Vec3& Vec3::operator[](int index)
+__VERTEX__TYPE__&  Vec3::operator[](int index)
 {
-    return (this)[index];
+//    return (this)[index];
+	if (index == 0)
+		return (*this).x;
+	else if (index == 1)
+		return (*this).y;
+	else if (index == 2)
+		return (*this).z;
+
 }
 
-const Vec3& Vec3::operator[](int index) const
+const __VERTEX__TYPE__&  Vec3::operator[](int index) const
 {
-    return (this)[index];
+//    return (this)[index];
+	if (index == 0)
+		return (*this).x;
+	else if (index == 1)
+		return (*this).y;
+	else if (index == 2)
+		return (*this).z;
 }
 Vec3& Vec3::operator=(const __VERTEX__TYPE__& in_Scalar)
 {
@@ -474,14 +495,32 @@ Vec4& Vec4::operator/=(const __VERTEX__TYPE__& in_Scalar)
 	return *this;
 }
 
-Vec4& Vec4::operator[](int index)
+__VERTEX__TYPE__& Vec4::operator[](int index)
 {
-    return (this)[index];
+//    return (this)[index];
+	if (index == 0)
+		return (*this).x;
+	else if (index == 1)
+		return (*this).y;
+	else if (index == 2)
+		return (*this).z;
+	else if (index == 3)
+		return (*this).w;
+
+
 }
 
-const Vec4& Vec4::operator[](int index) const
+const __VERTEX__TYPE__& Vec4::operator[](int index) const
 {
-    return (this)[index];
+//    return (this)[index];
+	if (index == 0)
+		return (*this).x;
+	else if (index == 1)
+		return (*this).y;
+	else if (index == 2)
+		return (*this).z;
+	else if (index == 3)
+		return (*this).w;
 }
 
 Vec4& Vec4::operator=(const __VERTEX__TYPE__& in_Scalar)

@@ -47,8 +47,8 @@ public:
     Vec2& operator*=(const __VERTEX__TYPE__& in_Scalar);
     Vec2& operator/=(const __VERTEX__TYPE__& in_Scalar);
     
-    Vec2& operator[](int index);
-    const Vec2& operator[](const int index) const;
+	__VERTEX__TYPE__& operator[](int index);
+	const __VERTEX__TYPE__& operator[](const int index) const;
     Vec2& operator=(const __VERTEX__TYPE__& in_Scalar);
     
     __VERTEX__TYPE__ length()const;
@@ -120,8 +120,8 @@ public:
     Vec3& operator*=(const __VERTEX__TYPE__& in_Scalar);
     Vec3& operator/=(const __VERTEX__TYPE__& in_Scalar);
     
-    Vec3& operator[](int index);
-    const Vec3& operator[](const int index) const;
+	__VERTEX__TYPE__& operator[](int index);
+	const __VERTEX__TYPE__& operator[](const int index) const;
     Vec3& operator=(const __VERTEX__TYPE__& in_Scalar);
     
     __VERTEX__TYPE__ length()const;
@@ -201,8 +201,9 @@ public:
     Vec4& operator*=(const __VERTEX__TYPE__& in_Scalar);
     Vec4& operator/=(const __VERTEX__TYPE__& in_Scalar);
     
-	Vec4& operator[](int index);
-    const Vec4& operator[](const int index) const;
+	__VERTEX__TYPE__& operator[](int index);
+	const __VERTEX__TYPE__& operator[](const int index) const;
+
     Vec4& operator=(const __VERTEX__TYPE__& in_Scalar); // [] where ??? is it ?
     
     __VERTEX__TYPE__ length()const;

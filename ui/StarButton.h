@@ -27,12 +27,12 @@ public:
     
     int texture_id;
    
-//    void setPosition(float x,float y,float width, float height);
-    void setFBOsize(float _fbo_width,float _fbo_height)
-    {
-        fbo_width = _fbo_width;
-        fbo_height = _fbo_height;
-    }
+    
+//    void setFBOsize(float _fbo_width,float _fbo_height)
+//    {
+//        fbo_width = _fbo_width;
+//        fbo_height = _fbo_height;
+//    }
     void setPosition(float _x,float _y,float _width,float _height)
     {
         center.x = _x;
@@ -44,7 +44,8 @@ public:
     void setTextureID(StarTexture* _startexture, unsigned int _texture_number)
     {
         startexture = _startexture;
-        texture_number = _texture_number;
+        texture_number[0] = _texture_number;
+        texture_number[1] = _texture_number+1;
     }
     
     void initialize(StarFBO* _starfbo, StarShader* _starshader, int _fbo_id, int _vao_id, int _vbo_id)
@@ -68,22 +69,22 @@ public:
         starfbo = _starfbo;
         starshader = _starshader;
         
-        fbo_id = _fbo_id;
+        fbo_id[0] = _fbo_id;
         vao_id = _vao_id;
         
         vbo_id[0] = _vbo_id+0;
         vbo_id[1] = _vbo_id+1;
         vbo_id[2] = _vbo_id+2;
        
-        starfbo->bindFBO(fbo_id);
+        starfbo->bindFBO(fbo_id[0]);
         starfbo->createVAO(vao_id);
         
         // NORMAL
-        if( !starshader->ShaderLoadSourceFromMemory(button_onVertexShader, GL_VERTEX_SHADER,  &vert_shader_id))
+        if( !starshader->ShaderLoadSourceFromMemory(button_onVertexShader, GL_VERTEX_SHADER,  &vs_id))
             starLOG("hi1");
-        if(!starshader->ShaderLoadSourceFromMemory(button_onFragmentShader, GL_FRAGMENT_SHADER, &frag_shader_id))
+        if(!starshader->ShaderLoadSourceFromMemory(button_onFragmentShader, GL_FRAGMENT_SHADER, &fs_id))
             starLOG("hi2");
-        if(!starshader->CreateProgram(&shader_program,vert_shader_id,frag_shader_id, star_attribute_vname_button_list,  (sizeof(star_attribute_vname_button_list))/sizeof(star_attribute_vname_button_list[0])))
+        if(!starshader->CreateProgram(&shader_program,vs_id,fs_id, star_attribute_vname_button_list,  (sizeof(star_attribute_vname_button_list))/sizeof(star_attribute_vname_button_list[0])))
             starLOG("hi3");
 //            starLOG("ERROR PROGRAM : %d",10);
         
@@ -110,7 +111,7 @@ public:
     void render()
     {
         
-        starfbo->bindFBO(fbo_id);
+        starfbo->bindFBO(fbo_id[0]);
 //        glEnable(GL_DEPTH_TEST);
         
 //        glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -122,9 +123,9 @@ public:
         
         glUseProgram(shader_program);
         
-        startexture->bindTEXTURE(GL_TEXTURE0+texture_number, texture_number);
+        startexture->bindTEXTURE(GL_TEXTURE0+texture_number[0], texture_number[0]);
         texture_id = glGetUniformLocation(shader_program, "texture0");
-        glUniform1i(texture_id,texture_number);
+        glUniform1i(texture_id,texture_number[0]);
         
 //        unifrom_id = glGetUniformLocation(shader_program,"backColor");
         

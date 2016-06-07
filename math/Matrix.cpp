@@ -8,6 +8,20 @@ Vec3 operator*(const Vec3& in_V, const Matrix3& in_M)
     Vec3 abc = Vec3(0,0);
     return abc;
 }
+Vec4 Matrix::operator*(const Vec4& in_V) const
+{
+	/*Vec4 out_V;
+
+		return out_V;
+
+	Matrix_MxM(out_M,*this,in_M);
+*/
+	 return Vec4(s[0]*in_V.x + s[4]*in_V.y + s[8]*in_V.z  + s[12]*in_V.w,
+                   s[1]*in_V.x + s[5]*in_V.y + s[9]*in_V.z  + s[13]*in_V.w,
+                   s[2]*in_V.x + s[6]*in_V.y + s[10]*in_V.z + s[14]*in_V.w,
+                   s[3]*in_V.x + s[7]*in_V.y + s[11]*in_V.z + s[15]*in_V.w);
+
+}
 Matrix Matrix::operator*(const Matrix& in_M)const
 {
 	Matrix out_M;
@@ -167,11 +181,20 @@ void Matrix_MxV( Vec4& out_V, const Vec4& in_V, const Matrix& in_M)
 {
     Vec4 temp_V;
     
+	/*
 	temp_V.x = in_V.x * in_M.s[_0x0_] + in_V.y * in_M.s[_1x0_] + in_V.z * in_M.s[_2x0_] + in_V.w * in_M.s[_3x0_];
 	temp_V.y = in_V.x * in_M.s[_0x1_] + in_V.y * in_M.s[_1x1_] + in_V.z * in_M.s[_2x1_] + in_V.w * in_M.s[_3x1_];
 	temp_V.z = in_V.x * in_M.s[_0x2_] + in_V.y * in_M.s[_1x2_] + in_V.z * in_M.s[_2x2_] + in_V.w * in_M.s[_3x2_];
 	temp_V.w = in_V.x * in_M.s[_0x3_] + in_V.y * in_M.s[_1x3_] + in_V.z * in_M.s[_2x3_] + in_V.w * in_M.s[_3x3_];
-    
+   */ 
+
+
+	temp_V.x = in_V.x * in_M.s[_0x0_] + in_V.y * in_M.s[_0x1_] + in_V.z * in_M.s[_0x2_] + in_V.w * in_M.s[_0x3_];
+	temp_V.y = in_V.x * in_M.s[_1x0_] + in_V.y * in_M.s[_1x1_] + in_V.z * in_M.s[_1x2_] + in_V.w * in_M.s[_1x3_];
+	temp_V.z = in_V.x * in_M.s[_2x0_] + in_V.y * in_M.s[_2x1_] + in_V.z * in_M.s[_2x2_] + in_V.w * in_M.s[_2x3_];
+	temp_V.w = in_V.x * in_M.s[_3x0_] + in_V.y * in_M.s[_3x1_] + in_V.z * in_M.s[_3x2_] + in_V.w * in_M.s[_3x3_];
+
+
     out_V = temp_V;
 //#ifdef YES_NEON
 //Matrix_MxV_NEON(&out_V.x, &in_V.x, in_M.s);
@@ -187,7 +210,7 @@ void Matrix_MxV( Vec4& out_V, const Vec4& in_V, const Matrix& in_M)
 void Matrix_MxV( Vec3& out_V, const Vec3& in_V, const Matrix3& in_M)
 {
     Vec3 temp_V;
-    
+
     temp_V.x = in_V.x * in_M.s[0] + in_V.y * in_M.s[1] + in_V.z * in_M.s[2];
     temp_V.y = in_V.x * in_M.s[3] + in_V.y * in_M.s[4] + in_V.z * in_M.s[5];
     temp_V.z = in_V.x * in_M.s[6] + in_V.y * in_M.s[7] + in_V.z * in_M.s[8];
@@ -254,6 +277,7 @@ void Matrix_Viewport(Matrix& out_M, const Vec2& in_Rect, const Matrix& in_M)
 //    out_M.s[_2x0_] = 0.f; out_M.s[_2x1_] = 0.f; out_M.s[_2x2_] = 1.f; out_M.s[_2x3_] = 0.f;
 //    out_M.s[_3x0_] =   x; out_M.s[_3x1_] =   y; out_M.s[_3x2_] =   z; out_M.s[_3x3_] = 1.f;
 }
+
 void Matrix_Translation( Matrix& out_M, const float x, const float y, const float z)
 {
 	out_M.s[_0x0_] = 1.f; out_M.s[_0x1_] = 0.f; out_M.s[_0x2_] = 0.f; out_M.s[_0x3_] = 0.f;
@@ -406,7 +430,7 @@ void Matrix3_Inverse(Matrix3& out_M, const Matrix3& in_M)
     +in_M.s[2]*(in_M.s[3]*in_M.s[7]-in_M.s[4]*in_M.s[6]);
     if(determinant==0)
     {
-        starLOG("oop det is zero\n");
+       // starLOG("oop det is zero\n");
         return;
     }
     
@@ -561,42 +585,43 @@ void Matrix_Inverse(Matrix& out_M, const Matrix& in_M)
         out_M.s[i] = inv[i] * det;
   
 }
-
-void Matrix_Scaling_By_Perspective(Matrix& out_M, const float FOV, const float ASPECT)
-{
-    
-//    float fov = 1.0f / (float)tan(FOV * 0.5f); // 1/tan(theta/2)
+//
+//void Matrix_Scaling_By_Perspective(Matrix& out_M, const float FOV, const float ASPECT)
+//{
 //    
-//    out_M.s[_0x0_] = ASPECT/fov;
-//    out_M.s[_1x0_] = 0;
-//    out_M.s[_2x0_] = 0;
-//    out_M.s[_3x0_] = 0;
-//    
-//    out_M.s[_0x1_] = 0.0;
-//    out_M.s[_1x1_] = 1./fov;
-//    out_M.s[_2x1_] = 0.0;
-//    out_M.s[_3x1_] = 0.0;
-//    
-//    out_M.s[_0x2_] = 0.0;
-//    out_M.s[_1x2_] = 0.0;
-//    out_M.s[_2x2_] = 1.0;
-//    out_M.s[_3x2_] = 0.0;
-//    
-//    out_M.s[_0x3_] = 0.0;
-//    out_M.s[_1x3_] = 0.0;
-//    out_M.s[_2x3_] = 1.0;
-//    out_M.s[_3x3_] = 0.0;
-}
+////    float fov = 1.0f / (float)tan(FOV * 0.5f); // 1/tan(theta/2)
+////    
+////    out_M.s[_0x0_] = ASPECT/fov;
+////    out_M.s[_1x0_] = 0;
+////    out_M.s[_2x0_] = 0;
+////    out_M.s[_3x0_] = 0;
+////    
+////    out_M.s[_0x1_] = 0.0;
+////    out_M.s[_1x1_] = 1./fov;
+////    out_M.s[_2x1_] = 0.0;
+////    out_M.s[_3x1_] = 0.0;
+////    
+////    out_M.s[_0x2_] = 0.0;
+////    out_M.s[_1x2_] = 0.0;
+////    out_M.s[_2x2_] = 1.0;
+////    out_M.s[_3x2_] = 0.0;
+////    
+////    out_M.s[_0x3_] = 0.0;
+////    out_M.s[_1x3_] = 0.0;
+////    out_M.s[_2x3_] = 1.0;
+////    out_M.s[_3x3_] = 0.0;
+//}
+//
 void Matrix_PerspectiveProjection
 (Matrix& out_M,
  const __VERTEX__TYPE__ FOV,
  const __VERTEX__TYPE__ ASPECT,
- const __VERTEX__TYPE__ NEAR,
- const __VERTEX__TYPE__ FAR)
+ const __VERTEX__TYPE__ N_EAR,
+ const __VERTEX__TYPE__ F_AR)
 {
     
     float fov = 1.0f / (float)tan(FOV * 0.5f); // 1/tan(theta/2)
-    float nf = 1.0f / (NEAR - FAR);
+    float nf = 1.0f / (N_EAR - F_AR);
     
     out_M.s[_0x0_] = fov/ASPECT;
     out_M.s[_1x0_] = 0;
@@ -610,8 +635,8 @@ void Matrix_PerspectiveProjection
     
     out_M.s[_0x2_] = 0.0;
     out_M.s[_1x2_] = 0.0;
-    out_M.s[_2x2_] = (NEAR+FAR) * nf;
-    out_M.s[_3x2_] = (2.f*NEAR*FAR) * nf;
+    out_M.s[_2x2_] = (N_EAR+F_AR) * nf;
+    out_M.s[_3x2_] = (2.f*N_EAR*F_AR) * nf;
     
     out_M.s[_0x3_] = 0.0;
     out_M.s[_1x3_] = 0.0;
@@ -724,7 +749,7 @@ void Quaternion::lerp(const float t,const Quaternion& in_Q)
         Quaternion_Normalize(result);
         if((this->w)!=(this->w))
         {
-           starLOG("stop");
+           //starLOG("stop");
         }
         
 //           starLOG("man");

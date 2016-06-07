@@ -23,12 +23,12 @@
 		Quaternion operator*(const float& in_Scalar) const;
 		Quaternion operator/(const float& in_Scalar) const;
 
-
 		Quaternion operator+(const Quaternion& in_Q) const;
 		Quaternion operator-(const Quaternion& in_Q) const;
 
 		float dot(const Quaternion& in_Q);
 		void lerp(float t, const Quaternion& in_Q);
+
 
 
 	};
@@ -44,6 +44,7 @@
 
 		Matrix3 operator*(const Matrix3& in_M)const;
 		friend Vec3 operator*(const Vec3& in_V, const Matrix3& in_M);
+
 	};
 
 	class Matrix
@@ -57,9 +58,11 @@
 		__MATRIX__TYPE__ s[16];
 
 		Matrix operator*(const Matrix& in_M)const;
+		Vec4 operator*(const Vec4& in_V)const;
 		friend Vec4 operator*(const Vec4& in_V, const Matrix& in_M);
 		friend Vec3 operator*(const Vec3& in_V, const Matrix& in_M);
 		friend Vec2 operator*(const Vec2& in_V, const Matrix& in_M);
+
 
 
 		//    (*this) inverse(void)

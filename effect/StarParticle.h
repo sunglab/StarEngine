@@ -1,7 +1,7 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#include "../math/Math.h"
+#include "../math/Starmath.h"
 #include "../tool/StarTouch.h"
 #include <iostream>
 #include <vector>
