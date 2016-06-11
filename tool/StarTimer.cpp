@@ -28,10 +28,13 @@ unsigned long long StarTimer::getTime()
 	const int result = clock_gettime(CLOCK_MONOTONIC, &current); 
 	current_msec = (current.tv_sec * 1000) + (current.tv_nsec / 1000000); 
 
-#else  // windows ... something like that
-	clock_t current = clock(); 
-	current_msec = (current / 1000000); // in msec 
-
+#elif _WIN32  // windows ... something like that
+	//clock_t 
+	long current = clock();
+	current_msec = (current); // in msec already
+#else
+	clock_t current = clock();
+	current_msec = (current /1000000.); // in msec 
 #endif 
 	fTimer = (unsigned long long)current_msec;///1000.0f;
 
@@ -47,7 +50,8 @@ void StarTimer::getFPS()
 	//    static char strFrameRate[50] = {0};  //IF I need to put Font with FPS
 
 	unsigned long current = getTime();//GetTickCount();
-	//    LOGE("%lu\n",current);
+	
+//	starLOG("ftime %lu\n",current);
 	++framePerSecond; 
 	//if the time is bigger than 1.0 sec
 
@@ -58,13 +62,20 @@ void StarTimer::getFPS()
 		//        LOGE(strFrameRate); 
 #elif IOS
 		//        printf("%s\n",strFrameRate);
+#elif _WIN32
+//		starLOG("timer\n");
 #endif
 		delegate->CallbackFPS((int)framePerSecond);
         frame++;
 		framePerSecond = 0; 
 	}
+/*	else
+	{
+		starLOG("what %lu\n", current - lastTime);
+	}*/
 	// Don't be over more than 1000
     delegate->CallbackTICK(current-frameTime);
+//	starLOG("what %lu\n", current - frameTime);
 	frameTime = current;
 
 }

@@ -21,7 +21,7 @@ unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,
 	// Load the source code into it.
     glShaderSource(*pObject, 1, &pszShaderCode, NULL);
 	
-//    printf("%d",*pObject);
+//    starLOG("%d",*pObject);
 	// Compile the source code.
     glCompileShader(*pObject);
     
@@ -36,7 +36,7 @@ unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,
 		glGetShaderiv(*pObject, GL_INFO_LOG_LENGTH, &logLength);
 		GLchar *log = (GLchar*) malloc(logLength);
 		glGetShaderInfoLog(*pObject, logLength, &logLength, log);
-		printf("Shader compile log\n %s", log);
+		starLOG("Shader compile log\n %s", log);
 		free(log);
 
 		// There was an error here, first get the length of the log message.
@@ -48,7 +48,7 @@ unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,
         glGetShaderInfoLog(*pObject, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
 		
 		// Displays the error!
-		//printf("Failed to compile fragment shader: %s\n", pszInfoLog);
+		//starLOG("Failed to compile fragment shader: %s\n", pszInfoLog);
 		delete [] pszInfoLog;
 		
 		// Delete shader.
@@ -111,14 +111,14 @@ unsigned int StarShader::CreateProgram(	GLuint* const pProgramObject,
 	{
 		GLchar *log = (GLchar*)malloc(logLength);
 		glGetProgramInfoLog(*pProgramObject, logLength, &logLength, log);
-		printf("Program link log:\n%s <- ENDLINE\n", log);
+		starLOG("Program link log:\n%s <- ENDLINE\n", log);
 		free(log);
 	}
 	
 	glGetProgramiv(*pProgramObject, GL_LINK_STATUS, &status);
 	if (status == 0)
 	{
-		printf("Failed to link program\n\n");
+		starLOG("Failed to link program\n\n");
 		return 0;
 	}
 	
@@ -128,14 +128,14 @@ unsigned int StarShader::CreateProgram(	GLuint* const pProgramObject,
 	{
 		GLchar *log = (GLchar*)malloc(logLength);
 		glGetProgramInfoLog(*pProgramObject, logLength, &logLength, log);
-		printf("Program validate log:\n%s\n", log);
+		starLOG("Program validate log:\n%s\n", log);
 		free(log);
 	}
 	
 	glGetProgramiv(*pProgramObject, GL_VALIDATE_STATUS, &status);
 	if (status == 0)
 	{
-		printf("Failed to validate program\n");
+		starLOG("Failed to validate program\n");
 		return 0;
 	}
 	return SUCCESS;

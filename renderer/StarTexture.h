@@ -58,6 +58,8 @@ class StarTexture
     Texture* getTEXTURE(unsigned int texture_id);
     void bindTEXTURE( unsigned int texture_unit, unsigned int texture_id);
     void deleteTEXTURE(unsigned int texture_id);
+
+	void unbindTEXTURE();
    
 };
 #endif

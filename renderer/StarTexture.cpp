@@ -20,7 +20,9 @@
 StarTexture::StarTexture(unsigned int texture_number)
 {
     texture = new Texture[texture_number];
-//    starLOG("is it emphy? %d\n", texture_number);
+	texture->texture_width = 0;
+	texture->texture_height = 0;
+	texture->texture_id = 0;
 }
 
 #ifdef IOS
@@ -197,14 +199,12 @@ void StarTexture::createTEXTURE_ANDROID( void* array, unsigned int texture_width
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0,GL_RGBA, GL_UNSIGNED_BYTE, array);
     starLOG("2here?");
 
-
 }
 #endif
 
 // it should know what it is the number of User defined texture ID ( userDefined TexID != computerDefined TexID);
 void StarTexture::createTEXTURE_DATA( void* data, unsigned int camera_width, unsigned int camera_height, unsigned int texture_id, bool alpha)
 {
-    
 	texture[texture_id].texture_width  = camera_width;
 	texture[texture_id].texture_height = camera_height;
 
@@ -213,12 +213,8 @@ void StarTexture::createTEXTURE_DATA( void* data, unsigned int camera_width, uns
     
     glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
 
-//                starLOG("gg");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
+//               starLOG("gg");
+
 //                starLOG("gg");
 if(alpha)
 {
@@ -231,9 +227,13 @@ if(alpha)
 #elif MAC
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0,GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glTexSubImage2D(GL_TEXTURE_2D, 0,0,0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+#elif _WIN32
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0,GL_RGBA, GL_UNSIGNED_BYTE, 0);
+ //   glTexSubImage2D(GL_TEXTURE_2D, 0,0,0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height,0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 #endif
-    
-//                starLOG("gg");
+
+	starLOG("that\n that\n");
 }
 else
 {
@@ -246,9 +246,20 @@ else
 #elif MAC
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, camera_width, camera_height, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
     glTexSubImage2D(GL_TEXTURE_2D, 0,0,0, camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, data);
+#elif _WIN32
+	/*glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, camera_width, camera_height, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,0,0, camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, data);
+*/
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, camera_width, camera_height,0, GL_RGB, GL_UNSIGNED_BYTE, data);
 #endif
+	starLOG("this\n this\n");
 }
-//    glEnable(GL_TEXTURE_2D);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 }
 
 void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id,bool resize)
@@ -256,7 +267,7 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 
 	texture[texture_id].texture_width = texture_width;
 	texture[texture_id].texture_height = texture_height;
-    
+
   if(!resize)
   {
       glGenTextures(1, &texture[texture_id].texture_id);
@@ -269,6 +280,11 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 //      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+	  int err;
+	while ((err = glGetError()) != GL_NO_ERROR) {
+			starLOG("\n\nOpenGL error TURNON second fbos-1: %x\n\n", err);
+		}
+
   }
   else
   {
@@ -288,6 +304,11 @@ Texture* StarTexture::getTEXTURE(unsigned int texture_id)
     return &texture[texture_id];
 }
 
+
+void StarTexture::unbindTEXTURE()
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
 void StarTexture::bindTEXTURE(unsigned int texture_unit, unsigned int texture_id)
 {
     int err =0;
