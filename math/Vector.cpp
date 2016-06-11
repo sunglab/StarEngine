@@ -294,7 +294,7 @@ __VERTEX__TYPE__&  Vec3::operator[](int index)
 		return (*this).x;
 	else if (index == 1)
 		return (*this).y;
-	else if (index == 2)
+	else //if (index == 2)
 		return (*this).z;
 
 }
@@ -306,7 +306,7 @@ const __VERTEX__TYPE__&  Vec3::operator[](int index) const
 		return (*this).x;
 	else if (index == 1)
 		return (*this).y;
-	else if (index == 2)
+	else //if (index == 2)
 		return (*this).z;
 }
 Vec3& Vec3::operator=(const __VERTEX__TYPE__& in_Scalar)
@@ -504,7 +504,7 @@ __VERTEX__TYPE__& Vec4::operator[](int index)
 		return (*this).y;
 	else if (index == 2)
 		return (*this).z;
-	else if (index == 3)
+	else// if (index == 3)
 		return (*this).w;
 
 
@@ -519,7 +519,7 @@ const __VERTEX__TYPE__& Vec4::operator[](int index) const
 		return (*this).y;
 	else if (index == 2)
 		return (*this).z;
-	else if (index == 3)
+	else// if (index == 3)
 		return (*this).w;
 }
 
