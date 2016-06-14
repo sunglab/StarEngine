@@ -51,7 +51,8 @@ class StarTexture
 #endif
     
     void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true); // for camera
-    void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texutre_id,bool resize=false);
+    void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texture_id,bool resize=false);
+    void createTEXTURE_RTF( unsigned int width, unsigned int height, unsigned int texture_id,unsigned int numOfMS);
     
     Texture* getTEXTURE(unsigned int texture_id);
 
