@@ -15,7 +15,6 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-//#inlcude <string>
 #include "./StarStructure.h"
 #include "../StarMain.h"
 

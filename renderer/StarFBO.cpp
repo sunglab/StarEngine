@@ -190,8 +190,8 @@ void StarFBO::createFBO_MS(bool depth, bool stencil, unsigned int width, unsigne
 		glGenFramebuffers(1, &fbo[fbo_idx]);
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo[fbo_idx]);
 
-		glGenRenderbuffers(1, &rboColor[fbo_idx]);
-		glBindRenderbuffer(GL_RENDERBUFFER, rboColor[fbo_idx]);
+	//	glGenRenderbuffers(1, &rboColor[fbo_idx]);
+	//	glBindRenderbuffer(GL_RENDERBUFFER, rboColor[fbo_idx]);
 
 //		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
 //		glRenderbufferStorage(GL_)
@@ -204,9 +204,8 @@ void StarFBO::createFBO_MS(bool depth, bool stencil, unsigned int width, unsigne
 			glRenderbufferStorageMultisample(GL_RENDERBUFFER, numOfMS, GL_DEPTH_COMPONENT, width, height);
 
 		}
+
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo[fbo_idx]);
-		// Attach ColorRenderbuffers
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rboColor[fbo_idx]);
 
 		if (depth)
 			// Attach DepthRenderbuffers
@@ -216,13 +215,14 @@ void StarFBO::createFBO_MS(bool depth, bool stencil, unsigned int width, unsigne
 	else  // MAIN FBO
 	{
 		fbo[fbo_idx] = 0;
+
 	}
 //	glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo[fbo_idx]);
 
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR) {
-		starLOG("\n\nOpenGL error TURNON 0: %x\n\n", err);
+		starLOG("\n\nOpenGL error MS: %x\n\n", err);
 	}
 
 }
@@ -245,8 +245,8 @@ void StarFBO::unbindFBO_Blit()
 
 void StarFBO::bindFBO_Blit(unsigned int from_fbo_idx, unsigned int to_fbo_idx)
 {
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, from_fbo_idx);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, to_fbo_idx);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo[from_fbo_idx]);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo[to_fbo_idx]);
 }
 #endif
 

@@ -192,6 +192,8 @@ void StarTexture::createTEXTURE_WINDOWS(void* array, unsigned int width, unsigne
 	glGenTextures(1, &texture[texture_id].texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
 
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, array);
+
 	if (repeat)
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -206,7 +208,6 @@ void StarTexture::createTEXTURE_WINDOWS(void* array, unsigned int width, unsigne
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, array);
 }
 #endif
 
@@ -254,12 +255,20 @@ void StarTexture::createTEXTURE_DATA(void* data, unsigned int camera_width, unsi
 
 void StarTexture::createTEXTURE_RTF(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, unsigned int numOfMS)
 {
+
+	int err;
+	while ((err = glGetError()) != GL_NO_ERROR) {
+		starLOG("\n\nOpenGL error MS TEXTURE second -3: %x\n\n", err);
+	}
 	texture[texture_id].texture_width = texture_width;
 	texture[texture_id].texture_height = texture_height;
 
 	glGenTextures(1, &texture[texture_id].texture_id);
-	glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, texture[texture_id].texture_id);
 
+	while ((err = glGetError()) != GL_NO_ERROR) {
+		starLOG("\n\nOpenGL error MS TEXTURE second -2: %x\n\n", err);
+	}
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -268,11 +277,14 @@ void StarTexture::createTEXTURE_RTF(unsigned int texture_width, unsigned int tex
 //	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGBA8, nWidth, nHeight, true);
 	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, numOfMS, GL_RGBA8, texture_width, texture_height, true);
 //	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, framebufferDesc.m_nRenderTextureId, 0);
+while ((err = glGetError()) != GL_NO_ERROR) {
+		starLOG("\n\nOpenGL error MS TEXTURE second -1: %x\n\n", err);
+	}
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, texture[texture_id].texture_id, 0);
 
-	int err;
+	//int err;
 	while ((err = glGetError()) != GL_NO_ERROR) {
-		starLOG("\n\nOpenGL error TURNON second fbos-1: %x\n\n", err);
+		starLOG("\n\nOpenGL error MS TEXTURE second 0: %x\n\n", err);
 	}
 
 }
@@ -293,7 +305,7 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
 		int err;
 		while ((err = glGetError()) != GL_NO_ERROR) {
-			starLOG("\n\nOpenGL error TURNON second fbos-1: %x\n\n", err);
+			starLOG("\n\nOpenGL error TURNON RTT???: %x\n\n", err);
 		}
 	}
 	else
