@@ -29,8 +29,6 @@
 		float dot(const Quaternion& in_Q);
 		void lerp(float t, const Quaternion& in_Q);
 
-
-
 	};
 	class Matrix3
 	{
@@ -44,7 +42,6 @@
 
 		Matrix3 operator*(const Matrix3& in_M)const;
 		friend Vec3 operator*(const Vec3& in_V, const Matrix3& in_M);
-
 	};
 
 	class Matrix
