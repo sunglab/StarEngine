@@ -48,15 +48,19 @@ class StarTexture
     void createTEXTURE_ANDROID(void* array,unsigned int width, unsigned int height, unsigned int texture_id, bool repeat = false);
 #elif _WIN32
     void createTEXTURE_WINDOWS( void* array, unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false); // for camera
+	void createTEXTURE_CUBE_WINDOWS(void** array, unsigned int width, unsigned int height, unsigned int texture_id);
 #endif
     
     void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true); // for camera
     void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texture_id,bool resize=false);
+
+#if (MAC||_WIN32)
     void createTEXTURE_RTF( unsigned int width, unsigned int height, unsigned int texture_id,unsigned int numOfMS);
-    
+#endif 
     Texture* getTEXTURE(unsigned int texture_id);
 
     void bindTEXTURE( unsigned int texture_unit, unsigned int texture_id);
+    void bindTEXTURE_CUBE( unsigned int texture_unit, unsigned int texture_id);
 	void unbindTEXTURE();
 
     void deleteTEXTURE(unsigned int texture_id);

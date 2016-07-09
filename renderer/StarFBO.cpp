@@ -62,7 +62,6 @@ StarFBO::StarFBO(unsigned int fbo_number, unsigned int vbo_number, unsigned int 
 #elif _WIN32
 	glGenRenderbuffers(1, &rboColor[0]);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
-
 #endif
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR) {

@@ -18,10 +18,9 @@ class StarFBO;
 class StarShader;
 class StarView
 {
-    
 protected:
     
-    int fbo_id[3]; // for rtt
+    int fbo_id[3]; // for rtt, prepared
     int vao_id;
     int vbo_id[10]; // position, uv, index, normal
     int err; // for opengl errors
@@ -59,17 +58,11 @@ protected:
     double now_tick;
     
 public:
-//   StarView( StarFBO* _starfbo, StarShader* _starshader, StarTouch* _startouch = 0)
-//    {
-//        starfbo = _starfbo;
-//        starshader = _starshader;
-//        startouch = _startouch;
-//    }
     
     void setStars(StarFBO* _starfbo, StarShader* _starshader, StarTouch* _startouch = 0)
     {
         offscreen = false;
-        
+
         starfbo = _starfbo;
         starshader = _starshader;
         startouch = _startouch;

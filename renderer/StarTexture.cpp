@@ -209,6 +209,30 @@ void StarTexture::createTEXTURE_WINDOWS(void* array, unsigned int width, unsigne
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
 }
+
+void StarTexture::createTEXTURE_CUBE_WINDOWS(void** array, unsigned int width, unsigned int height, unsigned int texture_id)
+{
+	texture[texture_id].texture_width = width;
+	texture[texture_id].texture_height = height;
+	glGenTextures(1, &texture[texture_id].texture_id);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texture[texture_id].texture_id);
+
+	for (int i = 0; i < 6; i++)
+	{
+		glTexImage2D(
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+			0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, array[i]);
+	}
+
+//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, array);
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE); // a new friend
+
+}
 #endif
 
 // it should know what it is the number of User defined texture ID ( userDefined TexID != computerDefined TexID);
@@ -253,6 +277,7 @@ void StarTexture::createTEXTURE_DATA(void* data, unsigned int camera_width, unsi
 }
 
 
+#if (MAC||_WIN32)
 void StarTexture::createTEXTURE_RTF(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, unsigned int numOfMS)
 {
 
@@ -288,9 +313,10 @@ while ((err = glGetError()) != GL_NO_ERROR) {
 	}
 
 }
+#endif
+
 void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool resize)
 {
-
 	texture[texture_id].texture_width = texture_width;
 	texture[texture_id].texture_height = texture_height;
 	if (!resize)
@@ -327,18 +353,14 @@ void StarTexture::unbindTEXTURE()
 }
 void StarTexture::bindTEXTURE(unsigned int texture_unit, unsigned int texture_id)
 {
-	int err = 0;
-	//    if(texture_unit)
 	glActiveTexture(texture_unit);
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		printf("\n\nOpenGL proof-00:%d err%x\n\n", texture_id, err);
-	}
-
 	glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		printf("\n\nOpenGL proof-01: %x\n\n", err);
-	}
+}
 
+void StarTexture::bindTEXTURE_CUBE(unsigned int texture_unit, unsigned int texture_id)
+{
+	glActiveTexture(texture_unit);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texture[texture_id].texture_id);
 }
 
 void StarTexture::deleteTEXTURE(unsigned int texture_id)
