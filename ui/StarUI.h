@@ -17,7 +17,7 @@
  */
 #define STRINGIFY(A)  #A
 
-#ifdef MAC
+#if MAC || _WIN32
 static const char button_onVertexShader[] =
 "#version 150\n"
 "in vec3 position;\n"
@@ -66,23 +66,23 @@ static const char* button_onFragmentShader= STRINGIFY(
 });
 #endif
 
-static const  float button_vertices[] = {
-    -1.0,-1.0,0.0,
-    1.0, -1.0,0.0,
-    -1.0, 1.0,0.0,
-    1.0, 1.0,0.0,
-};
-static const float button_texturevertices[] = {
-    0.0, 0.0,
-    1.0,0.0,
-    0.0,1.0,
-    1.0,1.0,
-};
-
-static const unsigned short button_indices[] =
-{
-    0,1,2,2,1,3
-};
+//static const  float button_vertices[] = {
+//    -1.0,-1.0,0.0,
+//    1.0, -1.0,0.0,
+//    -1.0, 1.0,0.0,
+//    1.0, 1.0,0.0,
+//};
+//static const float button_texturevertices[] = {
+//    0.0, 0.0,
+//    1.0,0.0,
+//    0.0,1.0,
+//    1.0,1.0,
+//};
+//
+//static const unsigned short button_indices[] =
+//{
+//    0,1,2,2,1,3
+//};
 
 class StarFBO;
 class StarTexture;

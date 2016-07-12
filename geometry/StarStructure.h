@@ -111,16 +111,6 @@ static GLfloat cube_UV[] = {
 	1.0,1.0
 };
 
-
-static GLfloat tri_Vertex[] = {
-	-1.0, -1.0, 1.0,
-	1.0, -1.0, 1.0,
-	-1.0, 1.0, 1.0,
-	-1.0, 1.0, 1.0,
-	1.0, -1.0, 1.0,
-	1.0, 1.0, 1.0
-};
-
 static GLfloat cube_Vertex[] = {
 
 
@@ -137,9 +127,6 @@ static GLfloat cube_Vertex[] = {
 	//1.0,1.0, 1.0,
 	//-1.0,1.0, -1.0,
 	//-1.0,1.0, 1.0
-
-
-
 
 	//RIGHT
 	1.0, -1.0, 1.0,
@@ -189,26 +176,9 @@ static GLfloat cube_Vertex[] = {
 	-1.0, 1.0, -1.0,
 
 
-	
-
-
-	
-	//-1., -1., -1.,
-	//1., -1., -1.,
-
-	//1.,  1., -1.,
-	//-1.,  1., -1.,
-
-	//-1., -1.,  1.,
-	//1., -1.,  1.,
-
-	//1.,  1.,  1.,
-	//-1.,  1.,  1.
-
 }; // 24
 
 static float cube_Normal[] = {
-
 	0.57    , 0.57      , 0.57,
 	0.57    , -0.57     , 0.57,
 	-0.57   , -0.57     , 0.57,
@@ -222,7 +192,6 @@ static float cube_Normal[] = {
 
 
 static GLushort cube_Index[] = {
-
 	0,2,1,
 	0,3,2,
 
@@ -243,18 +212,19 @@ static GLushort cube_Index[] = {
 }; // 36
 
 
-static const float rect_TexVertex[] = {
+static const float rect_UV_Vertex[] = {
 	0.0, 0.0,
 	1.0,0.0,
 	0.0,1.0,
 	1.0,1.0,
 };
-static const float rect_Vertex[] = {
+static const float rect_Pos_Vertex[] = {
 	-1.0,-1.0,0.0,
 	1.0, -1.0,0.0,
 	-1.0, 1.0,0.0,
 	1.0, 1.0,0.0,
 };
+
 static const float rect_Index[] = {
 	  0,1,2,2,1,3
 };
