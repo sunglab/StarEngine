@@ -347,6 +347,18 @@ void Vec3::lerp(float t, Vec3& in_Vec)
 	this->y = (1.-t)*(this->y) + (t)*(in_Vec.y);
 	this->z = (1.-t)*(this->z) + (t)*(in_Vec.z);
 }
+void Vec3::cubic(float t, Vec3& in_Vec)
+{
+	this->x = (1. - t*t*t)*(this->x) + (t*t*t)*(in_Vec.x);
+	this->y = (1. - t*t*t)*(this->y) + (t*t*t)*(in_Vec.y);
+	this->z = (1. - t*t*t)*(this->z) + (t*t*t)*(in_Vec.z);
+}
+void Vec3::cos(float t, Vec3& in_Vec)
+{
+	this->x = (1. - cosf(t*1.5707963))*(this->x) + cosf(t*1.5707963)*(in_Vec.x);
+	this->y = (1. - cosf(t*1.5707963))*(this->y) + cosf(t*1.5707963)*(in_Vec.y);
+	this->z = (1. - cosf(t*1.5707963))*(this->z) + cosf(t*1.5707963)*(in_Vec.z);
+}
 
 /*
  *      Vec4

@@ -15,6 +15,7 @@ class StarFBO
 {
     
 public:
+
     // IDs for fbo, vao and vbo
     unsigned int* fbo;
     unsigned int* rboColor;
@@ -43,9 +44,15 @@ public:
     void resizeRBO(unsigned int, unsigned int);
     
     void createVAO( unsigned int object_id);
-    void bindVAO( unsigned object_id);
+    void bindVAO( unsigned int object_id);
     void unbindVAO();
     
+	void createVAO_INDI(unsigned int* object_id);
+    void createVBO_INDI( unsigned int target, unsigned int size, void* data, unsigned int dataType, unsigned int* object_id);
+    void createVBOsub_INDI(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int dataType, unsigned int* object_id);
+    void bindVAO_INDI( unsigned int* object_id);
+    void bindVBO_INDI( unsigned int target, unsigned int* object_id);
+
 
     void createVBOsub(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int dataType, unsigned int object_id);
     void createVBO( unsigned int target, unsigned int size, void* data, unsigned int dataType, unsigned int object_id);

@@ -131,6 +131,8 @@ public:
     
     
     void lerp(float, Vec3&);
+    void cubic(float, Vec3&);
+	void cos(float, Vec3&);
     
     void zero()
     {(*this) = 0.f;}

@@ -359,6 +359,54 @@ void StarFBO::createVBOsub(unsigned int target, unsigned int offset, unsigned in
 	glBufferData(target, size, (void*)0, dataType);
 	glBufferSubData(target, offset, size, data);
 }
+void StarFBO::createVAO_INDI(unsigned int* object_id)
+{
+	// 'cuase it doesn't support opengl es 2.0
+#ifdef MAC
+	glGenVertexArrays(1, object_id);
+	glBindVertexArray(*object_id);
+#elif _WIN32
+	glGenVertexArrays(1, object_id);
+	glBindVertexArray(*object_id);
+#elif IOS
+	glGenVertexArraysOES(1, object_id);
+	glBindVertexArrayOES(*object_id);
+#elif ANDROID  // only supports VBO
+	//    glGenVertexArraysOES(1,&vao[object_id]);
+	//	glBindVertexArrayOES(vao[object_id]);
+#endif
+}
+
+void StarFBO::createVBOsub_INDI(unsigned int target, unsigned int offset, unsigned int size, void* data, unsigned int dataType, unsigned int* object_id)
+{
+	glGenBuffers(1, object_id);
+	glBindBuffer(target, *object_id);
+	glBufferData(target, size, (void*)0, dataType);
+	glBufferSubData(target, offset, size, data);
+}
+void StarFBO::createVBO_INDI(unsigned int target, unsigned int size, void* data, unsigned int dataType, unsigned int* object_id)
+{
+	glGenBuffers(1, object_id);
+	glBindBuffer(target, *object_id);
+	glBufferData(target, size, data, dataType);
+}
+void StarFBO::bindVAO_INDI(unsigned int* object_id)
+{
+#ifdef MAC
+	glBindVertexArray(*object_id);
+#elif _WIN32
+	glBindVertexArray(*object_id);
+#elif IOS
+	glBindVertexArrayOES(*object_id);
+#elif ANDROID
+	//    glBindVertexArrayOES(vao[object_id]);
+#endif
+}
+void StarFBO::bindVBO_INDI(unsigned int target, unsigned int* object_id)
+{
+	glBindBuffer(target, *object_id);
+}
+
 void StarFBO::bindVBO(unsigned int target, unsigned int object_id)
 {
 	glBindBuffer(target, vbo[object_id]);

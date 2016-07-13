@@ -82,6 +82,7 @@ void winprintf(const char *fmt, ...);
 #include "./ui/StarView.hpp"
 //#include "./ui/StarButton.h"
 //#include "./ui/StarBar.h"
+#include "./ai/StarAnt.h"
 
 #define STRINGIFY(A)  #A
 

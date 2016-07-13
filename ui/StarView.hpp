@@ -60,22 +60,23 @@ protected:
 /*    unsigned int fbo_height;
     unsigned int fbo_width;
  */   
-    double now_tick;
     
 public:
     
+    double now_tick;
     StarView* setStars(StarFBO* _starfbo, StarShader* _starshader, StarTouch* _startouch = 0)
     {
         starfbo = _starfbo;
         starshader = _starshader;
         startouch = _startouch;
-
+		now_tick = 0.0;
 		return this;
 	};
 
 	StarView* setShaderID(unsigned int _id)
 	{
 		shader_program = _id;
+
 		return this;
 	};
     
@@ -116,13 +117,20 @@ public:
     virtual void update()=0;
     virtual void render()=0;
     virtual void done()=0;
-    
 
+    /*
     virtual void CallbackFPS(){};
     virtual void CallbackTouchBegin(){};
     virtual void CallbackTouchMove(){};
     virtual void CallbackTouchEnd(){};
     virtual void CallbackTouchCancel(){};
+*/
+
+	virtual void CallbackFPS()=0;
+	virtual void CallbackTouchBegin()=0;
+	virtual void CallbackTouchMove()=0;
+	virtual void CallbackTouchEnd()=0;
+	virtual void CallbackTouchCancel()=0;
 };
 
 
