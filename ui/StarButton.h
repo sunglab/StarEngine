@@ -81,6 +81,7 @@ public:
 		Star_Interface = INTERFACE_CIRCLE;
 		vao_id = vbo_id[0] = vbo_id[1] = vbo_id[2] = vbo_id[3] = 0;
 		button_number = 0;
+        now_tick = 0.;
 		vanishing = false;
 		showing = false;
 	
@@ -177,18 +178,24 @@ public:
 		attribute_id[1] = 1;// glGetAttribLocation(shader_program, "inputTextureCoordinate");
         
 
-        //starfbo->createVBO_INDI(GL_ARRAY_BUFFER, sizeof(Vec3)*button_position.size(), (void*)&button_position[0], GL_STATIC_DRAW, &vbo_id[0]);
-        //glEnableVertexAttribArray(attribute_id[0]);
-        //glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
+//        starfbo->createVBO_INDI(GL_ARRAY_BUFFER, sizeof(Vec3)*button_position.size(), (void*)&button_position[0], GL_STATIC_DRAW, &vbo_id[0]);
+//        glEnableVertexAttribArray(attribute_id[0]);
+//        glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
         //
         //starfbo->createVBO_INDI(GL_ARRAY_BUFFER, sizeof(Vec2)*button_uv.size(), (void*)&button_uv[0], GL_STATIC_DRAW, &vbo_id[1]);
         //glEnableVertexAttribArray(attribute_id[1]);
         //glVertexAttribPointer(attribute_id[1], 2, GL_FLOAT, 0, 0, 0);
         //
 
+        starLOG("test %d\n", vbo_id[0]);
 		starfbo->createVBOsub_INDI(GL_ARRAY_BUFFER, 0, sizeof(Vec3)*button_position.size(), (void*)&button_position[0], GL_DYNAMIC_DRAW, &vbo_id[0]);
 		glEnableVertexAttribArray(attribute_id[0]);
 		glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
+        
+        starLOG("test %d\n", vbo_id[1]);
+        int err;
+        while ((err = glGetError()) != GL_NO_ERROR)
+            printf("\n\nOpenGL error button: %x %d\n\n",err, vbo_id[0]);
 
 		starfbo->createVBO_INDI(GL_ARRAY_BUFFER, sizeof(Vec2)*button_uv.size(), (void*)&button_uv[0], GL_STATIC_DRAW, &vbo_id[1]);
 		glEnableVertexAttribArray(attribute_id[1]);
@@ -247,7 +254,7 @@ public:
 
 		for (int i = 0; i < button_number; i++)
 		{
-//			starLOG(" hmm?? ");
+			starLOG(" hmm now_tick %f\n?? ", now_tick);
 			starAnt[i].work(now_tick);
 		}
 
@@ -287,21 +294,27 @@ public:
 //        glUniformMatrix4fv(shader_program, 1, GL_FALSE,final_matrix->s );
         glUniformMatrix4fv(a, 1, GL_FALSE, final_matrix.s);
         
-        int err;
-        while ((err = glGetError()) != GL_NO_ERROR)
-            printf("\n\nOpenGL error button: %x\n\n",err);
-        
-        
         glEnable(GL_BLEND);
 //        glBlendFunc(GL_ONE,GL_ZERO);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
-		starfbo->bindVBO(GL_ARRAY_BUFFER, vbo_id[0]);
+ 
+        
+//        starfbo->bindVBO(GL_ARRAY_BUFFER, VBO_FIRST_BACK_PARTICLE_COLOR);
+//        glEnableVertexAttribArray(h_Attributes[ATTRIBUTES_FIRST_BACK_PARTICLE_COLOR]);
+//        glVertexAttribPointer(h_Attributes[ATTRIBUTES_FIRST_BACK_PARTICLE_COLOR], 4, GL_FLOAT, 0, 0,0);
+//        glBufferData(GL_ARRAY_BUFFER, sizeof(Color4)*particle_max*TAIL, &particle_color[0], GL_DYNAMIC_DRAW);
+        
+		starfbo->bindVBO_INDI(GL_ARRAY_BUFFER, &vbo_id[0]);
+        int err;
+        while ((err = glGetError()) != GL_NO_ERROR)
+            printf("\n\nOpenGL error button: %x %d\n\n",err, vbo_id[0]);
 		glEnableVertexAttribArray(attribute_id[0]);
+      
 		glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
-	//	glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3)*bubble_max*POINTS_FOR_VERT, &bubble_position_show[0], GL_DYNAMIC_DRAW);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3)*button_position.size(), (void*)&button_position[0], GL_DYNAMIC_DRAW);
 
+      
 #ifdef ANDROID
         starfbo->bindVBO(GL_ARRAY_BUFFER,vbo_id[0]);
         glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
@@ -315,7 +328,9 @@ public:
 #endif
         
         glDrawElements(GL_TRIANGLES,button_index.size(), GL_UNSIGNED_SHORT ,(void*)0);
+        
 
+        
 		glDisable(GL_BLEND);
        // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
        // glEnable(GL_DEPTH_TEST);

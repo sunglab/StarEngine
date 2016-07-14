@@ -65,8 +65,8 @@ public:
 		{
 
 			remaining_time -= tick;
-			//src_position->lerp((setting_time - remaining_time) / setting_time, dst_position);
-			src_position->cubic((setting_time - remaining_time) / setting_time, dst_position);
+			src_position->lerp((float)(setting_time - remaining_time) / setting_time, dst_position);
+		//	src_position->cubic((setting_time - remaining_time) / setting_time, dst_position);
 		}
 	};
 };
