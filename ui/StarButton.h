@@ -31,6 +31,11 @@ typedef enum
 	INTERFACE_RECT_HORIZONTAL
 }STAR_INTERFACE;
 
+class StarButtonDelegate
+{
+public:
+	virtual void Callback_Press(int idx)=0;
+};
 class StarButton:public StarView
 {
 
@@ -39,6 +44,8 @@ public:
 	/*
 	* Button Properties
 	*/
+	StarButtonDelegate* delegate;
+
 	std::vector<Vec3> button_position;
 	std::vector<Vec3> button_center;
 	std::vector<Vec3> button_src;
@@ -56,7 +63,6 @@ public:
 	unsigned int vbo_id[4];
 
 	std::vector<StarAnt<Vec3>> starAnt;
-
 
 	bool showing;
 	bool vanishing;
@@ -76,9 +82,10 @@ public:
 		};
 	}
 
-	StarButton()
+	StarButton(StarButtonDelegate* _delegate=NULL)
 	{
-		Star_Interface = INTERFACE_CIRCLE;
+		delegate = _delegate;
+
 		vao_id = vbo_id[0] = vbo_id[1] = vbo_id[2] = vbo_id[3] = 0;
 		button_number = 0;
         now_tick = 0.;
@@ -287,8 +294,6 @@ public:
         texture_id[0] = glGetUniformLocation(shader_program, "texture0");
         glUniform1i(texture_id[0],texture_name[0]);
         
-//        unifrom_id = glGetUniformLocation(shader_program,"backColor");
-        
 //        Matrix_Identity(final_matrix);
        int a =  glGetUniformLocation(shader_program,"finalM");
 //        glUniformMatrix4fv(shader_program, 1, GL_FALSE,final_matrix->s );
@@ -297,13 +302,6 @@ public:
         glEnable(GL_BLEND);
 //        glBlendFunc(GL_ONE,GL_ZERO);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
- 
-        
-//        starfbo->bindVBO(GL_ARRAY_BUFFER, VBO_FIRST_BACK_PARTICLE_COLOR);
-//        glEnableVertexAttribArray(h_Attributes[ATTRIBUTES_FIRST_BACK_PARTICLE_COLOR]);
-//        glVertexAttribPointer(h_Attributes[ATTRIBUTES_FIRST_BACK_PARTICLE_COLOR], 4, GL_FLOAT, 0, 0,0);
-//        glBufferData(GL_ARRAY_BUFFER, sizeof(Color4)*particle_max*TAIL, &particle_color[0], GL_DYNAMIC_DRAW);
         
 		starfbo->bindVBO_INDI(GL_ARRAY_BUFFER, &vbo_id[0]);
         int err;
@@ -326,7 +324,7 @@ public:
         
         starfbo->bindVBO(GL_ELEMENT_ARRAY_BUFFER, vbo_id[2]);
 #endif
-        
+
         glDrawElements(GL_TRIANGLES,button_index.size(), GL_UNSIGNED_SHORT ,(void*)0);
         
 
@@ -344,15 +342,53 @@ void done()
 }
 
 /*
- *  Callback Functions 
+* Callback Functions (sending)
+*/
+void pressed(int idx)
+{
+	delegate->Callback_Press(idx);
+}
+
+/*
+ *  Callback Functions  (receiving)
  */
 void CallbackFPS() 
 {
 	
 };
 
+bool test(Vec3* center,Vec2* size, Vec2* touch)
+{
+
+	//if ((rect->x < touch->x) && (rect->x + rect->z > touch->x))
+	//	if ((rect->y < touch->y) && (rect->y + rect->w > touch->y))
+	//		return true;
+
+	if ( abs(center->x-touch->x) < size->x*0.5)
+		if (abs(center->y - touch->y < size->y*0.5))
+			return true;
+	return false;
+}
 void CallbackTouchBegin() 
 {
+	/*for (int i = 0; i < startouch->fingers; i++)
+	{
+	  		
+	}*/
+	for (int i = 0; i < button_number; i++)
+	{
+			//Vec4 rect = Vec4(
+			//(Vec2(button_center[i].x,button_center[i].y) - button_size[i] * 0.5).x
+			//(Vec2(button_center[i].x, button_center[i].y) - button_size[i] * 0.5).y
+			//	, button_size[i].x, button_size[i].y);
+
+			if (test(&button_center[i], &button_size[i], &(startouch->nowPos[i])))
+			{
+				pressed(i);
+				break;
+			}
+	}
+
 	if (showing)
 	{
 		show();
@@ -361,6 +397,7 @@ void CallbackTouchBegin()
 	{
 		vanish();
 	}
+
 };
 
 void CallbackTouchMove() 

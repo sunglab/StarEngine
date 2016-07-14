@@ -21,7 +21,6 @@
 class StarTouchDelegate
 {
     public:
-    
     virtual void CallbackTouchEnd(){};
     virtual void CallbackTouchBegin(){};
     virtual void CallbackTouchMove(){};
