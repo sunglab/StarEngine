@@ -64,6 +64,7 @@ public:
     {(*this) = 0.f;}
 };
 
+
 class Vec3
 {
 public:
@@ -134,6 +135,11 @@ public:
     void cubic(float, Vec3&);
 	void cos(float, Vec3&);
     
+/*	Vec4 xyzw()
+	{
+		return Vec4(this->x, this->y, this->z, 1.0);
+		}
+	*/
     void zero()
     {(*this) = 0.f;}
     
@@ -212,8 +218,9 @@ public:
     __VERTEX__TYPE__ lengthSquared()const;
     __VERTEX__TYPE__ dot(const Vec4&)const;
     void normalize();
-    Vec4 cross()const;
-    
+
+//    Vec4 cross()const;
+	Vec3 xyz()const;
     
     void lerp(float, Vec3&);
     void lerp(float, Vec4&);

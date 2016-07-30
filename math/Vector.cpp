@@ -561,6 +561,11 @@ void Vec4::normalize()
 	(*this) /= length();
 }
 
+Vec3 Vec4::xyz()const
+{
+	return Vec3(this->x, this->y, this->z);
+}
+
 void Vec4::lerp(float t, Vec3& in_Vec)
 {
 	this->x = (1.-t)*(this->x) + (t)*(in_Vec.x);

@@ -37,7 +37,6 @@ StarFBO::StarFBO()
 	}
 
 #endif
-
 }
 
 StarFBO::StarFBO(unsigned int fbo_number, unsigned int vbo_number, unsigned int vao_number)

@@ -16,10 +16,16 @@ Vec4 Matrix::operator*(const Vec4& in_V) const
 
 	Matrix_MxM(out_M,*this,in_M);
 */
+	 //row vector
 	 return Vec4(s[0]*in_V.x + s[4]*in_V.y + s[8]*in_V.z  + s[12]*in_V.w,
                    s[1]*in_V.x + s[5]*in_V.y + s[9]*in_V.z  + s[13]*in_V.w,
                    s[2]*in_V.x + s[6]*in_V.y + s[10]*in_V.z + s[14]*in_V.w,
                    s[3]*in_V.x + s[7]*in_V.y + s[11]*in_V.z + s[15]*in_V.w);
+
+	 //return Vec4(s[0] * in_V.x + s[1] * in_V.y + s[2] * in_V.z + s[3] * in_V.w,
+		// s[4] * in_V.x + s[5] * in_V.y + s[6] * in_V.z + s[7] * in_V.w,
+		// s[8] * in_V.x + s[9] * in_V.y + s[10] * in_V.z + s[11] * in_V.w,
+		// s[12] * in_V.x + s[13] * in_V.y + s[14] * in_V.z + s[15] * in_V.w);
 
 }
 Matrix Matrix::operator*(const Matrix& in_M)const
