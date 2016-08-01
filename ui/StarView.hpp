@@ -155,9 +155,7 @@ public:
 
 };
 
-
 // TEMPLATE
-
 //void CallbackFPS() {};
 //void CallbackTouchBegin() {};
 //void CallbackTouchMove() {};
