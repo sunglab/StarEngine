@@ -131,6 +131,7 @@ public:
 	void normalize(); Vec3 cross(const Vec3& in_V)const;
     
     
+	Vec2 xy();
     void lerp(float, Vec3&);
     void cubic(float, Vec3&);
 	void cos(float, Vec3&);
@@ -220,7 +221,9 @@ public:
     void normalize();
 
 //    Vec4 cross()const;
-	Vec3 xyz()const;
+
+	Vec2 xy();
+	Vec3 xyz();
     
     void lerp(float, Vec3&);
     void lerp(float, Vec4&);

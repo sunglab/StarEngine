@@ -341,6 +341,11 @@ Vec3 Vec3::cross(const Vec3& in_Vec)const
 	return Vec3((y * in_Vec.z - z * in_Vec.y), (z * in_Vec.x - x * in_Vec.z), (x * in_Vec.y - y * in_Vec.x));
 }
 
+Vec2 Vec3::xy()
+{
+	return Vec2(x, y);
+}
+
 void Vec3::lerp(float t, Vec3& in_Vec)
 {
 	this->x = (1.-t)*(this->x) + (t)*(in_Vec.x);
@@ -561,7 +566,12 @@ void Vec4::normalize()
 	(*this) /= length();
 }
 
-Vec3 Vec4::xyz()const
+Vec2 Vec4::xy()
+{
+	return Vec2(this->x, this->y);
+}
+
+Vec3 Vec4::xyz()
 {
 	return Vec3(this->x, this->y, this->z);
 }
