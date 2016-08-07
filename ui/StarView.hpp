@@ -147,11 +147,21 @@ public:
     virtual void CallbackTouchCancel(){};
 */
 
-	virtual void CallbackFPS()=0;
-	virtual void CallbackTouchBegin()=0;
-	virtual void CallbackTouchMove()=0;
-	virtual void CallbackTouchEnd()=0;
-	virtual void CallbackTouchCancel()=0;
+	//virtual void CallbackFPS()=0;
+	//virtual void CallbackTouchBegin()=0;
+	//virtual void CallbackTouchMove()=0;
+	//virtual void CallbackTouchEnd()=0;
+	//virtual void CallbackTouchCancel()=0;
+
+	
+	void CallbackFPS(){};
+	void CallbackTouchBegin(){};
+	void CallbackTouchMove(){};
+	void CallbackTouchEnd(){};
+	void CallbackTouchCancel(){};
+	
+
+
 
 };
 

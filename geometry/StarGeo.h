@@ -26,6 +26,7 @@ class StarSphere
 public:
     virtual Vec3 generate(const Vec2& pos, float r) const
     {
+
         float u = pos.x, v = pos.y;
         float x = r * sin(u) * cos(v);
         float y = r * cos(u);
