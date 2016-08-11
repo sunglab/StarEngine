@@ -424,7 +424,7 @@ void Matrix3_Identity(Matrix3& out_M)
     
     out_M.s[6]=0.;
     out_M.s[7]=0.;
-    out_M.s[8]=0.;
+    out_M.s[8]=1.;
 }
 void Matrix3_Inverse(Matrix3& out_M, const Matrix3& in_M)
 {

@@ -24,9 +24,15 @@ class StarSphere
 {
    // generate pos 0.0 to 1.0
 public:
-    virtual Vec3 generate(const Vec2& pos, float r) const
+	Vec2 domain(float x, float y,float side)
+	{
+		//float pi_2 = 6.28318548;
+		return Vec2(x*M_PI/(side - 1.), y*2.*M_PI/(side - 1.));
+	//	return Vec2(x*2.*M_PI/(side - 1.), y*2.*M_PI/(side - 1.));
+		//return Vec2(x*pi_2/(side - 1.), y*pi_2/(side - 1.));
+	}
+    virtual Vec3 generate(const Vec2& pos, float r = 1.0) const
     {
-
         float u = pos.x, v = pos.y;
         float x = r * sin(u) * cos(v);
         float y = r * cos(u);
