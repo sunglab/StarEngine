@@ -57,6 +57,7 @@ protected:
     
 	float animation_time;
 
+	float heightOfnearPlane;
 /*    unsigned int fbo_height;
     unsigned int fbo_width;
  */   
@@ -71,6 +72,13 @@ public:
         startouch = _startouch;
 		now_tick = 0.0;
 		animation_time = 0.0;
+
+		for (int i = 0; i < 10; i++)
+		{
+			attribute_id[i] = i;
+			uniform_id[i] = 0;
+		}
+
 		return this;
 	};
 
@@ -131,6 +139,10 @@ public:
 		return this;
     };
 
+	void setHeightOfNP(float honp)
+	{
+		heightOfnearPlane = honp;
+	}
 	/*
 	* Overriding
 	*/

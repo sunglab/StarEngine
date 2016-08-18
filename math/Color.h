@@ -116,6 +116,7 @@ class Color4
         r = rgb;
         g = rgb;
         b = rgb;
+        a = rgb;
         
     }
     Color4(const __COLOR__TYPE__ _r,const __COLOR__TYPE__ _g,const __COLOR__TYPE__ _b,const __COLOR__TYPE__ _a)
