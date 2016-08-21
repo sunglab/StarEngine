@@ -9,12 +9,12 @@
 #ifndef StarEngine_Main_Header
 #define StarEngine_Main_Header
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// Case IOS //////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
  #ifdef IOS
-
- #import "GLView.h"
+#import "GLView.h"
 #import <UIKit/UIKit.h>
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
@@ -31,7 +31,7 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #include <stdlib.h>
-//#include <iostream>
+#include <iostream>
 #include <string.h>
 #define  LOG_TAG    "StarEngine"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
@@ -83,6 +83,7 @@ void winprintf(const char *fmt, ...);
 //#include "./ui/StarButton.h"
 //#include "./ui/StarBar.h"
 #include "./ai/StarAnt.h"
+
 
 #define STRINGIFY(A)  #A
 

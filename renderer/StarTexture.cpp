@@ -160,14 +160,18 @@ void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, boo
 }
 #elif ANDROID
 
+
 void StarTexture::createTEXTURE_ANDROID(void* array, unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat)
 {
+    starLOG("hmm1\n");
 	texture[texture_id].texture_width = texture_width;
 	texture[texture_id].texture_height = texture_height;
 
+    starLOG("hmm1\n");
 	glGenTextures(1, &texture[texture_id].texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
 
+    starLOG("hmm1\n");
 	if (repeat)
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -177,14 +181,19 @@ void StarTexture::createTEXTURE_ANDROID(void* array, unsigned int texture_width,
 	}
 	else
 	{
-		glGenerateMipmap(GL_TEXTURE_2D);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//		glGenerateMipmap(GL_TEXTURE_2D);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
 
+    starLOG("hmm1\n");
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, array);
+    
+    starLOG("hmm2\n");
 
 }
 #elif _WIN32

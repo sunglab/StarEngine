@@ -27,6 +27,8 @@ protected:
  //   int vbo_id[10]; // position, uv, index, normal
     int err; // for opengl errors
     
+    GLuint vs_id;
+    GLuint fs_id;
     GLuint shader_program;
     
 	/*
@@ -112,11 +114,12 @@ public:
 	}
 	StarView* setMatrix(Matrix& m)
 	{
-		final_matrix = Matrix{
-			m.s[0],m.s[1],m.s[2],m.s[3],
-			m.s[4],m.s[5],m.s[6],m.s[7],
-			m.s[8],m.s[9],m.s[10],m.s[11],
-			m.s[12],m.s[13],m.s[14],m.s[15] };
+//		final_matrix = Matrix{
+//			m.s[0],m.s[1],m.s[2],m.s[3],
+//			m.s[4],m.s[5],m.s[6],m.s[7],
+//			m.s[8],m.s[9],m.s[10],m.s[11],
+//			m.s[12],m.s[13],m.s[14],m.s[15] };
+        final_matrix = m;
 
 		return this;
 	}
