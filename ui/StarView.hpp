@@ -30,7 +30,16 @@ protected:
     GLuint vs_id;
     GLuint fs_id;
     GLuint shader_program;
-    
+
+	std::vector<Vec3>	rect_pos;
+	std::vector<Vec2> rect_uv;
+	std::vector <Vec3> rect_norm;
+	std::vector <Color3> rect_color;
+	std::vector<unsigned short> rect_idx;
+	std::vector<float> rect_factor;
+
+	Matrix3 norm_matrix;
+
 	/*
 	* Handle from GLSL
 	*/
@@ -66,7 +75,8 @@ protected:
     
 public:
     
-    double now_tick;
+    double now_tick; 
+
     StarView* setStars(StarFBO* _starfbo, StarShader* _starshader, StarTouch* _startouch = 0)
     {
         starfbo = _starfbo;
@@ -74,6 +84,7 @@ public:
         startouch = _startouch;
 		now_tick = 0.0;
 		animation_time = 0.0;
+		heightOfnearPlane = 0.0;
 
 		for (int i = 0; i < 10; i++)
 		{
