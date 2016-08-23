@@ -200,17 +200,17 @@ public:
 
 
 
-#if(_WIN32 | MAC)
-attribute_id[0] = 0;
-attribute_id[1] = 1;
-attribute_id[2] = 3;
-
-#else
-attribute_id[0] = glGetAttribLocation(shader_program, "position");
-attribute_id[1] = glGetAttribLocation(shader_program, "color");
-//  attribute_id[2]= glGetAttribLocation(shader_program, "inputTextureCoordinate");
-attribute_id[2] = glGetAttribLocation(shader_program, "factor");
-#endif
+//#if(_WIN32 | MAC)
+//attribute_id[0] = 0;
+//attribute_id[1] = 1;
+//attribute_id[2] = 3;
+//
+//#else
+//attribute_id[0] = glGetAttribLocation(shader_program, "position");
+//attribute_id[1] = glGetAttribLocation(shader_program, "color");
+////  attribute_id[2]= glGetAttribLocation(shader_program, "inputTextureCoordinate");
+//attribute_id[2] = glGetAttribLocation(shader_program, "factor");
+//#endif
 
 
 //starfbo->createVAO(VAO_SMOKE);
