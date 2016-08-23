@@ -199,9 +199,20 @@ public:
 //void CallbackTouchCancel() {};
 
 
-//attribute_id[0] = 0;
-//attribute_id[1] = 1;
-//
+
+#if(_WIN32 | MAC)
+attribute_id[0] = 0;
+attribute_id[1] = 1;
+attribute_id[2] = 3;
+
+#else
+attribute_id[0] = glGetAttribLocation(shader_program, "position");
+attribute_id[1] = glGetAttribLocation(shader_program, "color");
+//  attribute_id[2]= glGetAttribLocation(shader_program, "inputTextureCoordinate");
+attribute_id[2] = glGetAttribLocation(shader_program, "factor");
+#endif
+
+
 //starfbo->createVAO(VAO_SMOKE);
 //
 //rect_pos.clear();
@@ -225,22 +236,22 @@ public:
 //rect_idx.push_back(rect_Idx_Vertex[4]);
 //rect_idx.push_back(rect_Idx_Vertex[5]);
 //
-//starfbo->createVBO(GL_ARRAY_BUFFER, sizeof(Vec3)*rect_pos.size(), (void*)&rect_pos[0], GL_STATIC_DRAW, VBO_SMOKE_POSITION);
-//glEnableVertexAttribArray(attribute_id[0]);
-//glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
-//
-//starfbo->createVBO(GL_ARRAY_BUFFER, sizeof(Vec2)*rect_uv.size(), (void*)&rect_uv[0], GL_DYNAMIC_DRAW, VBO_SMOKE_UV);
-//glEnableVertexAttribArray(attribute_id[1]);
-//glVertexAttribPointer(attribute_id[1], 2, GL_FLOAT, 0, 0, 0);
-
 //starfbo->createVBOsub(GL_ARRAY_BUFFER, 0, sizeof(Vec3)*rect_pos.size(), (void*)&rect_pos[0], GL_DYNAMIC_DRAW, VBO_SMOKE_POSITION);
 //glEnableVertexAttribArray(attribute_id[0]);
 //glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
-
-//starfbo->createVBOsub(GL_ARRAY_BUFFER, 0, sizeof(Color4)*rect_uv.size(), (void*)&rect_color[0], GL_DYNAMIC_DRAW, VBO_SMOKE_UV);
+//
+//starfbo->createVBO(GL_ARRAY_BUFFER, sizeof(Vec2)*rect_uv.size(), (void*)&rect_uv[0], GL_STATIC_DRAW, VBO_SMOKE_UV);
 //glEnableVertexAttribArray(attribute_id[1]);
 //glVertexAttribPointer(attribute_id[1], 2, GL_FLOAT, 0, 0, 0);
-
+//
+//starfbo->createVBOsub(GL_ARRAY_BUFFER, 0, sizeof(Vec3)*rect_pos.size(), (void*)&rect_pos[0], GL_DYNAMIC_DRAW, VBO_SMOKE_POSITION);
+//glEnableVertexAttribArray(attribute_id[0]);
+//glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
+//
+///*starfbo->createVBOsub(GL_ARRAY_BUFFER, 0, sizeof(Color4)*rect_uv.size(), (void*)&rect_color[0], GL_DYNAMIC_DRAW, VBO_SMOKE_UV);
+//glEnableVertexAttribArray(attribute_id[1]);
+//glVertexAttribPointer(attribute_id[1], 2, GL_FLOAT, 0, 0, 0);
+//*/
 //starfbo->createVBO(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short)*rect_idx.size(), (void*)&rect_idx[0], GL_STATIC_DRAW, VBO_SMOKE_INDEX);
 
 /*
