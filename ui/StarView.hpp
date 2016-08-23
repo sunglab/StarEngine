@@ -12,6 +12,20 @@
 #include <stdio.h>
 #include "../StarMain.h"
 
+enum
+{
+	SETVIEW_ONE_RECT,
+	SETVIEW_FEW_RECTS,
+
+	SETVIEW_ONE_SPHERE,
+	SETVIEW_FEW_SPHERE,
+
+	SETVIEW_ONE_CUBE,
+	SETVIEW_FEW_CUBES,
+
+	TOTAL_SETVIEW,
+};
+
 //#include "StarString.h" // connect with
 class StarTexture;
 class StarFBO;
@@ -34,7 +48,7 @@ protected:
 	std::vector<Vec3>	rect_pos;
 	std::vector<Vec2> rect_uv;
 	std::vector <Vec3> rect_norm;
-	std::vector <Color3> rect_color;
+	std::vector <Color4> rect_color;
 	std::vector<unsigned short> rect_idx;
 	std::vector<float> rect_factor;
 
@@ -104,6 +118,70 @@ public:
 	void setTime(float _time)
 	{
 		animation_time = _time;
+	}
+
+	void setView(unsigned int SETTING = 0, unsigned int NUMBER = 1)
+	{
+		switch (SETTING)
+		{
+		case SETVIEW_ONE_RECT:
+		{
+
+			rect_pos.clear();
+			rect_uv.clear();
+			rect_idx.clear();
+
+			rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2]));
+			rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], rect_Pos_Vertex[5]));
+			rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], rect_Pos_Vertex[8]));
+			rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11]));
+
+			rect_uv.push_back(Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
+			rect_uv.push_back(Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
+			rect_uv.push_back(Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
+			rect_uv.push_back(Vec2(rect_UV_Vertex[6], rect_UV_Vertex[7]));
+
+			rect_idx.push_back(rect_Idx_Vertex[0]);
+			rect_idx.push_back(rect_Idx_Vertex[1]);
+			rect_idx.push_back(rect_Idx_Vertex[2]);
+			rect_idx.push_back(rect_Idx_Vertex[3]);
+			rect_idx.push_back(rect_Idx_Vertex[4]);
+			rect_idx.push_back(rect_Idx_Vertex[5]);
+
+			break;
+
+		}
+		case SETVIEW_FEW_RECTS:
+		{
+			rect_pos.clear();
+			rect_uv.clear();
+			rect_idx.clear();
+
+			for (int i = 0; i < NUMBER; i++)
+			{
+				rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2]));
+				rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], rect_Pos_Vertex[5]));
+				rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], rect_Pos_Vertex[8]));
+				rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11]));
+
+				rect_uv.push_back(Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
+				rect_uv.push_back(Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
+				rect_uv.push_back(Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
+				rect_uv.push_back(Vec2(rect_UV_Vertex[6], rect_UV_Vertex[7]));
+
+				rect_idx.push_back(rect_Idx_Vertex[0]);
+				rect_idx.push_back(rect_Idx_Vertex[1]);
+				rect_idx.push_back(rect_Idx_Vertex[2]);
+				rect_idx.push_back(rect_Idx_Vertex[3]);
+				rect_idx.push_back(rect_Idx_Vertex[4]);
+				rect_idx.push_back(rect_Idx_Vertex[5]);
+
+			}
+			break;
+		}
+
+		}
+
 	}
 
   //  StarView* setFBOsize(float _fbo_width,float _fbo_height) // in need ?
