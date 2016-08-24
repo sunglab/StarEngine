@@ -15,7 +15,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include "./StarStructure.h"
+//#include "./StarStructure.h"
 #include "../StarMain.h"
 
 

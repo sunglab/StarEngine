@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include "../StarMain.h"
-
+//#include "../geometry/StarStructure.h"
 enum
 {
 	SETVIEW_ONE_RECT,
