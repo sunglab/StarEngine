@@ -46,6 +46,7 @@ protected:
     GLuint shader_program;
 
 	std::vector<Vec3>	rect_pos;
+	std::vector<Vec3>	rect_pos_save;
 	std::vector<Vec2> rect_uv;
 	std::vector <Vec3> rect_norm;
 	std::vector <Color4> rect_color;
@@ -146,6 +147,17 @@ public:
                 rect_idx.push_back(rect_Idx_Vertex[3]);
                 rect_idx.push_back(rect_Idx_Vertex[4]);
                 rect_idx.push_back(rect_Idx_Vertex[5]);
+
+				rect_color.push_back(Color4(1.0));
+				rect_color.push_back(Color4(1.0));
+				rect_color.push_back(Color4(1.0));
+				rect_color.push_back(Color4(1.0));
+
+				rect_factor.push_back(0.0);
+				rect_factor.push_back(0.0);
+				rect_factor.push_back(0.0);
+				rect_factor.push_back(0.0);
+
                 
                 break;
                 
@@ -169,6 +181,11 @@ public:
                     rect_color.push_back(Color4(1.0));
                     rect_color.push_back(Color4(1.0));
                     
+					rect_factor.push_back(0.0);
+					rect_factor.push_back(0.0);
+					rect_factor.push_back(0.0);
+					rect_factor.push_back(0.0);
+
                     rect_uv.push_back(Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
                     rect_uv.push_back(Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
                     rect_uv.push_back(Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
