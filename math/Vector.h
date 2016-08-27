@@ -100,6 +100,7 @@ public:
     {
         x = in_V.x;
         y = in_V.y;
+		z = 0.0;
     }
     
     Vec3 operator+(const Vec3& in_Vector)const;
