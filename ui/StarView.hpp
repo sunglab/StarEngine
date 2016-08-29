@@ -52,6 +52,7 @@ protected:
 	std::vector <Color4> rect_color;
 	std::vector<unsigned short> rect_idx;
 	std::vector<float> rect_factor;
+    std::vector<bool> rect_factor_inc;
 
 	Matrix3 norm_matrix;
 
@@ -158,6 +159,10 @@ public:
 				rect_factor.push_back(0.0);
 				rect_factor.push_back(0.0);
 
+                rect_factor.push_back(false);
+                rect_factor.push_back(false);
+                rect_factor.push_back(false);
+                rect_factor.push_back(false);
                 
                 break;
                 
@@ -169,6 +174,7 @@ public:
                 rect_color.clear();
                 rect_idx.clear();
                 
+                srand((unsigned)time(NULL));
                 for (int i = 0; i < NUMBER; i++)
                 {
                     rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2]));
@@ -181,11 +187,18 @@ public:
                     rect_color.push_back(Color4(1.0));
                     rect_color.push_back(Color4(1.0));
                     
-					rect_factor.push_back(0.0);
-					rect_factor.push_back(0.0);
-					rect_factor.push_back(0.0);
-					rect_factor.push_back(0.0);
-
+                    float f = rand()%1000 *0.001;
+                    
+                    rect_factor.push_back(f);
+                    rect_factor.push_back(f);
+                    rect_factor.push_back(f);
+                    rect_factor.push_back(f);
+                    
+                    rect_factor_inc.push_back(i%2);
+                    rect_factor_inc.push_back(i%2);
+                    rect_factor_inc.push_back(i%2);
+                    rect_factor_inc.push_back(i%2);
+                    
                     rect_uv.push_back(Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
                     rect_uv.push_back(Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
                     rect_uv.push_back(Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
