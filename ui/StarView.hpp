@@ -235,21 +235,19 @@ public:
 		return this;
 	}
     //StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_id,float width,float height unsigned int _texture_number=0)
-    StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_id=79,unsigned int _texture_number=0)
+    StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_name=79,unsigned int _texture_number=0)
     {
 	/*	texture_height = height;
 		texture_width = width;*/
 		
         startexture =_startexture;
 
-		if (_texture_id == 79)
+		if (_texture_name == 79)
 		{
 			//starLOG("yes null\n");
 			return this;
 		}
-
-        texture_id[_texture_number] = 0;
-		texture_name[_texture_number] = _texture_id;
+		texture_name[_texture_number] = _texture_name;
 		return this;
     };
 
