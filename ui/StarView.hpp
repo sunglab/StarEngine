@@ -19,6 +19,8 @@ enum
 
 	SETVIEW_ONE_SPHERE,
 	SETVIEW_FEW_SPHERE,
+    
+    SETVIEW_LINES,
 
 	SETVIEW_ONE_CUBE,
 	SETVIEW_FEW_CUBES,
@@ -47,12 +49,16 @@ protected:
 
 	std::vector<Vec3>	rect_pos;
 	std::vector<Vec3>	rect_pos_save;
+    std::vector<Vec3> rect_power;
 	std::vector<Vec2> rect_uv;
 	std::vector <Vec3> rect_norm;
 	std::vector <Color4> rect_color;
 	std::vector<unsigned short> rect_idx;
+    
+    // under the consideration
 	std::vector<float> rect_factor;
     std::vector<bool> rect_factor_inc;
+    std::vector<Vec3> rect_center;
 
 	Matrix3 norm_matrix;
 
@@ -110,7 +116,16 @@ public:
 
 		return this;
 	};
-
+    
+    StarView* setRect(float x=0., float y=0.)
+    {
+        if(x == 0. | y == 0.)
+            return NULL;
+        
+        width = x;
+        height = y;
+        return this;
+    }
 	StarView* setShaderID(unsigned int _id)
 	{
 		shader_program = _id;
@@ -213,11 +228,43 @@ public:
                     
                 }
                 break;
-            }//case done
+                
+            }
+            case SETVIEW_LINES:
+            {
+                
+                const int _TAIL = 2;
+                rect_pos.clear();
+                rect_color.clear();
+                rect_idx.clear();
+                rect_power.clear();
+                
+                for (int i = 0; i < NUMBER; i++)
+                {
+                    rect_pos.push_back(Vec3(0.0,0.0,0.));
+                    rect_pos.push_back(Vec3(0.0,0.0,0.));
+                    rect_color.push_back(Color4(1.0));
+                    rect_color.push_back(Color4(1.0));
+                    rect_idx.push_back(i*_TAIL+0);
+                    rect_idx.push_back(i*_TAIL+1);
+                    rect_power.push_back(Vec3(0.0,0.0,0.0));
+                }
+                
+               break;
+            }
                 
         }
 
 	}
+    
+    void setColor(Color4& color,int i)
+    {
+        rect_color[i] = color;
+    }
+    void setPosition(Vec3& position, int i)
+    {
+        rect_pos[i] = position;
+    }
 
   //  StarView* setFBOsize(float _fbo_width,float _fbo_height) // in need ?
   //  {
