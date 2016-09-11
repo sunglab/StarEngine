@@ -119,7 +119,7 @@ public:
     
     StarView* setRect(float x=0., float y=0.)
     {
-        if(x == 0. | y == 0.)
+        if((x == 0.) | (y == 0.))
             return NULL;
         
         width = x;
