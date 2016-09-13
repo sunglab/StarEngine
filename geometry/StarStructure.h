@@ -218,11 +218,12 @@ static const float rect_UV_Vertex[] = {
 	0.0,1.0,
 	1.0,1.0,
 };
+
 static const float rect_Pos_Vertex[] = {
-	-1.0,-1.0,-.5,
-	1.0, -1.0,-.5,
-	-1.0, 1.0,-.5,
-	1.0, 1.0, -.5,
+	-1.0,-1.0,0.,
+	1.0, -1.0,0.,
+	-1.0, 1.0,0.,
+	1.0,  1.0,0.,
 };
 
 static const unsigned short rect_Idx_Vertex[] = {
