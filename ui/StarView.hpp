@@ -20,7 +20,9 @@ enum
 	SETVIEW_ONE_SPHERE,
 	SETVIEW_FEW_SPHERE,
     
+    SETVIEW_POINTS,
     SETVIEW_LINES,
+    
 
 	SETVIEW_ONE_CUBE,
 	SETVIEW_FEW_CUBES,
@@ -229,6 +231,24 @@ public:
                 }
                 break;
                 
+            }
+            case SETVIEW_POINTS:
+            {
+                
+                rect_pos.clear();
+                rect_color.clear();
+                rect_idx.clear();
+                rect_power.clear();
+                
+                for (int i = 0; i < NUMBER; i++)
+                {
+                    rect_pos.push_back(Vec3(0.0,0.0,0.));
+                    rect_color.push_back(Color4(1.0));
+                    rect_idx.push_back(i);
+                    rect_power.push_back(Vec3(0.0,0.0,0.0));
+                }
+                
+                break;
             }
             case SETVIEW_LINES:
             {
