@@ -89,6 +89,7 @@ protected:
 
     float height;
     float width;
+    float hypo;
     
 	float animation_time;
 
@@ -126,6 +127,8 @@ public:
         
         width = x;
         height = y;
+        
+        hypo = sqrtf(width*width + height*height);
         return this;
     }
 	StarView* setShaderID(unsigned int _id)
