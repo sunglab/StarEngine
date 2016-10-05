@@ -20,7 +20,7 @@ public:
 //    virtual ~StarGeo();
 };
 
-class StarSphere
+class StarSphere//: public StarGeo
 {
    // generate pos 0.0 to 1.0
 public:
@@ -42,6 +42,21 @@ public:
     ~StarSphere(){};
     
 };
+
+class StarCube
+{
+public:
+    virtual Vec3 generate(const Vec2& pos, float r = 1.0) const
+    {
+        float u = pos.x, v = pos.y;
+        float x = r * sin(u) * cos(v);
+        float y = r * cos(u);
+        float z = r * -sin(u) * sin(v);
+        return Vec3(x,y,z);
+    }
+    ~StarCube(){};
+};
+
 class StarStar
 {
 //    virtual Vec2 generate(unsigned int num, unsigned int ofNum float scale) const
