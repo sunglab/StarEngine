@@ -42,7 +42,22 @@ class StarTouch
     
     StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect,bool TUIO=true);
     void init(bool TUIO=true);
-    
+
+	StarTouch* clear()
+	{
+
+		fingers = 0;
+
+		for (int i = 0; i < MAX_FINGERS; i++)
+		{
+			nowPos[i].zero();
+			prePos[i].zero();
+			end = true;
+		}
+
+		return this;
+	};
+
     void callbackBegin(){delegate->CallbackTouchBegin();}
     void callbackMove(){delegate->CallbackTouchMove();}
     void callbackEnd(){delegate->CallbackTouchEnd();}
