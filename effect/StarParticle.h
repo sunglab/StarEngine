@@ -20,15 +20,14 @@ typedef enum FLAME_MODE_ // change shape corre  corresponding to  in generate()
     
 }FLAME_MODE;
 
-typedef enum FIREWORKS_MODE_ // animation BIG and SHAPE and so on in  update()
+typedef enum 
 {
-    FIREWORKS_SMALL,
     FIREWORKS_MID,
-    FIREWORKS_BIG,
     
-    FIREWORKS_ROYAL,
-    FIREWORKS_TORNADO,
-    FIREWORKS_ROCKET,
+    FIREWORKS_MULTI,
+    
+    FIREWORKS_RAINBOW,
+    
 }FIREWORKS_MODE;
 
 class StarParticleTEX
