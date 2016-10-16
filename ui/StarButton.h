@@ -300,8 +300,8 @@ public:
         glUniformMatrix4fv(a, 1, GL_FALSE, final_matrix.s);
         
         glEnable(GL_BLEND);
-//        glBlendFunc(GL_ONE,GL_ZERO);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBlendFunc(GL_ONE,GL_ZERO);
+//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
 		starfbo->bindVBO_INDI(GL_ARRAY_BUFFER, &vbo_id[0]);
         int err;

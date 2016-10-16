@@ -108,7 +108,7 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
 
 #elif MAC
 
-void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, bool repeat)
+void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, bool repeat, bool opt)
 {
 	CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath : filename];
 	CGImageSourceRef myImageSourceRef = CGImageSourceCreateWithURL(url, NULL);
@@ -120,13 +120,24 @@ void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, boo
 	texture[texture_id].texture_height = height;
 
 	CGRect rect = { {0, 0}, {(float)width, (float)height} };
-	void * myData = calloc(width * 4, height);
+    
+	void * myData = (void*)calloc(width * 4, height);
 
 	if (!myData)
 		starLOG("texture not loaded\n");
 	else
-		starLOG("texture loaded width : %d height : %d\n", width, height);
+		starLOG("texture loaded width : %d height : %d id: %d\n", width, height, texture_id);
 
+//    for(int a=0;a<width;a++)
+//        for(int b=0;b<height;b++)
+//        {
+//        
+////             Color3 color =  Color3((float)(myData[(a*height+b)*4]),(float)myData[(a*height+b)*4+1],(float)myData[(a*height+b)*4+2]);
+//            
+////            starLOG("%f %f %f\n", color.r, color.g, color.b);
+////            starLOG("%f\n", myData[(a*height+b)*4+3]);
+//            
+//        }
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	CGContextRef myBitmapContext = CGBitmapContextCreate(myData,
 		width, height, 8,
@@ -143,7 +154,10 @@ void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, boo
 	//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_REPEAT);
 	//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_REPEAT);
     
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_INT_8_8_8_8_REV, myData);
+//    if(texture_id!=5)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_INT_8_8_8_8_REV, myData);
+//    else
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_BGR_EXT, GL_BYTE, myData);
 
 	if (repeat)
 	{
@@ -151,12 +165,12 @@ void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, boo
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
 	}
 	else
 	{
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        
 	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -169,7 +183,7 @@ void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, boo
 #elif ANDROID
 
 
-void StarTexture::createTEXTURE_ANDROID(void* array, unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat)
+void StarTexture::createTEXTURE_ANDROID(void* array, unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat, bool opt)
 {
 	texture[texture_id].texture_width = texture_width;
 	texture[texture_id].texture_height = texture_height;
@@ -192,8 +206,11 @@ void StarTexture::createTEXTURE_ANDROID(void* array, unsigned int texture_width,
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        if(opt)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        else
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
@@ -369,7 +386,7 @@ void StarTexture::createTEXTURE_RTF(unsigned int texture_width, unsigned int tex
 }
 #endif
 
-void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat,bool resize)
+void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat,bool resize, bool opt)
 {
 	texture[texture_id].texture_width = texture_width;
 	texture[texture_id].texture_height = texture_height;
@@ -385,6 +402,7 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 		{
 	//		glGenerateMipmap(GL_TEXTURE_2D);
 	//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -394,8 +412,13 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 		{
 		//	glGenerateMipmap(GL_TEXTURE_2D);
 		//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            
+//            if(opt)
+//                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//            else
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		}
