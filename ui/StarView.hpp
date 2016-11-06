@@ -52,6 +52,7 @@ protected:
 	std::vector<Vec3>	rect_pos;
 	std::vector<Vec3>	rect_pos_save;
     std::vector<Vec3> rect_power;
+    std::vector<Vec3> rect_power_cross;
 	std::vector<Vec2> rect_uv;
 	std::vector <Vec3> rect_norm;
 	std::vector <Color4> rect_color;
