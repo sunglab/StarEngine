@@ -26,7 +26,7 @@ StarTexture::StarTexture(unsigned int texture_number)
 }
 
 #ifdef IOS
-void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id, bool repeat)
+void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id, bool repeat, bool opt)
 {
 
 	CGImageRef imageRef;
@@ -87,7 +87,7 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
 		if (repeat)
 		{
 			glGenerateMipmap(GL_TEXTURE_2D);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

@@ -47,6 +47,13 @@
 	class Matrix
 	{
 	public:
+        Matrix(){};
+        Matrix(float _f)
+        {
+            for(int i = 0;i<16;i++)
+                s[i] = _f;
+        }
+        
 		__MATRIX__TYPE__* operator[] (const unsigned int row)
 		{
 			return &s[row << 2];
