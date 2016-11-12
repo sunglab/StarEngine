@@ -47,7 +47,14 @@
 	class Matrix
 	{
 	public:
-        Matrix(){};
+        Matrix(){
+			for (int i = 0; i<16; i++)
+				s[i] = 0.0;
+			s[0] = 1.0;
+			s[5] = 1.0;
+			s[10] = 1.0;
+			s[15] = 1.0;
+		};
         Matrix(float _f)
         {
             for(int i = 0;i<16;i++)

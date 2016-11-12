@@ -8,11 +8,12 @@
 
 #include "StarOBJ.h"
 
-#include <boost/tokenizer.hpp>
+//#include <boost/tokenizer.hpp>
+
 #include <string>
 #include "../StarMain.h"
 using namespace std;
-using namespace boost;
+//using namespace boost;
 
 StarOBJ::StarOBJ(const string& path, vector<Vec3>& position, vector<Vec2>& texcoord,vector<Vec3>& normal,  vector<unsigned short>& index):filepath(path)
 {
@@ -156,7 +157,7 @@ void StarOBJ::parseFace(const string& faces, vector<unsigned short>& idx)
 {
 	// without boost
 
-   boost::char_separator<char> sep("/");
+   /*boost::char_separator<char> sep("/");
     boost::tokenizer<boost::char_separator<char> > tokens(faces, sep);
     for(tokenizer<boost::char_separator<char> >::iterator itridx=tokens.begin(); itridx!=tokens.end();itridx++)
     {
@@ -164,7 +165,7 @@ void StarOBJ::parseFace(const string& faces, vector<unsigned short>& idx)
             idx.push_back(std::stoi((*itridx))-1);
         else
             temp_index.push_back(std::stoi(*itridx)-1);
-    }
+    }*/
     
 }
 
