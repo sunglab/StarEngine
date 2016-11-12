@@ -9,19 +9,11 @@
 #ifndef STARBUTTON_H
 #define STARBUTTON_H
 
-//#include ""
 
-//#include "./StarUI.h"
-//#include "StarView.hpp"
-#include <iostream> 
+#include <stdio.h>
+#include "../StarMain.h"
 
-#include "StarMain.h"
-#include "./StarView.hpp"
-
-//#include "../math/Matrix.h"
-//#include "../renderer/StarTexture.h"
-
-using namespace std;
+//using namespace std;
 
 //Typedef 
 typedef enum 
@@ -36,6 +28,7 @@ class StarButtonDelegate
 public:
 	virtual void Callback_Press(int idx)=0;
 };
+
 class StarButton:public StarView
 {
 
@@ -50,7 +43,6 @@ public:
 	std::vector<Vec3> button_center;
 	std::vector<Vec3> button_src;
 	std::vector<Vec3> button_dst;
-//	std::vector<Vec4> button_normal;
 	std::vector<Vec2> button_size;
 	std::vector<Vec2> button_uv;
 	std::vector<unsigned short> button_index;
@@ -170,12 +162,12 @@ public:
 		button_number = button_position.size() / 4;
 		if (!button_number)
 		{
-			starLOG("Error, add buttton first\n");
+//			starLOG("Error, add buttton first\n");
 			return;
 		}
 		else
 		{
-			starLOG("Yes, buttton num : %d\n", button_number);
+//			starLOG("Yes, buttton num : %d\n", button_number);
 		}
 
 		setDST(button_number);
@@ -194,12 +186,12 @@ public:
         //glVertexAttribPointer(attribute_id[1], 2, GL_FLOAT, 0, 0, 0);
         //
 
-        starLOG("test %d\n", vbo_id[0]);
+//        starLOG("test %d\n", vbo_id[0]);
 		starfbo->createVBOsub_INDI(GL_ARRAY_BUFFER, 0, sizeof(Vec3)*button_position.size(), (void*)&button_position[0], GL_DYNAMIC_DRAW, &vbo_id[0]);
 		glEnableVertexAttribArray(attribute_id[0]);
 		glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
         
-        starLOG("test %d\n", vbo_id[1]);
+//        starLOG("test %d\n", vbo_id[1]);
         int err;
         while ((err = glGetError()) != GL_NO_ERROR)
             printf("\n\nOpenGL error button: %x %d\n\n",err, vbo_id[0]);
@@ -278,11 +270,6 @@ public:
     void render()
     {
         
-    //    starfbo->bindFBO(fbo_id[0]);
-//        glEnable(GL_DEPTH_TEST);
-        
-//        glClearColor(0.0, 0.0, 0.0, 1.0);
-//        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
         starfbo->bindVAO_INDI(&vao_id);
         
@@ -296,7 +283,6 @@ public:
         
 //        Matrix_Identity(final_matrix);
        int a =  glGetUniformLocation(shader_program,"finalM");
-//        glUniformMatrix4fv(shader_program, 1, GL_FALSE,final_matrix->s );
         glUniformMatrix4fv(a, 1, GL_FALSE, final_matrix.s);
         
         glEnable(GL_BLEND);
@@ -346,7 +332,7 @@ void done()
 */
 void pressed(int idx)
 {
-    starLOG("oh pressed %d\n", idx);
+//    starLOG("oh pressed %d\n", idx);
     
     if(delegate)
 	delegate->Callback_Press(idx);

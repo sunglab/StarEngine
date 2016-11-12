@@ -21,7 +21,7 @@ class StarTimerDelegate
 {
 public:
     virtual void CallbackFPS(int fps){};
-    virtual void CallbackTICK(float tick){};
+    virtual void CallbackTICK(long tick){};
 };
 class StarTimer
 {

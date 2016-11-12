@@ -12,7 +12,7 @@ void StarTouch::init(bool TUIO)
 {
 #ifdef MAC
     if(TUIO)
-    StarTUIO* app = new StarTUIO(3333,this);
+        StarTUIO* app = new StarTUIO(3333,this);
     //    app->run();
     //    delete app;
 #endif

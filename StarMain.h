@@ -79,10 +79,11 @@ void winprintf(const char *fmt, ...);
 #include "./geometry/StarOBJ.h"
 #include "./geometry/StarGEO.h"
 
+#include "./ai/StarAnt.h"
+
 #include "./ui/StarView.hpp"
 //#include "./ui/StarButton.h"
 //#include "./ui/StarBar.h"
-#include "./ai/StarAnt.h"
 
 
 #define STRINGIFY(A)  #A
