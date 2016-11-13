@@ -47,7 +47,7 @@
 	class Matrix
 	{
 	public:
-        Matrix(){
+       /* Matrix(){
 			for (int i = 0; i<16; i++)
 				s[i] = 0.0;
 			s[0] = 1.0;
@@ -59,7 +59,7 @@
         {
             for(int i = 0;i<16;i++)
                 s[i] = _f;
-        }
+        }*/
         
 		__MATRIX__TYPE__* operator[] (const unsigned int row)
 		{
