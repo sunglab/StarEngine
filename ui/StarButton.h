@@ -13,11 +13,10 @@
 #include <stdio.h>
 #include "../StarMain.h"
 
-//using namespace std;
-
-//Typedef 
+//Typedef
 typedef enum 
 {
+	INTERFACE_NONE,
 	INTERFACE_CIRCLE,
 	INTERFACE_RECT_VERTICAL,
 	INTERFACE_RECT_HORIZONTAL
@@ -26,7 +25,7 @@ typedef enum
 class StarButtonDelegate
 {
 public:
-	virtual void Callback_Press(int idx)=0;
+    virtual void Callback_Press(int idx){};
 };
 
 class StarButton:public StarView
@@ -61,17 +60,29 @@ public:
 
 	void setDST(int num)
 	{
-		if (Star_Interface ==  INTERFACE_CIRCLE)
-		{
-			for (int a = 0; a < num; a++)
-			{
-				float short_side = width > height ? height : width;
-
-				float angle = (M_PI*2. / num) * a;
-
-				button_dst.push_back(Vec3(cos(angle)*short_side*0.2, sin(angle)*short_side*0.2, -1.0)+Vec3(width*0.5,height*0.5,0.0));
-			}
-		};
+        for (int a = 0; a < num; a++)
+        {
+            if (Star_Interface ==  INTERFACE_CIRCLE)
+            {
+//                starLOG("circle interface\n");
+                float short_side = width > height ? height : width;
+                float angle = (M_PI*2. / num) * a;
+                button_dst.push_back(Vec3(cos(angle)*short_side*0.2, sin(angle)*short_side*0.2, -1.0)+Vec3(width*0.5,height*0.5,0.0));
+            }
+            else if( Star_Interface == INTERFACE_RECT_VERTICAL)
+            {
+//                starLOG("vertical interface\n");
+//                float short_side = width > height ? height : width;
+//                float angle = (M_PI*2. / num) * a;
+                button_dst.push_back(button_center[0]-Vec2(0.0,button_size[0].y*1.0*a));
+            }
+            else
+            {
+//                starLOG("else interface\n");
+                button_dst.push_back(button_center[a]);
+            }
+            
+        }
 	}
 
 	StarButton(StarButtonDelegate* _delegate=NULL)
@@ -109,7 +120,7 @@ public:
 		button_position.push_back(Vec3(rect.x,rect.y+rect.w,-1.));
 		button_position.push_back(Vec3(rect.x+rect.z,rect.y+rect.w,-1.));
 
-		button_size.push_back(Vec2(rect.w, rect.z));
+		button_size.push_back(Vec2(rect.z, rect.w));
 
 		Vec3 temp = 
 		(Vec3(rect.x, rect.y, -1.)
@@ -140,7 +151,6 @@ public:
     //void initialize( int _vao_id, int _vbo_id)
 	void init()
 	{
-
 			 //starAnt = new StarAnt<Vec3>[5];
 
 		/*
@@ -172,10 +182,16 @@ public:
 
 		setDST(button_number);
         starfbo->createVAO_INDI(&vao_id);
-       
-		attribute_id[0] = 0;// glGetAttribLocation(shader_program, "position");
-		attribute_id[1] = 1;// glGetAttribLocation(shader_program, "inputTextureCoordinate");
         
+#if(MAC|_WIN32)
+        attribute_id[0] = 0;
+        attribute_id[1] = 1;
+        attribute_id[2] = 2;
+#else
+        attribute_id[0] = glGetAttribLocation(shader_program, "position");
+        attribute_id[1] = glGetAttribLocation(shader_program, "uv");
+//        attribute_id[2] = glGetAttribLocation(shader_program, "factor");
+#endif
 
 //        starfbo->createVBO_INDI(GL_ARRAY_BUFFER, sizeof(Vec3)*button_position.size(), (void*)&button_position[0], GL_STATIC_DRAW, &vbo_id[0]);
 //        glEnableVertexAttribArray(attribute_id[0]);
@@ -204,7 +220,7 @@ public:
 		glEnableVertexAttribArray(attribute_id[1]);
 		glVertexAttribPointer(attribute_id[1], 2, GL_FLOAT, 0, 0, 0);
 */
-
+        
 		for (int i = 0; i < button_number; i++)
 		{
 			for (int a = 0; a < 6; a++)
@@ -229,7 +245,6 @@ public:
 	//	starLOG("test show\n");
 		for (int i = 0; i < button_number; i++)
 		{
-			//fix
 			starAnt[i].setSrcDst(&(button_center[i]), button_dst[i],2000.);
 
 			//starAnt[i].setting_time = 2000.;
@@ -253,7 +268,7 @@ public:
 
 		for (int i = 0; i < button_number; i++)
 		{
-		//	starLOG(" hmm now_tick %f\n?? ", now_tick);
+//			starLOG(" hmm now_tick %f\n?? ", now_tick);
 			starAnt[i].work(now_tick);
 		}
 
@@ -269,8 +284,6 @@ public:
 
     void render()
     {
-        
-
         starfbo->bindVAO_INDI(&vao_id);
         
         glViewport(0,0, width,height);
@@ -281,43 +294,43 @@ public:
         texture_id[0] = glGetUniformLocation(shader_program, "texture0");
         glUniform1i(texture_id[0],texture_name[0]);
         
-//        Matrix_Identity(final_matrix);
+//        startexture->bindTEXTURE(GL_TEXTURE0+TEXTURES_BT, TEXTURES_BT);
+//        texture_id[0] = glGetUniformLocation(shader_program, "texture0");
+//        glUniform1i(texture_id[0],TEXTURES_BT);
+        
        int a =  glGetUniformLocation(shader_program,"finalM");
         glUniformMatrix4fv(a, 1, GL_FALSE, final_matrix.s);
         
         glEnable(GL_BLEND);
-        glBlendFunc(GL_ONE,GL_ZERO);
-//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
+//        glDisable(GL_BLEND);
 		starfbo->bindVBO_INDI(GL_ARRAY_BUFFER, &vbo_id[0]);
-        int err;
-        while ((err = glGetError()) != GL_NO_ERROR)
-            printf("\n\nOpenGL error button: %x %d\n\n",err, vbo_id[0]);
+        
 		glEnableVertexAttribArray(attribute_id[0]);
-      
 		glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3)*button_position.size(), (void*)&button_position[0], GL_DYNAMIC_DRAW);
 
       
 #ifdef ANDROID
-        starfbo->bindVBO(GL_ARRAY_BUFFER,vbo_id[0]);
-        glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
-        glEnableVertexAttribArray(attribute_id[0]);
+//        starfbo->bindVBO(GL_ARRAY_BUFFER,vbo_id[0]);
+//        glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
+//        glEnableVertexAttribArray(attribute_id[0]);
         
-        starfbo->bindVBO(GL_ARRAY_BUFFER,vbo_id[1]);
+        starfbo->bindVBO_INDI(GL_ARRAY_BUFFER,&vbo_id[1]);
         glVertexAttribPointer(attribute_id[1],2, GL_FLOAT, 0, 0, 0);
         glEnableVertexAttribArray(attribute_id[1]);
         
-        starfbo->bindVBO(GL_ELEMENT_ARRAY_BUFFER, vbo_id[2]);
+        starfbo->bindVBO_INDI(GL_ELEMENT_ARRAY_BUFFER, &vbo_id[2]);
 #endif
 
         glDrawElements(GL_TRIANGLES,button_index.size(), GL_UNSIGNED_SHORT ,(void*)0);
         
-
+        while ((err = glGetError()) != GL_NO_ERROR) {
+            printf("\n\nOpenGL error Button Irender error: %x\n\n",err);
+        }
         
 		glDisable(GL_BLEND);
-       // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-       // glEnable(GL_DEPTH_TEST);
     }
 
 void done()
@@ -332,7 +345,7 @@ void done()
 */
 void pressed(int idx)
 {
-//    starLOG("oh pressed %d\n", idx);
+    starLOG("oh pressed %d\n", idx);
     
     if(delegate)
 	delegate->Callback_Press(idx);
@@ -352,15 +365,21 @@ bool test(Vec3* center,Vec2* size, Vec2* touch)
 	//if ((rect->x < touch->x) && (rect->x + rect->z > touch->x))
 	//	if ((rect->y < touch->y) && (rect->y + rect->w > touch->y))
 	//		return true;
-
+    
+//    starLOG("touch %f %f\n", touch->x, touch->y);
+//    starLOG("center %f %f\n", center->x, center->y);
+//    starLOG("diff %f", abs(center->x - touch->x));
+//    starLOG(" %f\n", abs(center->y - touch->y));
+//    starLOG("size %f %f\n", size->x*0.5, size->y*0.5);
+    
 	if ( abs(center->x - touch->x) < size->x*0.5)
 		if (abs(center->y - touch->y) < size->y*0.5)
 			return true;
 	return false;
 }
-void CallbackTouchBegin() 
+void CallbackTouchBegin()
 {
-  //  starLOG("xy %f %f\n", startouch->nowPos[0].x, startouch->nowPos[0].y);
+//starLOG("xy %f %f\n", startouch->nowPos[0].x, startouch->nowPos[0].y);
 	for (int i = 0; i < button_number; i++)
 	{
 			//Vec4 rect = Vec4(
@@ -370,6 +389,7 @@ void CallbackTouchBegin()
 
 			if (test(&button_center[i], &button_size[i], &(startouch->nowPos[0])))
 			{
+                starLOG("pressed\n");
 				pressed(i);
                // vanish();
                 //showing = true;

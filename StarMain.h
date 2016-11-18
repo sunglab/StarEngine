@@ -81,8 +81,8 @@ void winprintf(const char *fmt, ...);
 
 #include "./ai/StarAnt.h"
 
-#include "./ui/StarView.hpp"
 //#include "./ui/StarButton.h"
+#include "./ui/StarView.hpp"
 //#include "./ui/StarBar.h"
 
 
