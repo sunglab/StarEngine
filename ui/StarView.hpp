@@ -62,6 +62,7 @@ protected:
 	std::vector<float> rect_factor;
     std::vector<bool> rect_factor_inc;
     std::vector<Vec3> rect_center;
+    std::vector<Vec3> rect_center_prev;
 
 	Matrix3 norm_matrix;
 

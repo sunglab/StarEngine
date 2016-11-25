@@ -53,7 +53,7 @@ public:
 	unsigned int vao_id;
 	unsigned int vbo_id[4];
 
-	std::vector<StarAnt<Vec3>> starAnt;
+	std::vector<StarAnt<Vec3> > starAnt;
 
 	bool showing;
 	bool vanishing;
@@ -207,10 +207,6 @@ public:
 		glEnableVertexAttribArray(attribute_id[0]);
 		glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
         
-//        starLOG("test %d\n", vbo_id[1]);
-        int err;
-        while ((err = glGetError()) != GL_NO_ERROR)
-            printf("\n\nOpenGL error button: %x %d\n\n",err, vbo_id[0]);
 
 		starfbo->createVBO_INDI(GL_ARRAY_BUFFER, sizeof(Vec2)*button_uv.size(), (void*)&button_uv[0], GL_STATIC_DRAW, &vbo_id[1]);
 		glEnableVertexAttribArray(attribute_id[1]);
@@ -326,9 +322,9 @@ public:
 
         glDrawElements(GL_TRIANGLES,button_index.size(), GL_UNSIGNED_SHORT ,(void*)0);
         
-        while ((err = glGetError()) != GL_NO_ERROR) {
-            printf("\n\nOpenGL error Button Irender error: %x\n\n",err);
-        }
+//        while ((err = glGetError()) != GL_NO_ERROR) {
+//            printf("\n\nOpenGL error Button Irender error: %x\n\n",err);
+//        }
         
 		glDisable(GL_BLEND);
     }
@@ -372,8 +368,8 @@ bool test(Vec3* center,Vec2* size, Vec2* touch)
 //    starLOG(" %f\n", abs(center->y - touch->y));
 //    starLOG("size %f %f\n", size->x*0.5, size->y*0.5);
     
-	if ( abs(center->x - touch->x) < size->x*0.5)
-		if (abs(center->y - touch->y) < size->y*0.5)
+	if ( abs((int)(center->x - touch->x)) < (size->x*0.5))
+		if (abs((int)(center->y - touch->y)) < (size->y*0.5))
 			return true;
 	return false;
 }
