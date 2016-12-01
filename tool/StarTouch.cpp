@@ -33,7 +33,6 @@ void StarTUIO::addTuioObject(TuioObject *tobj) {
 }
 
 void StarTUIO::updateTuioObject(TuioObject *tobj) {
-    
     if (verbose)
         std::cout << "set obj " << tobj->getSymbolID() << " (" << tobj->getSessionID() << "/"<<  tobj->getTuioSourceID() << ") "<< tobj->getX() << " " << tobj->getY() << " " << tobj->getAngle()
         << " " << tobj->getMotionSpeed() << " " << tobj->getRotationSpeed() << " " << tobj->getMotionAccel() << " " << tobj->getRotationAccel() << std::endl;

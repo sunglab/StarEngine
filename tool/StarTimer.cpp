@@ -74,7 +74,7 @@ void StarTimer::getFPS()
 		starLOG("what %lu\n", current - lastTime);
 	}*/
 	// Don't be over more than 1000
-    delegate->CallbackTICK(current-frameTime);
+    delegate->CallbackTICK((double)(current-frameTime));
 //	starLOG("what %lu\n", current - frameTime);
 	frameTime = current;
 
