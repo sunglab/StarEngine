@@ -1,6 +1,5 @@
 //
-//  StarOBJ.h
-//  GeoArt
+//  StarUI.h
 //
 //  Created by Sungwoo Choi on 7/30/15.
 //  Copyright (c) 2015 SungLab. All rights reserved.
@@ -12,9 +11,10 @@
 #include "../StarMain.h"
 
 /*
- * Because UI must look more like a fixed-base pipeline
- * Shader, attribute, uniform is fixed
+ * Because this UI Part must look more like a fixed-base pipeline
+ * Shader, attribute, uniform should be fixed here
  */
+
 #define STRINGIFY(A)  #A
 
 #if MAC || _WIN32

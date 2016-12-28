@@ -148,6 +148,28 @@ public:
 		return this;
 	}
     
+    StarButton* setRect(Vec4 rect,int idx=0)
+    {
+        button_position[idx*4] = (Vec3(rect.x,rect.y,-1.));
+        button_position[idx*4+1] = (Vec3(rect.x+rect.z,rect.y,-1.));
+        button_position[idx*4+2] = (Vec3(rect.x,rect.y+rect.w,-1.));
+        button_position[idx*4+3] = (Vec3(rect.x+rect.z,rect.y+rect.w,-1.));
+        
+        button_size[idx] = (Vec2(rect.z, rect.w));
+        
+        Vec3 temp =
+        (Vec3(rect.x, rect.y, -1.)
+         + Vec3(rect.x + rect.z, rect.y, -1.)
+         + Vec3(rect.x, rect.y + rect.w, -1.)
+         + Vec3(rect.x + rect.z, rect.y + rect.w, -1.))*0.25;
+        
+        button_src[idx] = (temp);
+        button_dst[idx] = (temp);
+        button_center[idx] =(temp);
+        
+//        starAnt[idx] = (star);
+        return this;
+    }
     //void initialize( int _vao_id, int _vbo_id)
 	void init()
 	{

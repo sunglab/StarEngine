@@ -1,3 +1,10 @@
+//
+//  Matrix.h
+//
+//  Created by sungwoo choi on 8/22/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
+
 #ifndef STARMATRIX_H
 #define STARMATRIX_H
 

@@ -1,3 +1,7 @@
+
+// http://stackoverflow.com/questions/4753055/perlin-noise-generation-for-terrain/4753123#4753123 by Nick Banks
+// Do not use this Perlin Code unless you study. Use Simplex Noise instead  (http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf)
+
 #include "Perlin.h"
 
 PerlinNoise::PerlinNoise()

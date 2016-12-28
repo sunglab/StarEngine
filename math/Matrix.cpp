@@ -1,3 +1,10 @@
+//
+//  Matrix.cpp
+//
+//  Created by sungwoo choi on 8/22/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
+
 #include "Matrix.h"
 #include <stdio.h>
 #include <math.h>

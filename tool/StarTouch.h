@@ -1,3 +1,9 @@
+//
+//  StarTouch.h
+//
+//  Created by sungwoo choi on 8/25/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
 
 #ifndef STARTOUCH_H
 #define STARTOUCH_H
@@ -5,8 +11,9 @@
 #include "../star.h"
 #include "../math/StarMath.h"
 
-#ifdef MAC
 
+
+#ifdef MAC
 #include "TuioListener.h"
 #include "TuioClient.h"
 #include "UdpReceiver.h"

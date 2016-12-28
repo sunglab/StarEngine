@@ -7,7 +7,5 @@
 //
 
 #include "StarButton.h"
-//#include <string>
-//using namespace std;
 
 

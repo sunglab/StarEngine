@@ -1,5 +1,9 @@
 
+// Modified by Sung, www.sunglab.com
+// Copyright (c) 2008-2012 Memo Akten, www.memo.tvn
+
 #include "Fluid.h"
+
 
 StarFluid::StarFluid()
 :density(NULL)
@@ -392,17 +396,6 @@ void StarFluid::advectRGB(int bound, const Vec2* duv) {
     setBoundaryRGB();
 }
 
-//void StarFluid::diffuse( int bound, float* c, float* c0, float diff )
-//{
-//    float a = deltaT * diff * _NX * _NY;	//todo find the exact strategy for using _NX and _NY in the factors
-//    linearSolver( bound, c, c0, a, 1.0 + 4 * a );
-//}
-//
-//void StarFluid::diffuseRGB( int bound, float diff )
-//{
-//    float a = deltaT * diff * _NX * _NY;
-//    linearSolverRGB( a, 1.0 + 4 * a );
-//}
 
 void StarFluid::diffuseUV( float diff )
 {

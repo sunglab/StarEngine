@@ -20,9 +20,12 @@
 StarTexture::StarTexture(unsigned int texture_number)
 {
 	texture = new Texture[texture_number];
-	texture->texture_width = 0;
-	texture->texture_height = 0;
-	texture->texture_id = 0;
+    for(int i=0;i<texture_number;i++)
+    {
+	texture[i].texture_width = 0;
+	texture[i].texture_height = 0;
+	texture[i].texture_id = 0;
+    }
 }
 
 #ifdef IOS
@@ -207,11 +210,15 @@ void StarTexture::createTEXTURE_ANDROID(void* array, unsigned int texture_width,
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         
         if(opt)
+        {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        }
         else
+        {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        }
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
@@ -221,11 +228,15 @@ void StarTexture::createTEXTURE_ANDROID(void* array, unsigned int texture_width,
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
         if(opt)
+        {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        }
         else
+        {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        }
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
@@ -428,11 +439,16 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 //			glGenerateMipmap(GL_TEXTURE_2D);
 //			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 //            
-//            if(opt)
-//                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//            else
+            if(opt)
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            }
+            else
+            {
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            }
             
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -472,10 +488,11 @@ void StarTexture::deleteTEXTURE(unsigned int texture_id)
 {
 	if (texture[texture_id].texture_id != 0)
 	{
-		texture[texture_id].texture_id = 0;
-		texture[texture_id].texture_width = 0;
-		texture[texture_id].texture_height = 0;
 		glDeleteTextures(1, &texture[texture_id].texture_id);
+//        glDeleteTextures(1, &texture_id);
+        texture[texture_id].texture_id = 0;
+        texture[texture_id].texture_width = 0;
+        texture[texture_id].texture_height = 0;
 	}
 }
 

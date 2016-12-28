@@ -39,6 +39,9 @@ class StarView
 {
 public:
     Matrix final_matrix; // at least one
+    Matrix translation_matrix;
+    Matrix scale_matrix;
+    Matrix rotation_matrix;
 
 protected:
  //   int vao_id;
@@ -290,6 +293,11 @@ public:
     {
         rect_pos[i] = position;
     }
+    void setUV(Vec2& uv, int i)
+    {
+        rect_uv[i] = uv;
+    }
+    void reset(){};
 
   //  StarView* setFBOsize(float _fbo_width,float _fbo_height) // in need ?
   //  {

@@ -1,3 +1,11 @@
+
+//
+//  StarMain.h
+//
+//  Created by sungwoo choi on 8/25/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
+
 #ifndef STAR_H
 #define STAR_H
   
@@ -18,10 +26,11 @@
 #define __MATRIX__TYPE__ __S_C_A_L_A_R__
 
 /*
- in c++ way not mat[row][col]
+
+ row vector based like V x M  
  
- 0 4   8 12
- 1 5   9 13
+ 0 4  8 12
+ 1 5  9 13
  2 6 10 14
  3 7 11 15
  

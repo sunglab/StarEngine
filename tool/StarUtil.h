@@ -1,4 +1,11 @@
 
+//
+//  StarUtil.h
+//
+//  Created by sungwoo choi on 8/25/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
+
 #ifndef STARUTIL_H
 #define STARUTIL_H
 //#include "../../StarEngine/StarMain.h"

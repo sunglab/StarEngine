@@ -1,3 +1,10 @@
+//
+//  Color.h
+//
+//  Created by sungwoo choi on 8/22/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
+
 #ifndef COLOR_H
 #define COLOR_H
 #include "../star.h"

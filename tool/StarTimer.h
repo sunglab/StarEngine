@@ -1,3 +1,9 @@
+//
+//  StarTimer.h
+//
+//  Created by sungwoo choi on 8/25/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
 
 #ifndef StarEngine_Timer
 #define StarEngine_Timer

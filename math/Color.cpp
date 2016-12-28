@@ -1,3 +1,11 @@
+
+//
+//  Color.cpp
+//
+//  Created by sungwoo choi on 8/22/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
+
 #include "Color.h"
 
 Color3 Color3::operator+(const Color3& in_Color)const

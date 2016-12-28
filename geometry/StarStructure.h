@@ -7,13 +7,6 @@
 //
 
 
-
-/*
- *
- *   Naming geo's namel _ format (rect_texvertex)
- *
- */
-
 #ifndef STRUCTURE_H
 #define STRUCTURE_H
 

@@ -1,7 +1,12 @@
+//
+//  Vector.cpp
+//
+//  Created by sungwoo choi on 8/22/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
+
 
 #include "Vector.h"
-//#include "StarTouch.h"
-//#include "StarEngine.h"
 
 Vec2 Normalize(Vec2 vec2)
 {return vec2/vec2.length();}

@@ -1,6 +1,13 @@
+
+//
+//  StarTouch.cpp
+//  StarEngine
+//
+//  Created by sungwoo choi on 8/25/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
+
 #include "StarTouch.h"
-
-
 
 
 StarTouch::StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect,bool TUIO)

@@ -1,4 +1,11 @@
 
+//
+//  Vector.h
+//
+//  Created by sungwoo choi on 8/22/12.
+//  Copyright (c) 2012 SungLab. All rights reserved.
+//
+
 #ifndef VECTOR_H
 #define VECTOR_H
 

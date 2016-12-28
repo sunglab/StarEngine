@@ -1,6 +1,5 @@
 //
 //  StarMain.h
-//  StarEngine
 //
 //  Created by sungwoo choi on 8/25/12.
 //  Copyright (c) 2012 SungLab. All rights reserved.
@@ -63,7 +62,7 @@ void winprintf(const char *fmt, ...);
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////// Can use both  //////////////////////////////////////////////////////////////
+///////////////////////////////////  Commonly used  ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "./renderer/StarShader.h"
 #include "./renderer/StarFBO.h"
@@ -95,15 +94,7 @@ void winprintf(const char *fmt, ...);
 #elif ANDROID
 #define starLOG LOGE
 #elif _WIN32
-#define starLOG winprintf //dprintf
+#define starLOG winprintf
 #endif
-
-//#ifdef IOS
-//#define starLOG(msg,num) printf("%s %d\n",msg,num);
-//#elif MAC
-//#define starLOG(msg,num) printf("%s %d\n",msg,num);
-//#elif ANDROID
-//#define starLOG(msg,num) LOGE("%s %d",msg,num);
-//#endif
 
 #endif
