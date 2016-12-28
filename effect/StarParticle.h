@@ -15,7 +15,7 @@
 
 using namespace std;
 
-typedef enum FLAME_MODE_ // change shape corre  corresponding to  in generate() // also it must be controled in update()
+typedef enum FLAME_MODE_ // change shape corresponding to  in generate() // also it must be controled in update()
 {
     FLAME_SMALL,
     FLAME_MID,
