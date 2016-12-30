@@ -1,3 +1,11 @@
+###  StarEngine 
+
+StarEngine is designed for people who need to develop cross-platform applications that require high performance 3D real-time rendering. You can see what softwares use StarEngine here, www.sunglab.com
+
+
+
+### License
+
 The code in this repository is available under the MIT License.
 
 Copyright (c) 2010-2017 Sung Woo Choi, www.sunglab.com
