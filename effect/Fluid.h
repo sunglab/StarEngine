@@ -106,7 +106,7 @@ public:
             for(int j=0;j<(l_radius);j++)
             {
                
-                float multi = ((start-abs(start-i))*(1./(2*start))+ (start-abs(start-j))*(1./(2*start)));
+float multi = ((start-abs(start-i))*(1./(2*start))+ (start-abs(start-j))*(1./(2*start)));
 //                if (l_radius==3&&multi==0)
 //                    multi = 0.25;
 //                if (l_radius==3&&multi==1)
