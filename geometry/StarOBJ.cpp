@@ -6,7 +6,7 @@
 //
 
 #include "StarOBJ.h"
-
+//
 //#include <boost/tokenizer.hpp>
 
 #include <string>
@@ -156,15 +156,15 @@ void StarOBJ::parseFace(const string& faces, vector<unsigned short>& idx)
 {
 	// without boost
 
-   /*boost::char_separator<char> sep("/");
-    boost::tokenizer<boost::char_separator<char> > tokens(faces, sep);
-    for(tokenizer<boost::char_separator<char> >::iterator itridx=tokens.begin(); itridx!=tokens.end();itridx++)
-    {
-        if(itridx==tokens.begin())
-            idx.push_back(std::stoi((*itridx))-1);
-        else
-            temp_index.push_back(std::stoi(*itridx)-1);
-    }*/
+//   boost::char_separator<char> sep("/");
+//    boost::tokenizer<boost::char_separator<char> > tokens(faces, sep);
+//    for(tokenizer<boost::char_separator<char> >::iterator itridx=tokens.begin(); itridx!=tokens.end();itridx++)
+//    {
+//        if(itridx==tokens.begin())
+//            idx.push_back(std::stoi((*itridx))-1);
+//        else
+//            temp_index.push_back(std::stoi(*itridx)-1);
+//    }
     
 }
 

@@ -332,6 +332,44 @@ void StarTexture::createTEXTURE_CUBE_WINDOWS(void** array, unsigned int width, u
 }
 #endif
 
+void StarTexture::createTEXTURE_CAMERA(void* data, unsigned int camera_width, unsigned int camera_height, unsigned int texture_id, bool alpha,bool _float)
+{
+    texture[texture_id].texture_width = camera_width;
+    texture[texture_id].texture_height = camera_height;
+    
+    if (!texture[texture_id].texture_id)
+        glGenTextures(1, &texture[texture_id].texture_id);
+    
+    glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
+    
+    if (alpha)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0,GL_BGRA, GL_UNSIGNED_BYTE, data);
+//        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    }
+    else
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, camera_width, camera_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+//        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, data);
+    }
+    
+    
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+//    glGenerateMipmap(GL_TEXTURE_2D);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    
+//    GLfloat largest;
+//    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &largest);
+//    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, largest);
+}
 // it should know what it is the number of User defined texture ID ( userDefined TexID != computerDefined TexID);
 void StarTexture::createTEXTURE_DATA(void* data, unsigned int camera_width, unsigned int camera_height, unsigned int texture_id, bool alpha,bool _float)
 {
@@ -355,21 +393,6 @@ void StarTexture::createTEXTURE_DATA(void* data, unsigned int camera_width, unsi
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		}
-//#ifdef ANDROID
-//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-//		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
-//#elif IOS
-//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-//		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
-//#elif MAC
-//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-//		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
-//#elif _WIN32
-//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-//		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data); 
-//	//	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, data);
-//		//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, camera_width, camera_height,0, GL_RGB, GL_UNSIGNED_BYTE, data); 
-//#endif
 	}
 	else
 	{

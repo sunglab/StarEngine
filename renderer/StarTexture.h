@@ -50,7 +50,7 @@ class StarTexture
     void createTEXTURE_WINDOWS( void* array, unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false,bool _float = false, bool opt=false); // for camera
 	void createTEXTURE_CUBE_WINDOWS(void** array, unsigned int width, unsigned int height, unsigned int texture_id,bool opt=false);
 #endif
-    
+    void createTEXTURE_CAMERA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,bool _float = false); // for camera
     void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,bool _float = false); // for camera
     void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false,bool resize=false, bool opt = false);
 
