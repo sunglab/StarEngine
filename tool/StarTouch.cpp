@@ -10,7 +10,7 @@
 #include "StarTouch.h"
 
 
-StarTouch::StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect,bool TUIO)
+StarTouch::StarTouch(StarTouchDelegate* _delegate,Vec2& _starRect,bool TUIO)
 {
     delegate = _delegate; starRect= _starRect; init(TUIO);
 }

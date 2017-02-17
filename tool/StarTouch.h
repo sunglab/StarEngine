@@ -47,7 +47,7 @@ class StarTouch
 	unsigned int fingers;
 	bool end;
     
-    StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect,bool TUIO=true);
+    StarTouch(StarTouchDelegate* _delegate,Vec2& _starRect,bool TUIO=true);
     void init(bool TUIO=true);
 
 	StarTouch* clear()

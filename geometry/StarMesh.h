@@ -9,97 +9,131 @@
 #ifndef STARMESH_H
 #define STARMESH_H
 #include "../StarMain.h"
-
+//#inlcude "../star
 class StarMesh
 {
 private:
 protected:
+    Vec3* grid_position;
+    Vec3* grid_destination;
+    Vec3* grid_power;
+    
     Vec3* pos_vert;
     Vec2* tex_vert;
     Vec3* norm_vert;
+    Color4* color_vert;
+    
 public:
     virtual void generatePV()=0;
     virtual void generateTV()=0;
+    virtual void generateNV()=0;
+    virtual void generateCV()=0;
+    virtual void generateWire(Vec3*)=0;
+    
 };
 
-//class StarGird
-//{
-//public:
-//    Vec3* generateVERT(const Vec2& size) //size = number of rectangles
-//    {
-//
-//        int width = (int)size.x;
-//        int height= (int)size.y;
-//
-//        float stepX = 2.0/width;
-//        float stepY = 2.0/height;
-//
-//        Vec3* ret= new Vec3[width*height*6];
-//
-//        for(int i=0; i<width; i++)
-//        {
-//            for(int j=0; j<height; j++)
-//            {
-//                ret[(i*height+j)*6+0] = Vec3(-1. + stepX*i, -1.+ stepY*j, 0.0);
-//                ret[(i*height+j)*6+1] = Vec3(-1. + stepX*(i+1), -1. + stepY*j, 0.0);
-//                ret[(i*height+j)*6+2] = Vec3(-1. + stepX*i, -1. + stepY*(j+1), 0.0);
-//
-//                ret[(i*height+j)*6+2] = Vec3(-1. + stepX*i, -1. + stepY*(j+1), 0.0);
-//                ret[(i*height+j)*6+1] = Vec3(-1. + stepX*(i+1), -1. + stepY*j, 0.0);
-//                ret[(i*height+j)*6+1] = Vec3(-1. + stepX*(i+1), -1. + stepY*(j+1), 0.0);
-//            }
-//        }
-//
-//        return ret;
-//    }
-//
-//    Vec3* generateTEX(const Vec2& size) //size = number of rectangles
-//    {
-//
-//        int width = (int)size.x;
-//        int height= (int)size.y;
-//
-//        float stepX = 1.0/width;
-//        float stepY = 1.0/height;
-//        Vec3* ret= new Vec3[width*height*6];
-//
-//        for(int i=0; i<width; i++)
-//        {
-//            for(int j=0; j<height; j++)
-//            {
-//                ret[(i*height+j)*6+0] = Vec3(0.0 + stepX*i, 0.0+ stepY*j, 0.0);
-//                ret[(i*height+j)*6+1] = Vec3(0.0 + stepX*(i+1), 0.0 + stepY*j, 0.0);
-//                ret[(i*height+j)*6+2] = Vec3(0.0 + stepX*i, 0.0 + stepY*(j+1), 0.0);
-//
-//                ret[(i*height+j)*6+2] = Vec3(0.0 + stepX*i, 0.0 + stepY*(j+1), 0.0);
-//                ret[(i*height+j)*6+1] = Vec3(0.0 + stepX*(i+1), 0.0 + stepY*j, 0.0);
-//                ret[(i*height+j)*6+1] = Vec3(0.0 + stepX*(i+1), 0.0 + stepY*(j+1), 0.0);
-//            }
-//        }
-//
-//        return ret;
-//    }
-//};
 
 class StarGrid:public StarMesh
 {
     
 private:
+    Vec2 screen;
     Vec2 grid;
     int width;
     int height;
     
 public:
-    StarGrid(Vec2 _grid):grid(_grid)
+    
+    int total_vert_tri;
+    int total_vert_point;
+    int total_wire_rect;
+    
+    StarGrid(Vec2 _grid, Vec2 _screen):grid(_grid), screen(_screen)
     {
         width = (int)grid.x;
         height = (int)grid.y;
         
         int total = width * height * 6;//two triangles
+//        int total_grid = (width+1) * (height+1);
+        int total_grid = width*height;
+        
+        total_vert_tri = total;
+        total_vert_point = total_grid;
+        total_wire_rect = height*(width+1)+width*(height+1);
+        
+        grid_position = new Vec3[total_grid];
+        grid_destination= new Vec3[total_grid];
+        grid_power= new Vec3[total_grid];
+        
         pos_vert = new Vec3[total];
         tex_vert = new Vec2[total];
         norm_vert = new Vec3[total];
+        color_vert = new Color4[total];
+        
+        for(int i=0;i<total;i++)
+        {
+            pos_vert[i].zero();
+            tex_vert[i].zero();
+            norm_vert[i].zero();
+            color_vert[i].zero();
+        }
+        
+        for(int i=0;i<total_grid;i++)
+        {
+            grid_position[i].zero();
+//            grid_destination[i].zero();
+            grid_destination[i] = Vec3(0.5,0.5,0.0);
+            grid_power[i].zero();
+        }
+        float stepX = 2.0/width;
+        float stepY = 2.0/height;
+        unsigned int idx = 0;
+        for(int i=0; i<height; i++)
+        {
+            for(int j=0; j<width; j++)
+            {
+               int  idx = i*width+j;
+                grid_position[(idx)] = Vec3(stepX*j, stepY*i,0.0);
+                grid_destination[(idx)] = Vec3(stepX*j, stepY*i,0.0);
+                
+//                grid_position[(idx)*6+1] = Vec3(-1. + stepX*(0+1), -1. + stepY*0,0.0);
+//                grid[(idx)*6+2] = Vec3(-1. + stepX*0, -1. + stepY*(0+1),0.0);
+//                pos_vert[(idx)*6+3] = Vec3(-1. + stepX*0, -1. + stepY*(0+1),0.0);
+//                pos_vert[(idx)*6+4] = Vec3(-1. + stepX*(0+1), -1. + stepY*0,0.0);
+//                pos_vert[(idx)*6+5] = Vec3(-1. + stepX*(0+1), -1. + stepY*(0+1),0.0);
+                
+            }
+        }
+//        float stepX = 2.0/width;
+//        float stepY = 2.0/height;
+//        
+//        for(int i=0; i<height; i++)
+//        {
+//            for(int j=0; j<width; j++)
+//            {
+//                int idx = i*width+j;
+//                
+//                grid_destination[(idx)] =  Vec3(stepX*(j), stepY*i,0.0);
+////                pos_vert[(idx)*6+0] = Vec3(-1. + stepX*j, -1.+ stepY*i,0.0);
+////                pos_vert[(idx)*6+1] = Vec3(-1. + stepX*(j+1), -1. + stepY*i,0.0);
+////                pos_vert[(idx)*6+2] = Vec3(-1. + stepX*j, -1. + stepY*(i+1),0.0);
+////                
+////                pos_vert[(idx)*6+3] = Vec3(-1. + stepX*j, -1. + stepY*(i+1),0.0);
+////                pos_vert[(idx)*6+4] = Vec3(-1. + stepX*(j+1), -1. + stepY*i,0.0);
+////                pos_vert[(idx)*6+5] = Vec3(-1. + stepX*(j+1), -1. + stepY*(i+1),0.0);
+//            }
+//        }
+       
     }
+    
+    void update();
+    void generatePV();
+    void generateTV();
+    void generateNV();
+    void generateCV();
+    void generateWire(Vec3*);
+   
+    void swap(int,int);
     
     Vec3* getPV()
     {
@@ -109,74 +143,16 @@ public:
     {
         return tex_vert;
     }
-    
-    void generateTV()
+    Vec3* getNV()
     {
-
-        float stepX = 1.0/width;
-        float stepY = 1.0/height;
-//        Vec3* ret= new Vec3[width*height*6];
-        
-        for(int i=0; i<width; i++)
-        {
-            for(int j=0; j<height; j++)
-            {
-                tex_vert[(i*height+j)*6+0] = Vec2(0.0 + stepX*i, 0.0+ stepY*j);
-                tex_vert[(i*height+j)*6+1] = Vec2(0.0 + stepX*(i+1), 0.0 + stepY*j);
-                tex_vert[(i*height+j)*6+2] = Vec2(0.0 + stepX*i, 0.0 + stepY*(j+1));
-                
-                tex_vert[(i*height+j)*6+3] = Vec2(0.0 + stepX*i, 0.0 + stepY*(j+1));
-                tex_vert[(i*height+j)*6+4] = Vec2(0.0 + stepX*(i+1), 0.0 + stepY*j);
-                tex_vert[(i*height+j)*6+5] = Vec2(0.0 + stepX*(i+1), 0.0 + stepY*(j+1));
-            }
-        }
+        return norm_vert;
     }
     
-    void generatePV()
+    Color4* getCV()
     {
-        
-        float stepX = 2.0/width;
-        float stepY = 2.0/height;
-        
-//        Vec3* ret= new Vec3[width*height*6];
-        
-        for(int i=0; i<width; i++)
-        {
-            for(int j=0; j<height; j++)
-            {
-                pos_vert[(i*height+j)*6+0] = Vec3(-1. + stepX*i, -1.+ stepY*j,0.0);
-                pos_vert[(i*height+j)*6+1] = Vec3(-1. + stepX*(i+1), -1. + stepY*j,0.0);
-                pos_vert[(i*height+j)*6+2] = Vec3(-1. + stepX*i, -1. + stepY*(j+1),0.0);
-                
-                pos_vert[(i*height+j)*6+3] = Vec3(-1. + stepX*i, -1. + stepY*(j+1),0.0);
-                pos_vert[(i*height+j)*6+4] = Vec3(-1. + stepX*(i+1), -1. + stepY*j,0.0);
-                pos_vert[(i*height+j)*6+5] = Vec3(-1. + stepX*(i+1), -1. + stepY*(j+1),0.0);
-            }
-        }
+        return color_vert;
     }
-    void generateNV()
-    {
-        
-        for(int i=0; i<width; i++)
-        {
-            for(int j=0; j<height; j++)
-            {
-                norm_vert[(i*height+j)*6+0] = pos_vert[(i*height+j)*6+1].cross(pos_vert[(i*height+j)*6+2]);
-                norm_vert[(i*height+j)*6+1] = pos_vert[(i*height+j)*6+2].cross(pos_vert[(i*height+j)*6+0]);
-                norm_vert[(i*height+j)*6+2] = pos_vert[(i*height+j)*6+0].cross(pos_vert[(i*height+j)*6+2]);
-                
-                norm_vert[(i*height+j)*6+3] = pos_vert[(i*height+j)*6+4].cross(pos_vert[(i*height+j)*6+5]);
-                norm_vert[(i*height+j)*6+4] = pos_vert[(i*height+j)*6+5].cross(pos_vert[(i*height+j)*6+3]);
-                norm_vert[(i*height+j)*6+5] = pos_vert[(i*height+j)*6+3].cross(pos_vert[(i*height+j)*6+4]);
-                
-                norm_vert[(i*height+j)*6+0].normalize();
-                norm_vert[(i*height+j)*6+1].normalize();
-                norm_vert[(i*height+j)*6+2].normalize();
-                norm_vert[(i*height+j)*6+3].normalize();
-                norm_vert[(i*height+j)*6+4].normalize();
-                norm_vert[(i*height+j)*6+5].normalize();
-            }
-        }
-    }
+    
+    
 };
 #endif

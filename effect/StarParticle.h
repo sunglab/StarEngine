@@ -281,7 +281,54 @@ namespace starparticle
         }
     }
     
+    
+    template <typename t>
+    void getCircleFingers(Vec2* nowPos,int fingers, Vec2 *circle_finger_pos[], float& circumference, t& avg)
+    {
+        for(int i = 0;i<10;i++)//total touch must be 10
+        {
+            (circle_finger_pos[i]) = &nowPos[i];
+        }
         
+        // Circle Finger
+        int touch_number = fingers;
+        Vec2* temp_finger_pos;
+        Vec2** l_temp_touch_pos = circle_finger_pos;
+        
+        circumference = 0.0;
+        if(touch_number>0)
+        {
+            for(int cc=0;cc<touch_number-1;cc++)
+                for(int dd=0;dd<touch_number-1;dd++)
+                {
+                    if(atan2f(avg.y-(*l_temp_touch_pos[dd]).y, avg.x-(*l_temp_touch_pos[dd]).x)<atan2f(avg.y-(*l_temp_touch_pos[dd+1]).y, avg.x-(*l_temp_touch_pos[dd+1]).x))//when angle is small than other
+                    {
+                        temp_finger_pos=(l_temp_touch_pos[dd]);
+                        (l_temp_touch_pos[dd])= (l_temp_touch_pos[dd+1]);
+                        (l_temp_touch_pos[dd+1]) = temp_finger_pos;
+                    }
+                }
+            
+            for(int i=0;i<touch_number;i++)
+            {
+                if(i==(touch_number-1))
+                {
+                    
+                    float lastx = ((*l_temp_touch_pos[0]).x-(*l_temp_touch_pos[i]).x);
+                    float lasty = ((*l_temp_touch_pos[0]).y-(*l_temp_touch_pos[i]).y);
+                    circumference += sqrt(lastx*lastx+lasty*lasty);
+                }
+                else
+                {
+                    float norx =((*l_temp_touch_pos[i+1]).x-(*l_temp_touch_pos[i]).x);
+                    float nory =((*l_temp_touch_pos[i+1]).y-(*l_temp_touch_pos[i]).y);
+                    circumference += sqrt(norx*norx+nory*nory);
+                }
+                avg.z += atan2f(avg.y- (*l_temp_touch_pos[i]).y, avg.x- (*l_temp_touch_pos[i]).x);
+            }
+            avg.z /= touch_number;
+        }
+    }
 //        boom(Vec3* p,int count)
 //        {
 //            

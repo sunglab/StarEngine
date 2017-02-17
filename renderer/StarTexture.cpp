@@ -344,8 +344,8 @@ void StarTexture::createTEXTURE_CAMERA(void* data, unsigned int camera_width, un
     
     if (alpha)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0,GL_BGRA, GL_UNSIGNED_BYTE, data);
-//        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0,GL_BGRA, GL_UNSIGNED_BYTE, data);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
     }
     else
     {

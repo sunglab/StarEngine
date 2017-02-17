@@ -93,7 +93,6 @@ void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned i
     int err;
 	if (object_id) // if it >= 0, it means 'main'
 	{
-
 		glGenFramebuffers(1, &fbo[object_id]);
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
 
@@ -111,9 +110,6 @@ void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned i
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
 #endif
 
-        while ((err = glGetError()) != GL_NO_ERROR) {
-            starLOG("\n\nOpenGL error TURNON -3: %x\n\n", err);
-        }
 		if (depth)
 		{ // Create the depth buffer.
 			glGenRenderbuffers(1, &rboDepth[object_id]);
