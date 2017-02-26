@@ -21,6 +21,7 @@ public:
 
 class StarSphere//: public StarGeo
 {
+//	float M_PI = 3.1415f;
    // generate pos 0.0 to 1.0
 public:
 	Vec2 domain(float x, float y,float side)
