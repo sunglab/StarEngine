@@ -93,7 +93,7 @@ public:
             for(int j=0; j<width; j++)
             {
                int  idx = i*width+j;
-                grid_position[(idx)] = Vec3(stepX*j, stepY*i,0.0);
+                grid_position[(idx)] = Vec3(stepX*j, stepY*i,rand()%10000*0.01);
                 grid_destination[(idx)] = Vec3(stepX*j, stepY*i,0.0);
                 
 //                grid_position[(idx)*6+1] = Vec3(-1. + stepX*(0+1), -1. + stepY*0,0.0);

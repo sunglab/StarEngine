@@ -41,13 +41,14 @@ class StarTouch
     
     StarTouchDelegate* delegate;
     
+    Vec2 starRect;
 	Vec2 nowPos[MAX_FINGERS];
 	Vec2 prePos[MAX_FINGERS];
-    Vec2 starRect;
 	unsigned int fingers;
 	bool end;
     
-    StarTouch(StarTouchDelegate* _delegate,Vec2& _starRect,bool TUIO=true);
+    StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect= 0,bool TUIO=true);
+//    StarTouch(StarTouchDelegate* _delegate,bool TUIO=true);
     void init(bool TUIO=true);
 
 	StarTouch* clear()
