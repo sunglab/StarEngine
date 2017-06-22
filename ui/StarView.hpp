@@ -11,7 +11,8 @@
 
 #include <stdio.h>
 #include "../StarMain.h"
-//#include "../geometry/StarStructure.h"
+#include "../star.h"
+
 enum
 {
 	SETVIEW_ONE_RECT,
@@ -30,13 +31,13 @@ enum
 	TOTAL_SETVIEW,
 };
 
-//#include "StarString.h" // connect with
 class StarTexture;
 class StarFBO;
 class StarShader;
 
-class StarView
+class StarView//:public StarEngine
 {
+    
 public:
     Matrix final_matrix; // at least one
     Matrix translation_matrix;
@@ -44,6 +45,11 @@ public:
     Matrix rotation_matrix;
 
 protected:
+    
+    unsigned int ObjectType;
+    unsigned int ObjectNumber;
+    unsigned int ObjectScale;
+    
  //   int vao_id;
  //   int vbo_id[10]; // position, uv, index, normal
     int err; // for opengl errors
@@ -89,8 +95,6 @@ protected:
     Vec2 center;
     Vec4 rect;
     
-    //unsigned int height;
-    //unsigned int width;
 
     float height;
     float width;
@@ -99,9 +103,7 @@ protected:
 	float animation_time;
 
 	float heightOfnearPlane;
-/*    unsigned int fbo_height;
-    unsigned int fbo_width;
- */   
+    
     
 public:
     
@@ -127,7 +129,7 @@ public:
     
     StarView* setRect(float x=0., float y=0.)
     {
-        if((x == 0.) | (y == 0.))
+        if((x == 0.) || (y == 0.))
             return NULL;
         
         width = x;
@@ -136,6 +138,7 @@ public:
         hypo = sqrtf(width*width + height*height);
         return this;
     }
+    
 	StarView* setShaderID(unsigned int _id)
 	{
 		shader_program = _id;
@@ -147,8 +150,44 @@ public:
 		animation_time = _time;
 	}
     
-    void setView(unsigned int SETTING = 0, unsigned int NUMBER = 1)
+    void sync()
     {
+        
+//        starLOG("sync %d", ObjectNumber);
+        
+//        printf("Sync %d\n", ObjectNumber);
+        switch(ObjectType)
+        {
+            case SETVIEW_FEW_RECTS:
+                for(int i=0; i< ObjectNumber; i++)
+                {
+                    rect_pos[i*4+0] = (rect_center[i]+ Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2])*ObjectScale);
+                    rect_pos[i*4+1] = (rect_center[i]+ Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], rect_Pos_Vertex[5])*ObjectScale);
+                    rect_pos[i*4+2] = (rect_center[i]+ Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], rect_Pos_Vertex[8])*ObjectScale);
+                    rect_pos[i*4+3] = (rect_center[i]+ Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11])*ObjectScale);
+                }
+                break;
+            case SETVIEW_LINES:
+                for(int i=0; i< ObjectNumber; i++)
+                {
+                    rect_pos[i*2+1] = rect_pos[i*2+0];
+                    rect_pos[i*2+0] = rect_center[i];
+                }
+                break;
+                
+        }
+    }
+    
+    void setView(unsigned int SETTING = 0, unsigned int NUMBER = 1, unsigned int SCALE = 1.0)
+    {
+        
+        ObjectType = SETTING;
+        ObjectNumber = NUMBER;
+        ObjectScale = SCALE;
+        
+        rect_center.resize(NUMBER);
+        rect_power.resize(NUMBER);
+        
         switch (SETTING)
         {
             case SETVIEW_ONE_RECT:
@@ -157,10 +196,15 @@ public:
                 rect_uv.clear();
                 rect_idx.clear();
                 
-                rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2]));
-                rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], rect_Pos_Vertex[5]));
-                rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], rect_Pos_Vertex[8]));
-                rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11]));
+//                rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2]));
+//                rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], rect_Pos_Vertex[5]));
+//                rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], rect_Pos_Vertex[8]));
+//                rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11]));
+                
+                rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], -1.));
+                rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], -1.));
+                rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], -1.));
+                rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10],-1.));
                 
                 rect_uv.push_back(Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
                 rect_uv.push_back(Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
@@ -235,7 +279,6 @@ public:
                     rect_idx.push_back(4*i+rect_Idx_Vertex[3]);
                     rect_idx.push_back(4*i+rect_Idx_Vertex[4]);
                     rect_idx.push_back(4*i+rect_Idx_Vertex[5]);
-                    
                 }
                 break;
                 
@@ -248,11 +291,11 @@ public:
                 rect_idx.clear();
                 rect_power.clear();
                 
-                for (int i = 0; i < NUMBER; i++)
+                for (unsigned int i = 0; i < NUMBER; i++)
                 {
                     rect_pos.push_back(Vec3(0.0,0.0,0.));
-                    rect_color.push_back(Color4(1.0));
                     rect_idx.push_back(i);
+                    rect_color.push_back(Color4(1.0));
                     rect_power.push_back(Vec3(0.0,0.0,0.0));
                 }
                 
@@ -266,7 +309,7 @@ public:
                 rect_color.clear();
                 rect_idx.clear();
                 rect_power.clear();
-                
+               
                 for (int i = 0; i < NUMBER; i++)
                 {
                     rect_pos.push_back(Vec3(0.0,0.0,0.));
@@ -275,13 +318,16 @@ public:
                     rect_color.push_back(Color4(1.0));
                     rect_idx.push_back(i*_TAIL+0);
                     rect_idx.push_back(i*_TAIL+1);
-                    rect_power.push_back(Vec3(0.0,0.0,0.0));
+                    
+//                    rect_power.push_back(Vec3(0.0,0.0,0.0));
                 }
                 
                break;
             }
                 
         }
+        
+        
 
 	}
     
@@ -289,33 +335,32 @@ public:
     {
         rect_color[i] = color;
     }
+    
     void setPosition(Vec3& position, int i)
     {
         rect_pos[i] = position;
     }
+    
     void setUV(Vec2& uv, int i)
     {
         rect_uv[i] = uv;
     }
+    
     void reset(){};
 
-  //  StarView* setFBOsize(float _fbo_width,float _fbo_height) // in need ?
-  //  {
-  //      fbo_width=_fbo_width; fbo_height=_fbo_height;
-		//return this;
-  //  };
-    
     StarView* setPosition(float x,float y,float width, float height)
     {
         rect = Vec4(x,y,width,height);
 		return this;
     };
+    
 	StarView* setScreen(float w, float h)
 	{
 		width = w;
 		height = h;
 		return this;
 	}
+    
 	StarView* setMatrix(Matrix& m)
 	{
 //		final_matrix = Matrix{
@@ -327,6 +372,7 @@ public:
 
 		return this;
 	}
+    
     //StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_id,float width,float height unsigned int _texture_number=0)
     StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_name=79,unsigned int _texture_number=0)
     {
@@ -356,29 +402,18 @@ public:
     virtual void render()=0;
     virtual void done()=0;
 
-    /*
-    virtual void CallbackFPS(){};
-    virtual void CallbackTouchBegin(){};
-    virtual void CallbackTouchMove(){};
-    virtual void CallbackTouchEnd(){};
-    virtual void CallbackTouchCancel(){};
-*/
-
-	//virtual void CallbackFPS()=0;
-	//virtual void CallbackTouchBegin()=0;
-	//virtual void CallbackTouchMove()=0;
-	//virtual void CallbackTouchEnd()=0;
-	//virtual void CallbackTouchCancel()=0;
-
+//    void init(){};
+//    void update(){};
+//    void render(){};
+//    void done(){};
+    
 	
+    //optional
 	void CallbackFPS(){};
 	void CallbackTouchBegin(){};
 	void CallbackTouchMove(){};
 	void CallbackTouchEnd(){};
 	void CallbackTouchCancel(){};
-	
-
-
 
 };
 

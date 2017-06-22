@@ -8,7 +8,6 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#include "../math/Starmath.h"
 #include "../tool/StarTouch.h"
 #include <iostream>
 #include <vector>

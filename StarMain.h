@@ -8,7 +8,7 @@
 #ifndef StarEngine_Main_Header
 #define StarEngine_Main_Header
 
-
+class starengine;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// Case IOS //////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,14 +77,16 @@ void winprintf(const char *fmt, ...);
 #include "./effect/StarParticle.h"
 #include "./geometry/StarStructure.h"
 #include "./geometry/StarOBJ.h"
-#include "./geometry/StarGEO.h"
+#include "./geometry/StarGeo.h"
 #include "./geometry/StarMesh.h"
 #include "./ai/StarAnt.h"
 
 //#include "./ui/StarButton.h"
+//#include "./ui/StarButton.h"
 #include "./ui/StarView.hpp"
 //#include "./ui/StarBar.h"
 #include "./cv/StarCV.h"
+#include "./ui/StarScene.hpp"
 
 #define STRINGIFY(A)  #A
 

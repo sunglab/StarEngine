@@ -22,10 +22,11 @@ typedef enum
 	INTERFACE_RECT_HORIZONTAL
 }STAR_INTERFACE;
 
+
 class StarButtonDelegate
 {
 public:
-    virtual void Callback_Press(int idx){};
+    virtual void Callback_Press(int idx)=0;
 };
 
 class StarButton:public StarView
@@ -170,6 +171,7 @@ public:
 //        starAnt[idx] = (star);
         return this;
     }
+    
     //void initialize( int _vao_id, int _vbo_id)
 	void init()
 	{
@@ -312,28 +314,28 @@ public:
         texture_id[0] = glGetUniformLocation(shader_program, "texture0");
         glUniform1i(texture_id[0],texture_name[0]);
         
-//        startexture->bindTEXTURE(GL_TEXTURE0+TEXTURES_BT, TEXTURES_BT);
-//        texture_id[0] = glGetUniformLocation(shader_program, "texture0");
-//        glUniform1i(texture_id[0],TEXTURES_BT);
+        //        startexture->bindTEXTURE(GL_TEXTURE0+TEXTURES_BT, TEXTURES_BT);
+        //        texture_id[0] = glGetUniformLocation(shader_program, "texture0");
+        //        glUniform1i(texture_id[0],TEXTURES_BT);
         
-       int a =  glGetUniformLocation(shader_program,"finalM");
+        int a =  glGetUniformLocation(shader_program,"finalM");
         glUniformMatrix4fv(a, 1, GL_FALSE, final_matrix.s);
         
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
-//        glDisable(GL_BLEND);
-		starfbo->bindVBO_INDI(GL_ARRAY_BUFFER, &vbo_id[0]);
+        //        glDisable(GL_BLEND);
+        starfbo->bindVBO_INDI(GL_ARRAY_BUFFER, &vbo_id[0]);
         
-		glEnableVertexAttribArray(attribute_id[0]);
-		glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3)*button_position.size(), (void*)&button_position[0], GL_DYNAMIC_DRAW);
-
-      
+        glEnableVertexAttribArray(attribute_id[0]);
+        glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3)*button_position.size(), (void*)&button_position[0], GL_DYNAMIC_DRAW);
+        
+        
 #ifdef ANDROID
-//        starfbo->bindVBO(GL_ARRAY_BUFFER,vbo_id[0]);
-//        glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
-//        glEnableVertexAttribArray(attribute_id[0]);
+        //        starfbo->bindVBO(GL_ARRAY_BUFFER,vbo_id[0]);
+        //        glVertexAttribPointer(attribute_id[0], 3, GL_FLOAT, 0, 0, 0);
+        //        glEnableVertexAttribArray(attribute_id[0]);
         
         starfbo->bindVBO_INDI(GL_ARRAY_BUFFER,&vbo_id[1]);
         glVertexAttribPointer(attribute_id[1],2, GL_FLOAT, 0, 0, 0);
@@ -341,14 +343,14 @@ public:
         
         starfbo->bindVBO_INDI(GL_ELEMENT_ARRAY_BUFFER, &vbo_id[2]);
 #endif
-
+        
         glDrawElements(GL_TRIANGLES,button_index.size(), GL_UNSIGNED_SHORT ,(void*)0);
         
-//        while ((err = glGetError()) != GL_NO_ERROR) {
-//            printf("\n\nOpenGL error Button Irender error: %x\n\n",err);
-//        }
+        //        while ((err = glGetError()) != GL_NO_ERROR) {
+        //            printf("\n\nOpenGL error Button Irender error: %x\n\n",err);
+        //        }
         
-		glDisable(GL_BLEND);
+        glDisable(GL_BLEND);
     }
 
 void done()
@@ -363,10 +365,9 @@ void done()
 */
 void pressed(int idx)
 {
-    starLOG("oh pressed %d\n", idx);
-    
+//    starLOG("oh pressed %d\n", idx);
     if(delegate)
-	delegate->Callback_Press(idx);
+        delegate->Callback_Press(idx);
 }
 
 /*
@@ -379,16 +380,6 @@ void CallbackFPS()
 
 bool test(Vec3* center,Vec2* size, Vec2* touch)
 {
-
-	//if ((rect->x < touch->x) && (rect->x + rect->z > touch->x))
-	//	if ((rect->y < touch->y) && (rect->y + rect->w > touch->y))
-	//		return true;
-    
-//    starLOG("touch %f %f\n", touch->x, touch->y);
-//    starLOG("center %f %f\n", center->x, center->y);
-//    starLOG("diff %f", abs(center->x - touch->x));
-//    starLOG(" %f\n", abs(center->y - touch->y));
-//    starLOG("size %f %f\n", size->x*0.5, size->y*0.5);
     
 	if ( abs((int)(center->x - touch->x)) < (size->x*0.5))
 		if (abs((int)(center->y - touch->y)) < (size->y*0.5))
@@ -397,17 +388,11 @@ bool test(Vec3* center,Vec2* size, Vec2* touch)
 }
 void CallbackTouchBegin()
 {
-//starLOG("xy %f %f\n", startouch->nowPos[0].x, startouch->nowPos[0].y);
 	for (int i = 0; i < button_number; i++)
 	{
-			//Vec4 rect = Vec4(
-			//(Vec2(button_center[i].x,button_center[i].y) - button_size[i] * 0.5).x
-			//(Vec2(button_center[i].x, button_center[i].y) - button_size[i] * 0.5).y
-			//	, button_size[i].x, button_size[i].y);
-
 			if (test(&button_center[i], &button_size[i], &(startouch->nowPos[0])))
 			{
-                starLOG("pressed\n");
+//                starLOG("pressed\n");
 				pressed(i);
                // vanish();
                 //showing = true;
@@ -419,17 +404,6 @@ void CallbackTouchBegin()
                 //showing = false;
             }
 	}
-
-//	if (showing)
-//	{
-//		show();
-//        showing = false;
-//	}
-////	else
-//    if(!showing)
-//	{
-//		
-//	}
 
 };
 

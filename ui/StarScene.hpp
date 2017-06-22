@@ -13,35 +13,39 @@
 //#include "./starUI.h"
 #include "./StarView.hpp"
 #include "./../StarMain.h"
+//#include "StarButton.h"
+#include "StarDefine.h"
 
-class StarScene
+class StarView;
+class StarScene :public StarTouchDelegate
+//:public StarEngine//, public StarButtonDelegate
 {
-    unsigned int  scene_id;
-    std::vector<StarView*> ui_list;
+    std::vector<StarView*> views;
     
-    StarScene()
-    {
-        scene_id = 0;
-    }
+public:
+//    StarScene(); = delete;
     
-    void addView(StarView* starUI)
+    virtual void addView(StarView* starUI)
     {
         if(starUI)
-        ui_list.push_back(starUI);
+        views.push_back(starUI);
     }
     
-    void setSceneID(unsigned int id)
+    void update()
     {
-        // special effect first
-        // then change?
-        scene_id = id;
+        for(StarView* view:views)
+            view->update();
     }
     
     void render()
     {
-        ui_list[scene_id]->render();
+        for(StarView* view:views)
+            view->render();
     }
     
-    
+    StarScene* Make_Scene()
+    {
+        return this;
+    }
 };
 #endif /* StarScene_hpp */

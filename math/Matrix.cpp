@@ -325,6 +325,7 @@ void Matrix_Identity( Matrix& out_M)
 void Matrix_Look_At( Matrix& out_M, const Vec3& in_EYE, const Vec3& in_AT,const Vec3& in_UP)
 {
     Vec3 zAxis, yAxis, xAxis;
+    
 //    Matrix 	t;
 //    zAxis = Vec3(in_AT.x - in_EYE.x,in_AT.y - in_EYE.y, in_AT.z - in_EYE.z);
 

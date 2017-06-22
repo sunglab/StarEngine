@@ -11,7 +11,7 @@
 #define STRUCTURE_H
 
 #include <stdio.h>
-#include "../starMain.h"
+#include "../StarMain.h"
 
 typedef struct Vertex_OBJ_
 {
@@ -213,10 +213,15 @@ static const float rect_UV_Vertex[] = {
 };
 
 static const float rect_Pos_Vertex[] = {
-	-1.0,-1.0,0.,
-	1.0, -1.0,0.,
-	-1.0, 1.0,0.,
-	1.0,  1.0,0.,
+    -1.0,-1.0, 0.0,
+    1.0, -1.0, 0.0,
+    -1.0, 1.0, 0.0,
+    1.0,  1.0, 0.0,
+    
+//	-1.0,-1.0,-10.,
+//	1.0, -1.0,-10.,
+//	-1.0, 1.0,-10.,
+//	1.0,  1.0,-10.,
 };
 
 static const unsigned short rect_Idx_Vertex[] = {

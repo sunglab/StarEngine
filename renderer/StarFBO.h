@@ -9,6 +9,7 @@
 #define StarEngine_StarFBO_h
 
 #include "../StarMain.h"
+//#include "StarInfo.h"
 class Vec4;
 class StarFBO
 {

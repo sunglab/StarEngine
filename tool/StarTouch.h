@@ -28,10 +28,10 @@
 class StarTouchDelegate
 {
     public:
-    virtual void CallbackTouchEnd(){};
-    virtual void CallbackTouchBegin(){};
-    virtual void CallbackTouchMove(){};
-    virtual void CallbackTouchCancel(){};
+    virtual void CallbackTouchEnd()=0;
+    virtual void CallbackTouchBegin()=0;
+    virtual void CallbackTouchMove()=0;
+    virtual void CallbackTouchCancel()=0;
 };
 
 //class StarTUIO;

@@ -39,6 +39,7 @@ public:
         float z = r * -sin(u) * sin(v);
         return Vec3(x,y,z);
     }
+    virtual
     ~StarSphere(){};
     
 };

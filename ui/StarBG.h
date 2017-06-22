@@ -1,3 +1,4 @@
+
 //
 //  StarButton.h
 //
@@ -13,7 +14,6 @@
 
 //#include "./StarUI.h"
 //#include "StarView.hpp"
-#include <iostream> 
 
 #include "StarMain.h"
 #include "./StarView.hpp"

@@ -8,7 +8,33 @@
 
 #ifndef STAR_H
 #define STAR_H
-  
+
+class StarEngine
+{
+    
+public:
+    
+    // List
+    virtual bool TurnOn_StarEngine(int width=0,int height=0) = 0;
+    virtual bool Update_StarEngine() = 0;
+    virtual bool Render_StarEngine() = 0;
+    virtual bool TurnOff_StarEngine() = 0;
+    virtual bool ReStart_StarEngine(int width,int height) = 0;
+    virtual bool ReRun_StarEngine() = 0;
+    virtual bool Setting_Shader() = 0; // Build All Shaders
+    virtual bool Setting_Texture(void* array, int width, int height, int textureid) = 0; // Textures
+    
+    // Callback
+    virtual void CallbackFPS(int FPS) = 0;
+    virtual void CallbackTICK(double TICK) = 0;
+    virtual void CallbackTouchBegin() = 0;
+    virtual void CallbackTouchMove() = 0;
+    virtual void CallbackTouchEnd() = 0;
+    virtual void CallbackTouchCancel() = 0;
+//    virtual void Callback_Press(int idx) = 0;
+    
+};
+
 #if (defined(IOS) && defined(__ARM_NEON__))||(defined(ANDROID) && defined(_ARM_ARCH_7))
 #define YES_NEON
 #else

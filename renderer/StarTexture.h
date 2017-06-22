@@ -11,6 +11,12 @@
 
 #include "../StarMain.h"
 
+enum TextureType
+{
+    CHAR,
+    FLOAT,
+    SHORT,
+};
 class Texture
 {
 public:
@@ -21,21 +27,22 @@ public:
     unsigned  int texture_id;
 };
 
-class StarImage
-{
-    public:
-    unsigned int width;
-    unsigned int height;
-    unsigned int format;
-    unsigned int type;
-    unsigned int rowByteSize;
-    char* data;
-};
+//class StarImage
+//{
+//    public:
+//    unsigned int width;
+//    unsigned int height;
+//    unsigned int format;
+//    unsigned int type;
+//    unsigned int rowByteSize;
+//    char* data;
+//};
 
 class StarTexture
 {
     public:
     Texture* texture;
+//    std::shared_ptr<Texture> texture;
     
 //    StarTexture(void);
     StarTexture(unsigned int texture_number);
@@ -51,7 +58,7 @@ class StarTexture
 	void createTEXTURE_CUBE_WINDOWS(void** array, unsigned int width, unsigned int height, unsigned int texture_id,bool opt=false);
 #endif
     void createTEXTURE_CAMERA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,bool _float = false); // for camera
-    void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,bool _float = false); // for camera
+    void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,int _float = 0); // for camera
     void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false,bool resize=false, bool opt = false);
 
 #if (MAC||_WIN32)
