@@ -139,6 +139,11 @@ public:
 	void normalize(); Vec3 cross(const Vec3& in_V)const;
     
     
+    
+	friend Vec3 operator*(const Vec3& in_V1, const Vec3& in_V2)
+    {
+        return Vec3(in_V1.x*in_V2.x,in_V1.y*in_V2.y, in_V1.z*in_V2.z);
+    }
 	Vec2 xy();
     void lerp(float, Vec3&);
     void cubic(float, Vec3&);
@@ -153,6 +158,11 @@ public:
     {(*this) = 0.f;}
     
 };
+
+//Vec3 operator*(const Vec3& in_V1, const Vec3& in_V2)
+//{
+//    return Vec3(in_V1.x*in_V2.x,in_V1.y*in_V2.y, in_V1.z*in_V2.z);
+//}
 
 class Vec4
 {
@@ -223,6 +233,10 @@ public:
 
     Vec4& operator=(const __VERTEX__TYPE__& in_Scalar); // [] where ??? is it ?
     
+    friend Vec4 operator*(const Vec4& in_V1, const Vec4& in_V2)
+    {
+        return Vec4(in_V1.x*in_V2.x,in_V1.y*in_V2.y, in_V1.z*in_V2.z,1.0);
+    }
     __VERTEX__TYPE__ length()const;
     __VERTEX__TYPE__ lengthSquared()const;
     __VERTEX__TYPE__ dot(const Vec4&)const;

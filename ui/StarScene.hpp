@@ -15,20 +15,27 @@
 #include "./../StarMain.h"
 //#include "StarButton.h"
 #include "StarDefine.h"
+#include <unordered_map>
+//#include  <typeindex>
+#include <typeinfo>
+#include <typeindex>
 
 class StarView;
 class StarScene :public StarTouchDelegate
 //:public StarEngine//, public StarButtonDelegate
 {
     std::vector<StarView*> views;
+    std::unordered_map< std::type_index,StarView*> list;
     
 public:
-//    StarScene(); = delete;
     
     virtual void addView(StarView* starUI)
     {
         if(starUI)
-        views.push_back(starUI);
+        {
+            views.push_back(starUI);
+            list[std::type_index(typeid(*starUI))] = starUI;
+        }
     }
     
     void update()
@@ -41,6 +48,11 @@ public:
     {
         for(StarView* view:views)
             view->render();
+    }
+    
+    StarView* getView(std::type_index idx)
+    {
+        return list[idx];
     }
     
     StarScene* Make_Scene()

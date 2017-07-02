@@ -59,6 +59,8 @@ public:
 	bool showing;
 	bool vanishing;
 
+    bool isCollision(Vec3* a) { return false; };
+    
 	void setDST(int num)
 	{
         for (int a = 0; a < num; a++)

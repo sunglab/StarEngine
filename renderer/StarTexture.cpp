@@ -13,9 +13,6 @@
 //#import <Cocoa/Cocoa.h>
 #endif
 
-//#ifdef MAC
-//#import <Cocoa/Cocoa.h>
-//#endif
 
 StarTexture::StarTexture(unsigned int texture_number)
 {

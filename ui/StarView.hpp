@@ -12,21 +12,17 @@
 #include <stdio.h>
 #include "../StarMain.h"
 #include "../star.h"
-
+#include <unordered_map>
 enum
 {
-	SETVIEW_ONE_RECT,
-	SETVIEW_FEW_RECTS,
-
-	SETVIEW_ONE_SPHERE,
-	SETVIEW_FEW_SPHERE,
     
     SETVIEW_POINTS,
+    
     SETVIEW_LINES,
     
+	SETVIEW_RECT,
 
-	SETVIEW_ONE_CUBE,
-	SETVIEW_FEW_CUBES,
+	SETVIEW_CUBE,
 
 	TOTAL_SETVIEW,
 };
@@ -48,7 +44,9 @@ protected:
     
     unsigned int ObjectType;
     unsigned int ObjectNumber;
-    unsigned int ObjectScale;
+    
+    std::vector<Vec3> rect_scale;
+//    float rect_scale[i];
     
  //   int vao_id;
  //   int vbo_id[10]; // position, uv, index, normal
@@ -58,6 +56,8 @@ protected:
     GLuint fs_id;
     GLuint shader_program;
 
+    std::unordered_map<Vec3*,int> connection;
+    
 	std::vector<Vec3>	rect_pos;
 	std::vector<Vec3>	rect_pos_save;
     std::vector<Vec3> rect_power;
@@ -109,6 +109,8 @@ public:
     
     double now_tick; 
 
+    virtual bool isCollision(Vec3* pos){ return false;};
+    
     StarView* setStars(StarFBO* _starfbo, StarShader* _starshader, StarTouch* _startouch = 0)
     {
         starfbo = _starfbo;
@@ -153,18 +155,15 @@ public:
     void sync()
     {
         
-//        starLOG("sync %d", ObjectNumber);
-        
-//        printf("Sync %d\n", ObjectNumber);
         switch(ObjectType)
         {
-            case SETVIEW_FEW_RECTS:
+            case SETVIEW_RECT:
                 for(int i=0; i< ObjectNumber; i++)
                 {
-                    rect_pos[i*4+0] = (rect_center[i]+ Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2])*ObjectScale);
-                    rect_pos[i*4+1] = (rect_center[i]+ Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], rect_Pos_Vertex[5])*ObjectScale);
-                    rect_pos[i*4+2] = (rect_center[i]+ Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], rect_Pos_Vertex[8])*ObjectScale);
-                    rect_pos[i*4+3] = (rect_center[i]+ Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11])*ObjectScale);
+                    rect_pos[i*4+0] = (rect_center[i]+ Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2])*rect_scale[i]);
+                    rect_pos[i*4+1] = (rect_center[i]+ Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], rect_Pos_Vertex[5])*rect_scale[i]);
+                    rect_pos[i*4+2] = (rect_center[i]+ Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], rect_Pos_Vertex[8])*rect_scale[i]);
+                    rect_pos[i*4+3] = (rect_center[i]+ Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11])*rect_scale[i]);
                 }
                 break;
             case SETVIEW_LINES:
@@ -174,82 +173,66 @@ public:
                     rect_pos[i*2+0] = rect_center[i];
                 }
                 break;
-                
+            case  SETVIEW_POINTS:
+                for(int i=0; i< ObjectNumber; i++)
+                {
+                    rect_pos[i] = rect_center[i];
+                }
+                break;
         }
     }
     
-    void setView(unsigned int SETTING = 0, unsigned int NUMBER = 1, unsigned int SCALE = 1.0)
+    Vec3* getPower(int idx)
+    {
+        return &rect_power[idx];
+    }
+    
+    Vec3* getCenter(int idx)
+    {
+        return &rect_center[idx];
+    }
+    
+    int getConnection(Vec3* pos)
+    {
+        return connection[pos];
+    }
+    
+    void setView(unsigned int SETTING = SETVIEW_RECT, unsigned int NUMBER = 1, Vec3 SCALE = Vec3(1.0))
+//    void setView(unsigned int SETTING = 0, unsigned int NUMBER = 1, float SCALE = (1.0))
     {
         
         ObjectType = SETTING;
         ObjectNumber = NUMBER;
-        ObjectScale = SCALE;
+        
+       if(SETTING != SETVIEW_POINTS)
+       {
+           rect_scale.resize(NUMBER, SCALE);
+       }
         
         rect_center.resize(NUMBER);
         rect_power.resize(NUMBER);
+        rect_factor.resize(NUMBER);
+        
+        rect_pos.clear();
+        rect_uv.clear();
+        rect_color.clear();
+        rect_idx.clear();
         
         switch (SETTING)
         {
-            case SETVIEW_ONE_RECT:
+            case SETVIEW_RECT:
             {
-                rect_pos.clear();
-                rect_uv.clear();
-                rect_idx.clear();
+        
                 
-//                rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2]));
-//                rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], rect_Pos_Vertex[5]));
-//                rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], rect_Pos_Vertex[8]));
-//                rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11]));
-                
-                rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], -1.));
-                rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], -1.));
-                rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], -1.));
-                rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10],-1.));
-                
-                rect_uv.push_back(Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
-                rect_uv.push_back(Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
-                rect_uv.push_back(Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
-                rect_uv.push_back(Vec2(rect_UV_Vertex[6], rect_UV_Vertex[7]));
-                
-                rect_idx.push_back(rect_Idx_Vertex[0]);
-                rect_idx.push_back(rect_Idx_Vertex[1]);
-                rect_idx.push_back(rect_Idx_Vertex[2]);
-                rect_idx.push_back(rect_Idx_Vertex[3]);
-                rect_idx.push_back(rect_Idx_Vertex[4]);
-                rect_idx.push_back(rect_Idx_Vertex[5]);
-
-				rect_color.push_back(Color4(1.0));
-				rect_color.push_back(Color4(1.0));
-				rect_color.push_back(Color4(1.0));
-				rect_color.push_back(Color4(1.0));
-
-				rect_factor.push_back(0.0);
-				rect_factor.push_back(0.0);
-				rect_factor.push_back(0.0);
-				rect_factor.push_back(0.0);
-
-                rect_factor.push_back(false);
-                rect_factor.push_back(false);
-                rect_factor.push_back(false);
-                rect_factor.push_back(false);
-                
-                break;
-                
-            }
-            case SETVIEW_FEW_RECTS:
-            {
-                rect_pos.clear();
-                rect_uv.clear();
-                rect_color.clear();
-                rect_idx.clear();
                 
                 srand((unsigned)time(NULL));
                 for (int i = 0; i < NUMBER; i++)
                 {
-                    rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2]));
-                    rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], rect_Pos_Vertex[5]));
-                    rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], rect_Pos_Vertex[8]));
-                    rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11]));
+                    
+                    rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], -1.)*rect_scale[i]);
+                    rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], -1.)*rect_scale[i]);
+                    rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], -1.)*rect_scale[i]);
+                    rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10],-1.)*rect_scale[i]);
                     
                     rect_color.push_back(Color4(1.0));
                     rect_color.push_back(Color4(1.0));
@@ -279,6 +262,11 @@ public:
                     rect_idx.push_back(4*i+rect_Idx_Vertex[3]);
                     rect_idx.push_back(4*i+rect_Idx_Vertex[4]);
                     rect_idx.push_back(4*i+rect_Idx_Vertex[5]);
+                    
+                    rect_factor_inc.push_back(false);
+                    rect_factor_inc.push_back(false);
+                    rect_factor_inc.push_back(false);
+                    rect_factor_inc.push_back(false);
                 }
                 break;
                 
@@ -286,13 +274,10 @@ public:
             case SETVIEW_POINTS:
             {
                 
-                rect_pos.clear();
-                rect_color.clear();
-                rect_idx.clear();
-                rect_power.clear();
                 
                 for (unsigned int i = 0; i < NUMBER; i++)
                 {
+                    
                     rect_pos.push_back(Vec3(0.0,0.0,0.));
                     rect_idx.push_back(i);
                     rect_color.push_back(Color4(1.0));
@@ -305,10 +290,6 @@ public:
             {
                 
                 const int _TAIL = 2;
-                rect_pos.clear();
-                rect_color.clear();
-                rect_idx.clear();
-                rect_power.clear();
                
                 for (int i = 0; i < NUMBER; i++)
                 {
