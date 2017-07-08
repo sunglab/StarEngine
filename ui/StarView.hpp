@@ -204,69 +204,105 @@ public:
         ObjectType = SETTING;
         ObjectNumber = NUMBER;
         
-       if(SETTING != SETVIEW_POINTS)
-       {
-           rect_scale.resize(NUMBER, SCALE);
-       }
+//       if(SETTING != SETVIEW_POINTS)
+//       {
+//       }
         
+        rect_scale.resize(NUMBER, SCALE);
         rect_center.resize(NUMBER);
-        rect_power.resize(NUMBER);
+        rect_power.resize(NUMBER, Vec3(0.0));
         rect_factor.resize(NUMBER);
         
-        rect_pos.clear();
-        rect_uv.clear();
-        rect_color.clear();
-        rect_idx.clear();
         
         switch (SETTING)
         {
             case SETVIEW_RECT:
             {
         
+                rect_pos.resize(NUMBER*4, Vec3(0.0));
+                rect_color.resize(NUMBER*4, Color4(0.0));
+                rect_uv.resize(NUMBER*4, Vec2(0.0));
+                rect_factor.resize(NUMBER*4, 1.0);
+                rect_factor_inc.resize(NUMBER*4, false);
                 
-                
+                rect_idx.resize(NUMBER*6, 0);
+            
                 srand((unsigned)time(NULL));
                 for (int i = 0; i < NUMBER; i++)
                 {
                     
-                    rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], -1.)*rect_scale[i]);
-                    rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], -1.)*rect_scale[i]);
-                    rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], -1.)*rect_scale[i]);
-                    rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10],-1.)*rect_scale[i]);
+                    rect_pos[i*4+0] = (Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], -1.)*rect_scale[i]);
+                    rect_pos[i*4+1] = (Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], -1.)*rect_scale[i]);
+                    rect_pos[i*4+2] = (Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], -1.)*rect_scale[i]);
+                    rect_pos[i*4+3] = (Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10],-1.)*rect_scale[i]);
                     
-                    rect_color.push_back(Color4(1.0));
-                    rect_color.push_back(Color4(1.0));
-                    rect_color.push_back(Color4(1.0));
-                    rect_color.push_back(Color4(1.0));
+                    rect_color[i*4+0] = (Color4(1.0));
+                    rect_color[i*4+1] = (Color4(1.0));
+                    rect_color[i*4+2] = (Color4(1.0));
+                    rect_color[i*4+3] = (Color4(1.0));
                     
                     float f = rand()%1000 *0.001;
                     
-                    rect_factor.push_back(f);
-                    rect_factor.push_back(f);
-                    rect_factor.push_back(f);
-                    rect_factor.push_back(f);
+                    rect_factor[i*4+0] = (f);
+                    rect_factor[i*4+1] = (f);
+                    rect_factor[i*4+2] = (f);
+                    rect_factor[i*4+3] = (f);
                     
-                    rect_factor_inc.push_back(i%2);
-                    rect_factor_inc.push_back(i%2);
-                    rect_factor_inc.push_back(i%2);
-                    rect_factor_inc.push_back(i%2);
+                    rect_uv[i*4+0] = (Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
+                    rect_uv[i*4+1] = (Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
+                    rect_uv[i*4+1] = (Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
+                    rect_uv[i*4+1] = (Vec2(rect_UV_Vertex[6], rect_UV_Vertex[7]));
                     
-                    rect_uv.push_back(Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
-                    rect_uv.push_back(Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
-                    rect_uv.push_back(Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
-                    rect_uv.push_back(Vec2(rect_UV_Vertex[6], rect_UV_Vertex[7]));
+                    rect_idx[i*6+0] =(4*i+rect_Idx_Vertex[0]);
+                    rect_idx[i*6+1] =(4*i+rect_Idx_Vertex[1]);
+                    rect_idx[i*6+2] =(4*i+rect_Idx_Vertex[2]);
+                    rect_idx[i*6+3] =(4*i+rect_Idx_Vertex[3]);
+                    rect_idx[i*6+4] =(4*i+rect_Idx_Vertex[4]);
+                    rect_idx[i*6+5] =(4*i+rect_Idx_Vertex[5]);
                     
-                    rect_idx.push_back(4*i+rect_Idx_Vertex[0]);
-                    rect_idx.push_back(4*i+rect_Idx_Vertex[1]);
-                    rect_idx.push_back(4*i+rect_Idx_Vertex[2]);
-                    rect_idx.push_back(4*i+rect_Idx_Vertex[3]);
-                    rect_idx.push_back(4*i+rect_Idx_Vertex[4]);
-                    rect_idx.push_back(4*i+rect_Idx_Vertex[5]);
+                    rect_factor_inc[i*4+0] = (false);
+                    rect_factor_inc[i*4+1] = (false);
+                    rect_factor_inc[i*4+2] = (false);
+                    rect_factor_inc[i*4+3] = (false);
                     
-                    rect_factor_inc.push_back(false);
-                    rect_factor_inc.push_back(false);
-                    rect_factor_inc.push_back(false);
-                    rect_factor_inc.push_back(false);
+//                    rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], -1.)*rect_scale[i]);
+//                    rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], -1.)*rect_scale[i]);
+//                    rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], -1.)*rect_scale[i]);
+//                    rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10],-1.)*rect_scale[i]);
+//                    
+//                    rect_color.push_back(Color4(1.0));
+//                    rect_color.push_back(Color4(1.0));
+//                    rect_color.push_back(Color4(1.0));
+//                    rect_color.push_back(Color4(1.0));
+//                    
+//                    float f = rand()%1000 *0.001;
+//                    
+//                    rect_factor.push_back(f);
+//                    rect_factor.push_back(f);
+//                    rect_factor.push_back(f);
+//                    rect_factor.push_back(f);
+//                    
+//                    rect_factor_inc.push_back(i%2);
+//                    rect_factor_inc.push_back(i%2);
+//                    rect_factor_inc.push_back(i%2);
+//                    rect_factor_inc.push_back(i%2);
+//                    
+//                    rect_uv.push_back(Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
+//                    rect_uv.push_back(Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
+//                    rect_uv.push_back(Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
+//                    rect_uv.push_back(Vec2(rect_UV_Vertex[6], rect_UV_Vertex[7]));
+//                    
+//                    rect_idx.push_back(4*i+rect_Idx_Vertex[0]);
+//                    rect_idx.push_back(4*i+rect_Idx_Vertex[1]);
+//                    rect_idx.push_back(4*i+rect_Idx_Vertex[2]);
+//                    rect_idx.push_back(4*i+rect_Idx_Vertex[3]);
+//                    rect_idx.push_back(4*i+rect_Idx_Vertex[4]);
+//                    rect_idx.push_back(4*i+rect_Idx_Vertex[5]);
+//                    
+//                    rect_factor_inc.push_back(false);
+//                    rect_factor_inc.push_back(false);
+//                    rect_factor_inc.push_back(false);
+//                    rect_factor_inc.push_back(false);
                 }
                 break;
                 
@@ -274,14 +310,21 @@ public:
             case SETVIEW_POINTS:
             {
                 
+                rect_pos.resize(NUMBER, Vec3(0.0));
+                rect_color.resize(NUMBER, Color4(0.0));
+                rect_idx.resize(NUMBER);
+                
                 
                 for (unsigned int i = 0; i < NUMBER; i++)
                 {
                     
-                    rect_pos.push_back(Vec3(0.0,0.0,0.));
-                    rect_idx.push_back(i);
-                    rect_color.push_back(Color4(1.0));
-                    rect_power.push_back(Vec3(0.0,0.0,0.0));
+//                    rect_pos.push_back(Vec3(0.0,0.0,0.));
+//                    rect_idx.push_back(i);
+//                    rect_color.push_back(Color4(1.0));
+                    
+                    rect_pos[i] = (Vec3(0.0,0.0,0.));
+                    rect_color[i] = (Color4(1.0));
+                    rect_idx[i] = (i);
                 }
                 
                 break;
@@ -289,18 +332,25 @@ public:
             case SETVIEW_LINES:
             {
                 
+                rect_pos.resize(NUMBER*2, Vec3(0.0));
+                rect_color.resize(NUMBER*2, Color4(0.0));
+                rect_idx.resize(NUMBER*2);
+                
+//                rect_factor.resize(NUMBER*2, 1.0);
+//                rect_factor_inc.resize(NUMBER*2, false);
+                
                 const int _TAIL = 2;
                
                 for (int i = 0; i < NUMBER; i++)
                 {
-                    rect_pos.push_back(Vec3(0.0,0.0,0.));
-                    rect_pos.push_back(Vec3(0.0,0.0,0.));
-                    rect_color.push_back(Color4(1.0));
-                    rect_color.push_back(Color4(1.0));
-                    rect_idx.push_back(i*_TAIL+0);
-                    rect_idx.push_back(i*_TAIL+1);
+                    rect_pos[i*_TAIL+0] = (Vec3(0.0, 0.0, 0.0));
+                    rect_pos[i*_TAIL+1] = (Vec3(0.0, 0.0, 0.0));
                     
-//                    rect_power.push_back(Vec3(0.0,0.0,0.0));
+                    rect_color[i*_TAIL+0] = (Color4(1.0));
+                    rect_color[i*_TAIL+1] = (Color4(1.0));
+                    
+                    rect_idx[i*_TAIL+0] = (i*_TAIL+0);
+                    rect_idx[i*_TAIL+1] = (i*_TAIL+1);
                 }
                 
                break;
@@ -357,17 +407,19 @@ public:
     //StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_id,float width,float height unsigned int _texture_number=0)
     StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_name=79,unsigned int _texture_number=0)
     {
-	/*	texture_height = height;
-		texture_width = width;*/
+//		texture_height = height;
+//		texture_width = width;
 		
         startexture =_startexture;
 
-		if (_texture_name == 79)
-		{
-			//starLOG("yes null\n");
-			return this;
-		}
+//		if (_texture_name == 79)
+//		{
+//			//starLOG("yes null\n");
+//			return this;
+//		}
+        
 		texture_name[_texture_number] = _texture_name;
+        
 		return this;
     };
 
