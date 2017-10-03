@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 //#include "./starUI.h"
-#include "./StarView.hpp"
+#include "./StarView.h"
 #include "./../StarMain.h"
 //#include "StarButton.h"
 #include "StarDefine.h"

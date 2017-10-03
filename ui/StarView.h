@@ -13,18 +13,19 @@
 #include "../StarMain.h"
 #include "../star.h"
 #include <unordered_map>
-enum
+
+enum class SETVIEW
 {
     
-    SETVIEW_POINTS,
+    POINTS,
     
-    SETVIEW_LINES,
+    LINES,
     
-	SETVIEW_RECT,
+	RECT,
 
-	SETVIEW_CUBE,
+	CUBE,
 
-	TOTAL_SETVIEW,
+	TOTAL
 };
 
 class StarTexture;
@@ -42,7 +43,8 @@ public:
 
 protected:
     
-    unsigned int ObjectType;
+    //unsigned int ObjectType;
+    SETVIEW ObjectType;
     unsigned int ObjectNumber;
     
     std::vector<Vec3> rect_scale;
@@ -157,7 +159,7 @@ public:
         
         switch(ObjectType)
         {
-            case SETVIEW_RECT:
+		case SETVIEW::RECT:
                 for(int i=0; i< ObjectNumber; i++)
                 {
                     rect_pos[i*4+0] = (rect_center[i]+ Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], rect_Pos_Vertex[2])*rect_scale[i]);
@@ -166,14 +168,14 @@ public:
                     rect_pos[i*4+3] = (rect_center[i]+ Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10], rect_Pos_Vertex[11])*rect_scale[i]);
                 }
                 break;
-            case SETVIEW_LINES:
+		case SETVIEW::LINES:
                 for(int i=0; i< ObjectNumber; i++)
                 {
                     rect_pos[i*2+1] = rect_pos[i*2+0];
                     rect_pos[i*2+0] = rect_center[i];
                 }
                 break;
-            case  SETVIEW_POINTS:
+		case  SETVIEW::POINTS:
                 for(int i=0; i< ObjectNumber; i++)
                 {
                     rect_pos[i] = rect_center[i];
@@ -197,7 +199,7 @@ public:
         return connection[pos];
     }
     
-    void setView(unsigned int SETTING = SETVIEW_RECT, unsigned int NUMBER = 1, Vec3 SCALE = Vec3(1.0))
+    void setView(SETVIEW SETTING = (SETVIEW::RECT), unsigned int NUMBER = 1, Vec3 SCALE = Vec3(1.0))
 //    void setView(unsigned int SETTING = 0, unsigned int NUMBER = 1, float SCALE = (1.0))
     {
         
@@ -216,7 +218,7 @@ public:
         
         switch (SETTING)
         {
-            case SETVIEW_RECT:
+		case SETVIEW::RECT:
             {
         
                 rect_pos.resize(NUMBER*4, Vec3(0.0));
@@ -307,7 +309,7 @@ public:
                 break;
                 
             }
-            case SETVIEW_POINTS:
+		case SETVIEW::POINTS:
             {
                 
                 rect_pos.resize(NUMBER, Vec3(0.0));
@@ -329,7 +331,7 @@ public:
                 
                 break;
             }
-            case SETVIEW_LINES:
+		case SETVIEW::LINES:
             {
                 
                 rect_pos.resize(NUMBER*2, Vec3(0.0));

@@ -385,12 +385,12 @@ void StarTexture::createTEXTURE_DATA(void* data, unsigned int camera_width, unsi
 	{
 		if (type)
 		{
-            if(type==TextureType::SHORT)
+            if(type== ToInt(TextureType::SHORT))
             {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, 0);
                 glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, data);
             }
-            else if(type==TextureType::FLOAT)
+            else if(type==ToInt(TextureType::FLOAT))
             {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_width, camera_height, 0, GL_RGBA, GL_FLOAT, 0);
                 glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGBA, GL_FLOAT, data);
@@ -406,12 +406,12 @@ void StarTexture::createTEXTURE_DATA(void* data, unsigned int camera_width, unsi
 	{
 		if (type)
 		{
-            if(type==TextureType::SHORT)
+            if(type==ToInt(TextureType::SHORT))
             {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, camera_width, camera_height, 0, GL_RGB, GL_UNSIGNED_SHORT_4_4_4_4, 0);
                 glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGB, GL_UNSIGNED_SHORT_4_4_4_4, data);
             }
-            else if(type==TextureType::FLOAT)
+            else if(type==ToInt(TextureType::FLOAT))
             {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, camera_width, camera_height, 0, GL_RGB, GL_FLOAT, 0);
                 glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, camera_width, camera_height, GL_RGB, GL_FLOAT, data);

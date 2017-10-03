@@ -11,12 +11,14 @@
 
 #include "../StarMain.h"
 #include <iostream>
-enum TextureType
+
+enum class TextureType
 {
     CHAR,
     FLOAT,
     SHORT,
 };
+
 class Texture
 {
 public:
@@ -25,7 +27,7 @@ public:
 //    Texture(unsigned int tex_id);
     unsigned int texture_width;
     unsigned int texture_height;
-    unsigned  int texture_id;
+    unsigned int texture_id;
 };
 
 //class StarImage

@@ -62,6 +62,7 @@ class starengine;
 void winprintf(const char *fmt, ...);
 #endif
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// OS Free ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,12 +82,15 @@ void winprintf(const char *fmt, ...);
 #include "./geometry/StarMesh.h"
 #include "./ai/StarAnt.h"
 
-//#include "./ui/StarButton.h"
-//#include "./ui/StarButton.h"
-#include "./ui/StarView.hpp"
-//#include "./ui/StarBar.h"
+#include "./ui/StarView.h"
 #include "./cv/StarCV.h"
-#include "./ui/StarScene.hpp"
+#include "./ui/StarScene.h"
+
+#define ToInt(x) static_cast<int>(x)
+#define ToUInt(x) static_cast<unsigned int>(x)
+#define ToLong(x) static_cast<long>(x)
+#define ToFloat(x) static_cast<float>(x)
+#define ToDouble(x) static_cast<double>(x)
 
 #define STRINGIFY(A)  #A
 
