@@ -13,19 +13,17 @@
 //#include "./starUI.h"
 #include "./StarView.h"
 #include "./../StarMain.h"
-//#include "StarButton.h"
 #include "StarDefine.h"
+
 #include <unordered_map>
-//#include  <typeindex>
 #include <typeinfo>
 #include <typeindex>
 
 class StarView;
 class StarScene :public StarTouchDelegate
-//:public StarEngine//, public StarButtonDelegate
 {
     std::vector<StarView*> views;
-    std::unordered_map< std::type_index,StarView*> list;
+    std::unordered_map<std::type_index,StarView*> list;
     
 public:
     
@@ -50,6 +48,7 @@ public:
             view->render();
     }
     
+    
     StarView* getView(std::type_index idx)
     {
         return list[idx];
@@ -58,6 +57,30 @@ public:
     StarScene* Make_Scene()
     {
         return this;
+    }
+    
+    virtual void CallbackTouchBegin()override
+    {
+        for(StarView* view:views)
+            view->CallbackTouchBegin();
+    }
+    
+    virtual void CallbackTouchMove()override
+    {
+        for(StarView* view:views)
+            view->CallbackTouchMove();
+    }
+    
+    virtual void CallbackTouchEnd() override
+    {
+        for(StarView* view:views)
+            view->CallbackTouchEnd();
+    }
+    
+    virtual void CallbackTouchCancel()override
+    {
+        for(StarView* view:views)
+            view->CallbackTouchCancel();
     }
 };
 #endif /* StarScene_hpp */

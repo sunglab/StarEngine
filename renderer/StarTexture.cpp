@@ -198,7 +198,10 @@ void StarTexture::createTEXTURE_ANDROID(void* array, unsigned int texture_width,
 	texture[texture_id].texture_width = texture_width;
 	texture[texture_id].texture_height = texture_height;
 
-	glGenTextures(1, &texture[texture_id].texture_id);
+    if (!texture[texture_id].texture_id)
+        glGenTextures(1, &texture[texture_id].texture_id);
+//	glGenTextures(1, &texture[texture_id].texture_id);
+    
 	glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
     
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, array);
@@ -481,7 +484,7 @@ void StarTexture::createTEXTURE_RTF(unsigned int texture_width, unsigned int tex
 }
 #endif
 
-void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat,bool resize, bool opt)
+void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat,bool resize, bool opt, int type)
 {
 	texture[texture_id].texture_width = texture_width;
 	texture[texture_id].texture_height = texture_height;
@@ -491,8 +494,21 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 		glGenTextures(1, &texture[texture_id].texture_id);
 		glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+        if(type == TextureType::CHAR)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+        }
+        else if(type == TextureType::FLOAT)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_FLOAT, 0);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+        }
+        else if(type == TextureType::SHORT)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, 0);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+        }
 
 		if (repeat)
 		{
@@ -506,9 +522,6 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 		}
 		else
 		{
-//			glGenerateMipmap(GL_TEXTURE_2D);
-//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-//            
             if(opt)
             {
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -528,8 +541,14 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 	}
 	else
 	{
-		glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+        glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
+        
+        if(type == TextureType::CHAR)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+        else if(type == TextureType::FLOAT)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_FLOAT, 0);
+        else if(type == TextureType::SHORT)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, 0);
 	}
 }
 

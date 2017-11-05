@@ -48,6 +48,11 @@ class StarTexture
 //    std::unique_ptr<Texture[]> texture;
     StarTexture(unsigned int texture_number);
 
+    ~StarTexture()
+    {
+        delete[] texture;
+    }
+    
 #ifdef IOS
     void createTEXTURE_IOS(const char*, unsigned texture_id,bool repeat = false, bool opt = false);
 #elif MAC
@@ -59,8 +64,8 @@ class StarTexture
 	void createTEXTURE_CUBE_WINDOWS(void** array, unsigned int width, unsigned int height, unsigned int texture_id,bool opt=false);
 #endif
     void createTEXTURE_CAMERA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,bool _float = false); // for camera
-    void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,int _float = 0); // for camera
-    void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false,bool resize=false, bool opt = false);
+    void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,int type= 0); // for camera
+    void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false,bool resize=false, bool opt = false, int type = 0);
 
 #if (MAC||_WIN32)
     void createTEXTURE_RTF( unsigned int width, unsigned int height, unsigned int texture_id,unsigned int numOfMS);

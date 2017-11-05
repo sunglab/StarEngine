@@ -82,9 +82,9 @@ protected:
 	*/
     GLuint attribute_id[10]; // position & uv
     GLuint uniform_id[10]; // matrix
-    GLuint texture_id[4]; //  from glsl
     
-    GLuint texture_name[4]; // from my own name in enum
+    GLuint texture_id[10]; //  from glsl  // sampler
+    GLuint texture_name[10]; // from my own name in enum 
     
     StarFBO* starfbo;
     StarTexture* startexture;
@@ -200,39 +200,32 @@ public:
     }
     
     void setView(SETVIEW SETTING = (SETVIEW::RECT), unsigned int NUMBER = 1, Vec3 SCALE = Vec3(1.0))
-//    void setView(unsigned int SETTING = 0, unsigned int NUMBER = 1, float SCALE = (1.0))
+
     {
         
         ObjectType = SETTING;
         ObjectNumber = NUMBER;
         
-//       if(SETTING != SETVIEW_POINTS)
-//       {
-//       }
-        
         rect_scale.resize(NUMBER, SCALE);
         rect_center.resize(NUMBER);
         rect_power.resize(NUMBER, Vec3(0.0));
-        rect_factor.resize(NUMBER);
+        rect_factor.resize(NUMBER, 1.0);
         
         
         switch (SETTING)
         {
 		case SETVIEW::RECT:
             {
-        
                 rect_pos.resize(NUMBER*4, Vec3(0.0));
                 rect_color.resize(NUMBER*4, Color4(0.0));
                 rect_uv.resize(NUMBER*4, Vec2(0.0));
                 rect_factor.resize(NUMBER*4, 1.0);
                 rect_factor_inc.resize(NUMBER*4, false);
-                
                 rect_idx.resize(NUMBER*6, 0);
-            
+                
                 srand((unsigned)time(NULL));
                 for (int i = 0; i < NUMBER; i++)
                 {
-                    
                     rect_pos[i*4+0] = (Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], -1.)*rect_scale[i]);
                     rect_pos[i*4+1] = (Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], -1.)*rect_scale[i]);
                     rect_pos[i*4+2] = (Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], -1.)*rect_scale[i]);
@@ -252,8 +245,8 @@ public:
                     
                     rect_uv[i*4+0] = (Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
                     rect_uv[i*4+1] = (Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
-                    rect_uv[i*4+1] = (Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
-                    rect_uv[i*4+1] = (Vec2(rect_UV_Vertex[6], rect_UV_Vertex[7]));
+                    rect_uv[i*4+2] = (Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
+                    rect_uv[i*4+3] = (Vec2(rect_UV_Vertex[6], rect_UV_Vertex[7]));
                     
                     rect_idx[i*6+0] =(4*i+rect_Idx_Vertex[0]);
                     rect_idx[i*6+1] =(4*i+rect_Idx_Vertex[1]);
@@ -266,64 +259,18 @@ public:
                     rect_factor_inc[i*4+1] = (false);
                     rect_factor_inc[i*4+2] = (false);
                     rect_factor_inc[i*4+3] = (false);
-                    
-//                    rect_pos.push_back(Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], -1.)*rect_scale[i]);
-//                    rect_pos.push_back(Vec3(rect_Pos_Vertex[3], rect_Pos_Vertex[4], -1.)*rect_scale[i]);
-//                    rect_pos.push_back(Vec3(rect_Pos_Vertex[6], rect_Pos_Vertex[7], -1.)*rect_scale[i]);
-//                    rect_pos.push_back(Vec3(rect_Pos_Vertex[9], rect_Pos_Vertex[10],-1.)*rect_scale[i]);
-//                    
-//                    rect_color.push_back(Color4(1.0));
-//                    rect_color.push_back(Color4(1.0));
-//                    rect_color.push_back(Color4(1.0));
-//                    rect_color.push_back(Color4(1.0));
-//                    
-//                    float f = rand()%1000 *0.001;
-//                    
-//                    rect_factor.push_back(f);
-//                    rect_factor.push_back(f);
-//                    rect_factor.push_back(f);
-//                    rect_factor.push_back(f);
-//                    
-//                    rect_factor_inc.push_back(i%2);
-//                    rect_factor_inc.push_back(i%2);
-//                    rect_factor_inc.push_back(i%2);
-//                    rect_factor_inc.push_back(i%2);
-//                    
-//                    rect_uv.push_back(Vec2(rect_UV_Vertex[0], rect_UV_Vertex[1]));
-//                    rect_uv.push_back(Vec2(rect_UV_Vertex[2], rect_UV_Vertex[3]));
-//                    rect_uv.push_back(Vec2(rect_UV_Vertex[4], rect_UV_Vertex[5]));
-//                    rect_uv.push_back(Vec2(rect_UV_Vertex[6], rect_UV_Vertex[7]));
-//                    
-//                    rect_idx.push_back(4*i+rect_Idx_Vertex[0]);
-//                    rect_idx.push_back(4*i+rect_Idx_Vertex[1]);
-//                    rect_idx.push_back(4*i+rect_Idx_Vertex[2]);
-//                    rect_idx.push_back(4*i+rect_Idx_Vertex[3]);
-//                    rect_idx.push_back(4*i+rect_Idx_Vertex[4]);
-//                    rect_idx.push_back(4*i+rect_Idx_Vertex[5]);
-//                    
-//                    rect_factor_inc.push_back(false);
-//                    rect_factor_inc.push_back(false);
-//                    rect_factor_inc.push_back(false);
-//                    rect_factor_inc.push_back(false);
                 }
                 break;
                 
             }
 		case SETVIEW::POINTS:
             {
-                
                 rect_pos.resize(NUMBER, Vec3(0.0));
-                rect_color.resize(NUMBER, Color4(0.0));
+                rect_color.resize(NUMBER, Color4(1.0));
                 rect_idx.resize(NUMBER);
-                
                 
                 for (unsigned int i = 0; i < NUMBER; i++)
                 {
-                    
-//                    rect_pos.push_back(Vec3(0.0,0.0,0.));
-//                    rect_idx.push_back(i);
-//                    rect_color.push_back(Color4(1.0));
-                    
                     rect_pos[i] = (Vec3(0.0,0.0,0.));
                     rect_color[i] = (Color4(1.0));
                     rect_idx[i] = (i);
@@ -338,37 +285,42 @@ public:
                 rect_color.resize(NUMBER*2, Color4(0.0));
                 rect_idx.resize(NUMBER*2);
                 
-//                rect_factor.resize(NUMBER*2, 1.0);
-//                rect_factor_inc.resize(NUMBER*2, false);
-                
-                const int _TAIL = 2;
-               
                 for (int i = 0; i < NUMBER; i++)
                 {
-                    rect_pos[i*_TAIL+0] = (Vec3(0.0, 0.0, 0.0));
-                    rect_pos[i*_TAIL+1] = (Vec3(0.0, 0.0, 0.0));
+                    rect_pos[i*2+0] = (Vec3(0.0, 0.0, 0.0));
+                    rect_pos[i*2+1] = (Vec3(0.0, 0.0, 0.0));
                     
-                    rect_color[i*_TAIL+0] = (Color4(1.0));
-                    rect_color[i*_TAIL+1] = (Color4(1.0));
+                    rect_color[i*2+0] = (Color4(1.0));
+                    rect_color[i*2+1] = (Color4(1.0));
                     
-                    rect_idx[i*_TAIL+0] = (i*_TAIL+0);
-                    rect_idx[i*_TAIL+1] = (i*_TAIL+1);
+                    rect_idx[i*2+0] = (i*2+0);
+                    rect_idx[i*2+1] = (i*2+1);
                 }
                 
-               break;
+                break;
             }
+            default:
+                break;
                 
         }
         
-        
-
-	}
+    }
     
     void setColor(Color4& color,int i)
     {
         rect_color[i] = color;
     }
     
+    void addPower(Vec3& power)
+    {
+        for(int i=0; i<rect_power.size(); i++)
+        rect_power[i] += power;
+    }
+    
+    void setPower(Vec3& power, int i)
+    {
+        rect_power[i] = power;
+    }
     void setPosition(Vec3& position, int i)
     {
         rect_pos[i] = position;
@@ -406,19 +358,10 @@ public:
 		return this;
 	}
     
-    //StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_id,float width,float height unsigned int _texture_number=0)
     StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_name=79,unsigned int _texture_number=0)
     {
-//		texture_height = height;
-//		texture_width = width;
-		
+        
         startexture =_startexture;
-
-//		if (_texture_name == 79)
-//		{
-//			//starLOG("yes null\n");
-//			return this;
-//		}
         
 		texture_name[_texture_number] = _texture_name;
         
@@ -444,11 +387,11 @@ public:
     
 	
     //optional
-	void CallbackFPS(){};
-	void CallbackTouchBegin(){};
-	void CallbackTouchMove(){};
-	void CallbackTouchEnd(){};
-	void CallbackTouchCancel(){};
+	virtual void CallbackFPS(){};
+	virtual void CallbackTouchBegin(){};
+	virtual void CallbackTouchMove(){};
+	virtual void CallbackTouchEnd(){};
+	virtual void CallbackTouchCancel(){};
 
 };
 
