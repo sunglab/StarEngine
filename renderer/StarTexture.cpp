@@ -494,17 +494,17 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 		glGenTextures(1, &texture[texture_id].texture_id);
 		glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
 
-        if(type == TextureType::CHAR)
+        if(type == ToInt(TextureType::CHAR))
         {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
         }
-        else if(type == TextureType::FLOAT)
+        else if(type == ToInt(TextureType::FLOAT))
         {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_FLOAT, 0);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
         }
-        else if(type == TextureType::SHORT)
+        else if(type == ToInt(TextureType::SHORT))
         {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, 0);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
@@ -543,11 +543,11 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 	{
         glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
         
-        if(type == TextureType::CHAR)
+        if(type == ToInt(TextureType::CHAR))
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-        else if(type == TextureType::FLOAT)
+        else if(type == ToInt(TextureType::FLOAT))
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_FLOAT, 0);
-        else if(type == TextureType::SHORT)
+        else if(type == ToInt(TextureType::SHORT))
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, 0);
 	}
 }
