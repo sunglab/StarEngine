@@ -11,7 +11,7 @@
 #define     FLUID_DEFAULT_DT					0.04f	//Maa	25fps
 #define		FLUID_DEFAULT_VISC					0.0001f
 //#define     FLUID_DEFAULT_COLOR_DIFFUSION		0.1f
-#define     FLUID_DEFAULT_FADESPEED				0.03f
+#define     FLUID_DEFAULT_FADESPEED				0.003f
 #define		FLUID_DEFAULT_SOLVER_ITERATIONS		10  // why 10 ??
 #define		FLUID_IX(i, j)		((i) + (_NX + 2)  *(j))
 

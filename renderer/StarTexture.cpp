@@ -13,7 +13,6 @@
 //#import <Cocoa/Cocoa.h>
 #endif
 
-
 StarTexture::StarTexture(unsigned int texture_number)
 {
     texture = new Texture[texture_number];

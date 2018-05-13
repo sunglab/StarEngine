@@ -292,6 +292,15 @@ Vec3& Vec3::operator/=(const __VERTEX__TYPE__& in_Scalar)
 	return *this;
 }
 
+bool Vec3::operator==(const Vec3& in_Vec)
+{
+    Vec3 ret = *this - in_Vec;
+    float threshold = 0.000001f;
+    return ret.x < threshold &&
+            ret.y < threshold &&
+            ret.z < threshold;
+}
+
 __VERTEX__TYPE__&  Vec3::operator[](int index)
 {
 //    return (this)[index];

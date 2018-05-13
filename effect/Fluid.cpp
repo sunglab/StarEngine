@@ -213,8 +213,8 @@ void StarFluid::update() {
 
 void StarFluid::fadeRGB() {
     
-//    float holdAmount = 1 - _avgDensity * _avgDensity * fadeSpeed;	// this is how fast the density will decay depending on how full the screen currently is
-    float holdAmount = 1 - fadeSpeed;
+    float holdAmount = 1 - _avgDensity * _avgDensity * fadeSpeed;	// this is how fast the density will decay depending on how full the screen currently is
+//    float holdAmount = 1 - fadeSpeed;
     
     _avgDensity = 0;
     _avgSpeed = 0;
@@ -236,7 +236,8 @@ void StarFluid::fadeRGB() {
         // calc avg density
         tmp.r = starMin( 1.0f, color[i].r );
         tmp.g = starMin( 1.0f, color[i].g );
-        tmp.b = starMin( 1.0f, color[i].b);
+        tmp.b = starMin( 1.0f, color[i].b );
+        
 //        tmp.x=  color[i].x;
 //        tmp.y = color[i].y;
 //        tmp.z = color[i].z;

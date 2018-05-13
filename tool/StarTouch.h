@@ -11,8 +11,6 @@
 #include "../star.h"
 #include "../math/StarMath.h"
 
-
-
 #ifdef MAC
 #include "TuioListener.h"
 #include "TuioClient.h"
@@ -23,7 +21,7 @@
 #endif
 
 
-#define MAX_FINGERS 10
+#define MAX_FINGERS 30
 
 class StarTouchDelegate
 {
@@ -48,7 +46,6 @@ class StarTouch
 	bool end;
     
     StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect= 0,bool TUIO=true);
-//    StarTouch(StarTouchDelegate* _delegate,bool TUIO=true);
     void init(bool TUIO=true);
 
 	StarTouch* clear()

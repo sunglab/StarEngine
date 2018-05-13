@@ -12,8 +12,9 @@
 
 Vec3 operator*(const Vec3& in_V, const Matrix3& in_M)
 {
-    Vec3 abc = Vec3(0,0);
-    return abc;
+    Vec3 out_V;
+    Matrix_MxV(out_V,in_V,in_M);
+    return out_V;
 }
 Vec4 Matrix::operator*(const Vec4& in_V) const
 {
@@ -50,7 +51,7 @@ Vec4 operator*(const Vec4& in_V,const Matrix& in_M)
 }
 
 Vec3 operator*(const Vec3& in_V,const Matrix& in_M)
-{ Vec3 out_V;
+{   Vec3 out_V;
 	Matrix_MxV(out_V,in_V,in_M);
 	return out_V;
 //	Vec4 temp_V;
