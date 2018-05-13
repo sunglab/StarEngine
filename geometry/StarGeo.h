@@ -10,7 +10,7 @@
 #define STARGEO_H
 #include "../StarMain.h"
 #include <vector>
-
+#include <algorithm>
 
 class StarGeo
 {
