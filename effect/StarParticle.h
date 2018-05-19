@@ -50,8 +50,6 @@ public:
         position.zero();
         texCoord.zero();
         color.zero();
-        //        angle = 3.14159265*0.5;
-        //        lifetile = 7.0;
     }
 };
 
@@ -69,33 +67,6 @@ public:
     }
     
 };
-//template <>
-//class StarParticleLINE<Vec2>
-//{
-//public:
-//    Vec2 position;
-//    Color4 color;
-//public:
-//    StarParticleLINE()
-//    {
-//        position.zero();
-//        color.zero();
-//    }
-//};
-//
-//template <>
-//class StarParticleLINE<Vec3>
-//{
-//public:
-//    Vec3 position;
-//    Color4 color;
-//public:
-//    StarParticleLINE()
-//    {
-//        position.zero();
-//        color.zero();
-//    }
-//};
 
 template <typename t> class StarParticleManager
 {
@@ -128,14 +99,9 @@ public:
         
         for(int i=0; i<howmany; i++)
         {
-            //            particle_position[i*2] = particle_position[i*2+1] = Vec2(-10000.-10000.);
             particle_index[i*2+0] = (i*2+0);
             particle_index[i*2+1] = (i*2+1);
-            //            particle_index.push_back(i*2+0);
-            //            particle_index.push_back(i*2+1);
         }
-        //        starLOG("%d %d %d\n", particle_index.size(),particle_power.size(), particle_position.size());
-        //        printf("%d %d %d\n", particle_index.capacity(),particle_power.size(), particle_position.size());
     }
     
     StarParticleLINE& getPosition()
@@ -181,17 +147,6 @@ public:
         
     }
 };
-/*
- * Manager
- */
-
-//template <typename t>
-//class StarParticle_O_Array
-//{
-//public:
-//    vector<t> pList;
-//    
-//};
 
 /*
  * for supporting effects
@@ -200,11 +155,6 @@ public:
 namespace starparticle
 {
     
-//    void getPolar(Vec3* position, Vec2* center, int idx, int total)
-//    {
-//        particle_position [idx*2+1] = particle_position [idx*2] = Vec3(center->x+cosf(2*M_PI*((float)idx/(float)total)), center->y+sinf(2*M_PI*((float)idx/(float)total)),particle_position [idx*2].z);
-//    }
-//    
    template<typename t>
     void setZeroTimer(unsigned int* timer,unsigned int exception)
     {
@@ -328,24 +278,7 @@ namespace starparticle
             avg.z /= touch_number;
         }
     }
-//        boom(Vec3* p,int count)
-//        {
-//            
-//        }
-        //        averA /= touch_number; // ANGLE
     
-    
-    
- 
-    
-    
-    //template <typename t>
-    //bool isinCircle(float r,Vec2* finger,t particle)
-    //{
-    ////    if(r>(finger.x))
-    //}
-    
-    //template <typename t>
     typedef struct isinCircle_
     {
         bool operator()(Vec2* dis,float r)
@@ -376,32 +309,5 @@ namespace starparticle
         }
         
     }IsoutRect;
-    //template<typename t>
-    //void getCircumference(StarTouch* startouch, float& circumference)//, t& avg) //taken out 'cause I don't need it yet
-    //{
-    //    int touch_number = startouch->fingers;
-    //    if(touch_number>0)
-    //    {
-    //        for(int i=0;i<touch_number;i++)
-    //        {
-    //            if(i==(touch_number-1))
-    //            {
-    //                
-    //                float lastx = ((*l_temp_touch_pos[0]).x-(*l_temp_touch_pos[i]).x);
-    //                float lasty = ((*l_temp_touch_pos[0]).y-(*l_temp_touch_pos[i]).y);
-    //                circumference += sqrt(lastx*lastx+lasty*lasty);
-    //            }
-    //            else
-    //            {
-    //                float norx =((*l_temp_touch_pos[i+1]).x-(*l_temp_touch_pos[i]).x);
-    //                float nory =((*l_temp_touch_pos[i+1]).y-(*l_temp_touch_pos[i]).y);
-    //                circumference += sqrt(norx*norx+nory*nory);
-    //            }
-    //            //            averA += atan2f(avg.y- (*l_temp_touch_pos[i]).y, avg.x- (*l_temp_touch_pos[i]).x);
-    //        }
-    //        //        averA /= touch_number; // ANGLE
-    //    }
-    //}
-    
 }
 #endif

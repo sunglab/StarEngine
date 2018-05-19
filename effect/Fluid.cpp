@@ -14,7 +14,6 @@ StarFluid::StarFluid()
 ,colorOld(NULL)
 ,_isInited(false)
 {
-//    starLOG("ok?");
     custom_brush[0]  = (float*)0;
     custom_brush[1] = (float*)0;
     custom_brush[2] = (float*)0;

@@ -22,7 +22,7 @@ StarOBJ::StarOBJ(const string& path, vector<Vec3>& position, vector<Vec2>& texco
     ifstream objfile(path.c_str());
     
     if(!objfile)
-        starLOG("file not open\n");
+        starLOG("File is not open\n");
     else
         while (std::getline(objfile,line))
         {
@@ -69,44 +69,10 @@ StarOBJ::StarOBJ(const string& path, vector<Vec3>& position, vector<Vec2>& texco
                 
               if(l.size())
               {
-            //if rectangle
                 parseFace(i,index);
                 parseFace(k,index);
                 parseFace(l,index);
               }
-                
-//                parseFace(i,index);
-//                parseFace(k,index);
-//                parseFace(j,index);
-               
-//                starLOG("haha\n");
-                //           if((!vn) && (!vt))
-                //           {
-                //            lineSS >> i >> j >> k;
-                //            idx.push_back(i-1);
-                //            idx.push_back(j-1);
-                //            idx.push_back(k-1);
-                //           }
-                //           else if((vn) && (!vt))
-                //           {
-                //               
-                //           }
-                //           else if((!vn) && (vt))
-                //           {
-                //               
-                //           }
-                //           else if((vn) && (vt))
-                //           {
-                //               
-                //           
-                //           }
-                //           else
-                //           {
-                //               starLOG("doesn't make sense\n");
-                //               starLOG("doesn't make sense\n");
-                //               starLOG("doesn't make sense\n");
-                //               starLOG("doesn't make sense\n");
-                //           }
             }
         }
     
@@ -128,7 +94,6 @@ StarOBJ::StarOBJ(const string& path, vector<Vec3>& position, vector<Vec2>& texco
         for(vector<unsigned short>::iterator itr=temp_index.begin(); itr!=temp_index.end();itr++)
         {
             normal.push_back(temp_normal[*itr]);
-//        starLOG("normall %f %f %f \n",temp_normal[*itr].x,temp_normal[*itr].y, temp_normal[*itr].z);
         }
     }
     else if(offset==2)

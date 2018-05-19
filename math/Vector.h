@@ -123,9 +123,9 @@ public:
     friend bool operator==(const Vec3& in_Vector1, const Vec3& in_Vector2) {
         Vec3 ret = in_Vector1 - in_Vector2;
         float threshold = 0.000001f;
-        return abs(ret.x) < threshold &&
-        abs(ret.y) < threshold &&
-        abs(ret.z) < threshold;
+        return fabs(ret.x) < threshold &&
+        fabs(ret.y) < threshold &&
+        fabs(ret.z) < threshold;
     }
 
     Vec3 operator+(const __VERTEX__TYPE__& in_Scalar)const;

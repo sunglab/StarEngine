@@ -29,10 +29,6 @@ StarFBO::StarFBO()
 
 	glGenRenderbuffers(1, &rboColor[0]);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
-
-	int err;
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		starLOG("\n\nOpenGL error rbo gen  0: %x\n\n", err);
 	}
 
 #endif
@@ -69,12 +65,7 @@ StarFBO::StarFBO(unsigned int fbo_number, unsigned int vbo_number, unsigned int 
 	glGenRenderbuffers(1, &rboColor[0]);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
 #endif
-	int err;
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		starLOG("\n\nOpenGL error TURNON second fbos init: %x\n\n", err);
-	}
-
-	// After that, It might be called [context renderbufferstorage]  // IOS
+	// After that, It must be called [context renderbufferstorage]  // IOS
 
 }
 
@@ -89,7 +80,7 @@ StarFBO::~StarFBO()
 
 void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id)
 {
-
+    stencil = false; // TODO : no stencil
     int err;
 	if (object_id) // if it >= 0, it means 'main'
 	{
@@ -99,9 +90,6 @@ void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned i
 		glGenRenderbuffers(1, &rboColor[object_id]);
 		glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
 
-        while ((err = glGetError()) != GL_NO_ERROR) {
-            starLOG("\n\nOpenGL error TURNON -4: %x\n\n", err);
-        }
 #ifdef ANDROID
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8_OES, width, height);
 #elif IOS
@@ -122,22 +110,17 @@ void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned i
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
 #endif
 		}
-        while ((err = glGetError()) != GL_NO_ERROR) {
-            starLOG("\n\nOpenGL error TURNON -2: %x\n\n", err);
-        }
+        
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
 		// Attach ColorRenderbuffers
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rboColor[object_id]);
-
-        while ((err = glGetError()) != GL_NO_ERROR) {
-            starLOG("\n\nOpenGL error TURNON -1: %x\n\n", err);
-        }
+        
 		if (depth)
 			// Attach DepthRenderbuffers
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth[object_id]);
-		//if (stencil)
-		//	// Attach Stencil Renderbuffers
-		//	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepth[object_id]);
+        if (stencil)
+            // Attach Stencil Renderbuffers
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepth[object_id]);
 
 	}
 	else  // MAIN FBO
@@ -168,19 +151,13 @@ void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned i
 		if (depth)
 			// Attach DepthRenderbuffers
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth[object_id]);
-		//if (stencil)
-		//	// Attach Stencil Renderbuffers
-		//	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepth[object_id]);
+        if (stencil)
+            // Attach Stencil Renderbuffers
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepth[object_id]);
 #endif
 	}
 //	glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo[object_id]);
-
-	//int err;
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		starLOG("\n\nOpenGL error TURNON 0: %x\n\n", err);
-	}
-
 }
 
 void StarFBO::bindFBO(unsigned int object_id)
@@ -231,12 +208,6 @@ void StarFBO::createFBO_MS(bool depth, bool stencil, unsigned int width, unsigne
 	}
 //	glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo[fbo_idx]);
-
-	int err;
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		starLOG("\n\nOpenGL error MS: %x\n\n", err);
-	}
-
 }
 
 void StarFBO::blit(Vec4 src, Vec4 dst, int mask, int filter)

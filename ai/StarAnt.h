@@ -51,7 +51,6 @@ public:
 
 	void setSrcDst( Vec3* _src_position, Vec3 _dst_position, float time )
 	{
-//		starLOG("aaa\n");
 		setting_time = time;
 		remaining_time = time;
 		dst_position = _dst_position;
@@ -63,7 +62,6 @@ public:
 
 		if (remaining_time>0.)
 		{
-
 			remaining_time -= tick;
 			src_position->lerp((float)(setting_time - remaining_time) / setting_time, dst_position);
 		//	src_position->cubic((setting_time - remaining_time) / setting_time, dst_position);

@@ -6,13 +6,8 @@
 //
 
 #include "StarShader.h"
-
-
 #define SUCCESS			1
 #define FAIL			0
-
-
-
 
 unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,
                                         const GLenum Type, 
@@ -26,7 +21,6 @@ unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,
 	// Load the source code into it.
     glShaderSource(*pObject, 1, &pszShaderCode, NULL);
 	
-//    starLOG("%d",*pObject);
 	// Compile the source code.
     glCompileShader(*pObject);
     
@@ -36,12 +30,11 @@ unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,
     glGetShaderiv(*pObject, GL_COMPILE_STATUS, &bShaderCompiled);
 	if (!bShaderCompiled)
 	{
-       
         GLint logLength = 0;
 		glGetShaderiv(*pObject, GL_INFO_LOG_LENGTH, &logLength);
 		GLchar *log = (GLchar*) malloc(logLength);
 		glGetShaderInfoLog(*pObject, logLength, &logLength, log);
-		starLOG("Shader compile log\n %s", log);
+		starLOG("Shader Compile Log\n %s", log);
 		free(log);
 
 		// There was an error here, first get the length of the log message.
@@ -53,7 +46,7 @@ unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,
         glGetShaderInfoLog(*pObject, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
 		
 		// Displays the error!
-		//starLOG("Failed to compile fragment shader: %s\n", pszInfoLog);
+        starLOG("Failed to compile fragment shader: %s\n", pszInfoLog);
 		delete [] pszInfoLog;
 		
 		// Delete shader.

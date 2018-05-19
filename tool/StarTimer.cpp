@@ -53,38 +53,19 @@ void StarTimer::getFPS()
 	static unsigned long framePerSecond = 0; 
 	static unsigned long lastTime = 0;
 	static unsigned long frameTime = 0;
-	//    static char strFrameRate[50] = {0};  //IF I need to put Font with FPS
-
-	unsigned long current = getTime();//GetTickCount();
-	
-//	starLOG("ftime %lu\n",current);
-	++framePerSecond; 
-	//if the time is bigger than 1.0 sec
+	unsigned long current = getTime();
+	++framePerSecond;
 
 	if (current - lastTime > 1000) { // when higher than 1 SEC
 		lastTime = current; // init 
-		//        sprintf(strFrameRate, "FPS :%d", int(framePerSecond)); 
-#ifdef ANDROID
-		//        LOGE(strFrameRate); 
-#elif IOS
-		//        printf("%s\n",strFrameRate);
-#elif _WIN32
-//		starLOG("timer\n");
-#endif
 		delegate->CallbackFPS((int)framePerSecond);
         frame++;
 		framePerSecond = 0; 
 	}
-/*	else
-	{
-		starLOG("what %lu\n", current - lastTime);
-	}*/
-	// Don't be over more than 1000
     delegate->CallbackTICK((double)(current-frameTime));
-//	starLOG("what %lu\n", current - frameTime);
 	frameTime = current;
-
 }
+
 int StarTimer::getFrame()
 {
     return frame;

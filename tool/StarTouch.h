@@ -17,22 +17,21 @@
 #include "UdpReceiver.h"
 #include "TcpReceiver.h"
 #include <list>
-
 #endif
 
 
-#define MAX_FINGERS 30
+#define MAX_FINGERS 10
 
 class StarTouchDelegate
 {
     public:
-    virtual void CallbackTouchEnd()=0;
-    virtual void CallbackTouchBegin()=0;
-    virtual void CallbackTouchMove()=0;
-    virtual void CallbackTouchCancel()=0;
+    virtual void CallbackTouchEnd() = 0;
+    virtual void CallbackTouchBegin() = 0;
+    virtual void CallbackTouchMove() = 0;
+    virtual void CallbackTouchCancel() = 0;
 };
 
-//class StarTUIO;
+class StarTUIO;
 class StarTouch
 {
     public:
@@ -45,21 +44,21 @@ class StarTouch
 	unsigned int fingers;
 	bool end;
     
-    StarTouch(StarTouchDelegate* _delegate,Vec2 _starRect= 0,bool TUIO=true);
-    void init(bool TUIO=true);
+    StarTouch(StarTouchDelegate* _delegate,
+              Vec2 _starRect = 0,
+              bool TUIO = true);
+    
+    void init(bool TUIO = true);
 
 	StarTouch* clear()
 	{
-
 		fingers = 0;
-
 		for (int i = 0; i < MAX_FINGERS; i++)
 		{
 			nowPos[i].zero();
 			prePos[i].zero();
 			end = true;
 		}
-
 		return this;
 	};
 
