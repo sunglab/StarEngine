@@ -13,12 +13,11 @@
 StarFBO::StarFBO()
 {
 
-	fbo = new unsigned int[0];
-	rboColor = new unsigned int[0];
-	rboDepth = new unsigned int[0];
-	//    rboStencil = new unsigned int[0]; //it was combined with Depth buffer Object
-	vbo = new unsigned int[0];
-	vao = new unsigned int[0];
+    fbo = std::unique_ptr<unsigned int[]>(new unsigned int[0]);
+    rboColor = std::unique_ptr<unsigned int[]>(new unsigned int[0]);
+    rboDepth = std::unique_ptr<unsigned int[]>(new unsigned int[0]);
+    vbo = std::unique_ptr<unsigned int[]>(new unsigned int[0]);
+    vao = std::unique_ptr<unsigned int[]>(new unsigned int[0]);
 
 #ifdef IOS
 	glGenRenderbuffers(1, &rboColor[0]);
@@ -37,12 +36,11 @@ StarFBO::StarFBO()
 StarFBO::StarFBO(unsigned int fbo_number, unsigned int vbo_number, unsigned int vao_number)
 {
 
-	fbo = new unsigned int[fbo_number];
-	rboColor = new unsigned int[fbo_number];
-	rboDepth = new unsigned int[fbo_number];
-	//    rboStencil = new unsigned int[fbo_number];
-	vbo = new unsigned int[vbo_number];
-	vao = new unsigned int[vao_number];
+    fbo = std::unique_ptr<unsigned int[]>(new unsigned int[fbo_number]);
+    rboColor = std::unique_ptr<unsigned int[]>(new unsigned int[fbo_number]);
+    rboDepth = std::unique_ptr<unsigned int[]>(new unsigned int[fbo_number]);
+    vbo = std::unique_ptr<unsigned int[]>(new unsigned int[vbo_number]);
+    vao = std::unique_ptr<unsigned int[]>(new unsigned int[vao_number]);
 
     for(int i=0;i<fbo_number;i++)
     {
@@ -71,11 +69,6 @@ StarFBO::StarFBO(unsigned int fbo_number, unsigned int vbo_number, unsigned int 
 
 StarFBO::~StarFBO()
 {
-	delete[] vbo;
-	delete[] vao;
-	delete[] fbo;
-	delete[] rboColor;
-	delete[] rboDepth;
 }
 
 void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id)

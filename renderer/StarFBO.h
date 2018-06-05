@@ -9,7 +9,6 @@
 #define StarEngine_StarFBO_h
 
 #include "../StarMain.h"
-//#include "StarInfo.h"
 class Vec4;
 class StarFBO
 {
@@ -17,13 +16,18 @@ class StarFBO
 public:
 
     // IDs for fbo, vao and vbo
-    unsigned int* fbo;
-    unsigned int* rboColor;
-    unsigned int* rboDepth;
+    //unsigned int* fbo;
+    //unsigned int* rboColor;
+    //unsigned int* rboDepth;
+    std::unique_ptr<unsigned int[]> fbo;
+    std::unique_ptr<unsigned int[]> rboColor;
+    std::unique_ptr<unsigned int[]> rboDepth;
     //    unsigned int* rboStencil;
     
-    unsigned int* vao;
-    unsigned int* vbo;
+    //unsigned int* vao;
+    std::unique_ptr<unsigned int[]> vao;
+    std::unique_ptr<unsigned int[]> vbo;
+    //unsigned int* vbo;
     
     StarFBO(void);
     StarFBO( unsigned int fbo_number, unsigned int vbo_number, unsigned int vao_number);

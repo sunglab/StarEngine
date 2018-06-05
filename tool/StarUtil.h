@@ -8,7 +8,7 @@
 
 #ifndef STARUTIL_H
 #define STARUTIL_H
-
+#include <algorithm>
 /*
  *  singleton
  */
@@ -41,6 +41,10 @@ template <typename T> T* StarSingleton<T>::_single = 0;
 /*
  * global functions for useful
  */
+#define starSwap std::swap
+#define starMin std::min
+#define starMax std::max
+/*
 template<typename T>
 void starSwap(T& a, T& b)
 {
@@ -66,7 +70,7 @@ T starMax(T a, T b)
     else
         return b;
 }
-
+*/
 template<typename T>
 T starConstrain(T c, T a, T b)
 {

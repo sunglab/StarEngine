@@ -10,7 +10,6 @@
 #define StarEngine_StarTexture_h
 
 #include "../StarMain.h"
-#include <iostream>
 
 enum class TextureType
 {
@@ -24,7 +23,6 @@ class Texture
 public:
     
     Texture(){texture_id = 0; texture_width=0; texture_height=0; }
-//    Texture(unsigned int tex_id);
     unsigned int texture_width;
     unsigned int texture_height;
     unsigned int texture_id;
@@ -44,13 +42,16 @@ public:
 class StarTexture
 {
     public:
-    Texture* texture;
-//    std::unique_ptr<Texture[]> texture;
+    std::unique_ptr<Texture[]> texture;
+    unsigned int total_texture_number = 0;
     StarTexture(unsigned int texture_number);
 
     ~StarTexture()
     {
-        delete[] texture;
+        if(texture) {
+            for(int i=0; i < total_texture_number; i++)
+                deleteTEXTURE(i);
+        }
     }
     
 #ifdef IOS

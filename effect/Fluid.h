@@ -8,11 +8,11 @@
 // do not change these values, you can override them using the solver methods
 #define		FLUID_DEFAULT_NX					50
 #define		FLUID_DEFAULT_NY					50
-#define     FLUID_DEFAULT_DT					0.04f	//Maa	25fps
+#define     FLUID_DEFAULT_DT					0.04f
 #define		FLUID_DEFAULT_VISC					0.0001f
 //#define     FLUID_DEFAULT_COLOR_DIFFUSION		0.1f
 #define     FLUID_DEFAULT_FADESPEED				0.003f
-#define		FLUID_DEFAULT_SOLVER_ITERATIONS		10  // why 10 ??
+#define		FLUID_DEFAULT_SOLVER_ITERATIONS		10
 #define		FLUID_IX(i, j)		((i) + (_NX + 2)  *(j))
 
 class StarFluid {
@@ -105,16 +105,7 @@ public:
         for(int i=0;i<(l_radius);i++)
             for(int j=0;j<(l_radius);j++)
             {
-               
-float multi = ((start-abs(start-i))*(1./(2*start))+ (start-abs(start-j))*(1./(2*start)));
-//                if (l_radius==3&&multi==0)
-//                    multi = 0.25;
-//                if (l_radius==3&&multi==1)
-//                    multi = 0.75;
-//               if(a==1)
-//                   printf("%f ",multi*multi);
-//                float multi2 = multi*(multi*2.);
-//                starConstrain(multi2,(float)0.0,(float)1.0);
+                float multi = ((start-abs(start-i))*(1./(2*start))+ (start-abs(start-j))*(1./(2*start)));
                 custom_brush[a][i*l_radius+j] = multi*multi;
             }
         }

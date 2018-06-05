@@ -35,8 +35,7 @@ private:
     int frame;
     StarTimerDelegate* delegate;
 public:
-    //StarTimer():frame(0){}
-    StarTimer(StarTimerDelegate* _delegate):frame(0){delegate = _delegate;};
+    StarTimer(StarTimerDelegate* _delegate):frame(0){ delegate = _delegate; };
     unsigned long long getTime() ;
     void  getFPS() ;
     int getFrame();

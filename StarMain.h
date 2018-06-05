@@ -10,6 +10,9 @@
 
 class starengine;
 
+#include <memory>
+#include <algorithm>
+
 // IOS
  #ifdef IOS
 #import "GLView.h"
@@ -72,6 +75,7 @@ void winprintf(const char *fmt, ...);
 #include "./ui/StarView.h"
 #include "./cv/StarCV.h"
 #include "./ui/StarScene.h"
+
 
 #define ToInt(x) static_cast<int>(x)
 #define ToUInt(x) static_cast<unsigned int>(x)

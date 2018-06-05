@@ -14,9 +14,9 @@
 class StarShader
 {
 public:
-unsigned int ShaderLoadSourceFromMemory(	const char* pszShaderCode,
-											const GLenum Type,
-											GLuint* const pObject);
+unsigned int ShaderLoadSourceFromMemory(const char* pszShaderCode,
+										const GLenum Type,
+										GLuint* const pObject);
 
 unsigned int CreateProgram(	GLuint* const pProgramObject,
 						    const GLuint VertexShader,

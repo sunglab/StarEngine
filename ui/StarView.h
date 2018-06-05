@@ -86,17 +86,15 @@ protected:
     GLuint texture_id[10]; //  from glsl  // sampler
     GLuint texture_name[10]; // from my own name in enum 
     
-    StarFBO* starfbo;
-    StarTexture* startexture;
-    StarShader* starshader;
-    
-    StarTouch* startouch;
+    std::shared_ptr<StarFBO> starfbo;
+    std::shared_ptr<StarTexture> startexture;
+    std::shared_ptr<StarShader> starshader;
+    std::shared_ptr<StarTouch> startouch;
 
     bool initialed;
 
     Vec2 center;
     Vec4 rect;
-    
 
     float height;
     float width;
@@ -113,7 +111,7 @@ public:
 
     virtual bool isCollision(Vec3* pos){ return false;};
     
-    StarView* setStars(StarFBO* _starfbo, StarShader* _starshader, StarTouch* _startouch = 0)
+    StarView* setStars(std::shared_ptr<StarFBO> _starfbo, std::shared_ptr<StarShader> _starshader, std::shared_ptr<StarTouch> _startouch = 0)
     {
         starfbo = _starfbo;
         starshader = _starshader;
@@ -326,6 +324,18 @@ public:
         rect_pos[i] = position;
     }
     
+    void addPosition(Vec3& power)
+    {
+        for(int i=0; i< rect_center.size(); i++) {
+           rect_center[i] += power;
+           rect_pos[i*2+0] += power;
+           rect_pos[i*2+1] += power;
+           //rect_color[i*2+0] = Color4(1.0, 0.0, 0.0, 1.0);
+           //rect_color[i*2+1] = Color4(1.0, 0.0, 0.0, 1.0);
+            
+        }
+    }
+    
     void setUV(Vec2& uv, int i)
     {
         rect_uv[i] = uv;
@@ -348,17 +358,11 @@ public:
     
 	StarView* setMatrix(Matrix& m)
 	{
-//		final_matrix = Matrix{
-//			m.s[0],m.s[1],m.s[2],m.s[3],
-//			m.s[4],m.s[5],m.s[6],m.s[7],
-//			m.s[8],m.s[9],m.s[10],m.s[11],
-//			m.s[12],m.s[13],m.s[14],m.s[15] };
         final_matrix = m;
-
 		return this;
 	}
     
-    StarView* setTextureID(StarTexture* _startexture, unsigned int _texture_name=79,unsigned int _texture_number=0)
+    StarView* setTextureID(std::shared_ptr<StarTexture> _startexture, unsigned int _texture_name=79,unsigned int _texture_number=0)
     {
         
         startexture =_startexture;
@@ -380,12 +384,6 @@ public:
     virtual void render()=0;
     virtual void done()=0;
 
-//    void init(){};
-//    void update(){};
-//    void render(){};
-//    void done(){};
-    
-	
     //optional
 	virtual void CallbackFPS(){};
 	virtual void CallbackTouchBegin(){};

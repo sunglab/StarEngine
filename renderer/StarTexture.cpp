@@ -9,15 +9,12 @@
 #include "StarTexture.h"
 #ifdef IOS
 #import <UIKit/UIKit.h>
-//#elif MAC
-//#import <Cocoa/Cocoa.h>
 #endif
 
 StarTexture::StarTexture(unsigned int texture_number)
 {
-    texture = new Texture[texture_number];
-//    texture = std::unique_ptr<Texture[]>(new Texture[texture_number]);
-    
+    texture = std::unique_ptr<Texture[]>(new Texture[texture_number]);
+    total_texture_number = texture_number;
     for(int i=0;i<texture_number;i++)
     {
         texture[i].texture_width = 0;
