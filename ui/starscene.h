@@ -13,7 +13,6 @@
 //#include "./starUI.h"
 #include "./StarView.h"
 #include "./../StarMain.h"
-#include "StarDefine.h"
 
 #include <unordered_map>
 #include <typeinfo>

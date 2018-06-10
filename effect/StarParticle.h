@@ -166,7 +166,7 @@ namespace starparticle
     }
 
     template <typename t>
-    void getAVG(StarTouch* startouch, t& avg)
+    void getAVG(std::shared_ptr<StarTouch> startouch, t& avg)
     {
         int fingers = (startouch->fingers);
         Vec2* nowPos = (startouch->nowPos);
@@ -183,7 +183,7 @@ namespace starparticle
     }
     
     template <typename t>
-    void getCircleFingers(StarTouch* startouch, Vec2 *circle_finger_pos[], float& circumference, t& avg)
+    void getCircleFingers(std::shared_ptr<StarTouch> startouch, Vec2 *circle_finger_pos[], float& circumference, t& avg)
     {
         for(int i = 0;i<10;i++)//total touch must be 10
         {
