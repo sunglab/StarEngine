@@ -28,7 +28,6 @@ StarFBO::StarFBO()
 
 	glGenRenderbuffers(1, &rboColor[0]);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
-	}
 
 #endif
 }
