@@ -154,7 +154,6 @@ public:
     
     void sync()
     {
-        
         switch(ObjectType)
         {
 		case SETVIEW::RECT:
@@ -221,7 +220,6 @@ public:
                 rect_factor_inc.resize(NUMBER*4, false);
                 rect_idx.resize(NUMBER*6, 0);
                 
-                srand((unsigned)time(NULL));
                 for (int i = 0; i < NUMBER; i++)
                 {
                     rect_pos[i*4+0] = (Vec3(rect_Pos_Vertex[0], rect_Pos_Vertex[1], -1.)*rect_scale[i]);

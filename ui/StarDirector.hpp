@@ -11,6 +11,7 @@
 
 #include "../StarMain.h"
 //#include "StarInfo.h"
+#include "StarDefine.h" // How to solve it
 
 class StarDirector{
 

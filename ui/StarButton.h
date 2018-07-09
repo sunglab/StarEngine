@@ -14,13 +14,14 @@
 #include "../StarMain.h"
 
 //Typedef
-typedef enum 
+enum class SETBUTTON
 {
-	INTERFACE_NONE,
-	INTERFACE_CIRCLE,
-	INTERFACE_RECT_VERTICAL,
-	INTERFACE_RECT_HORIZONTAL
-}STAR_INTERFACE;
+	NONE,
+	CIRCLE,
+	VERTICAL,
+	HORIZONTAL
+};
+
 
 
 class StarButtonDelegate
@@ -49,7 +50,7 @@ public:
 	 
 	unsigned int button_number;
 
-	STAR_INTERFACE Star_Interface;
+	SETBUTTON Star_Interface;
 	
 	unsigned int vao_id;
 	unsigned int vbo_id[4];
@@ -65,16 +66,17 @@ public:
 	{
         for (int a = 0; a < num; a++)
         {
-            if (Star_Interface ==  INTERFACE_CIRCLE)
+            if (Star_Interface ==  SETBUTTON::CIRCLE)
             {
                 float short_side = width > height ? height : width;
                 float angle = (M_PI*2. / num) * a;
                 button_dst.push_back(Vec3(cos(angle)*short_side*0.2, sin(angle)*short_side*0.2, -1.0)+Vec3(width*0.5,height*0.5,0.0));
             }
-            else if( Star_Interface == INTERFACE_RECT_VERTICAL)
+            else if(Star_Interface == SETBUTTON::VERTICAL)
             {
                 button_dst.push_back(button_center[0]-Vec2(0.0,button_size[0].y*1.0*a));
             }
+//            else if(Star_Interface == SETBUTTON::HORIZONTAL)
             else
             {
                 button_dst.push_back(button_center[a]);
@@ -105,7 +107,7 @@ public:
 
    // int texture_id;
 
-	StarButton* setInterface(STAR_INTERFACE interface)
+	StarButton* setInterface(SETBUTTON interface)
 	{
 		Star_Interface = interface;
 		return this;
@@ -311,12 +313,12 @@ void CallbackFPS()
 
 bool test(Vec3* center,Vec2* size, Vec2* touch)
 {
-    
 	if ( abs((int)(center->x - touch->x)) < (size->x*0.5))
 		if (abs((int)(center->y - touch->y)) < (size->y*0.5))
 			return true;
 	return false;
 }
+    
 void CallbackTouchBegin()
 {
 	for (int i = 0; i < button_number; i++)

@@ -17,21 +17,18 @@ class StarSingleton
 {
     
 public:
-//    StarSingleton();
-//    virtual ~StarSingleton(){};
     static T* share()
     {
-            if(_single)
-                return _single;
-           else
-               return _single = new T;
+        if(_single)
+            return _single;
+        else
+            return _single = new T;
     };
     static void release()
     {
             delete _single;
             _single = false;
     }
-    
 private:
     static T* _single;
 };

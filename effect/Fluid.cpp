@@ -1,8 +1,8 @@
-
 // Modified by Sung, www.sunglab.com
 // Copyright (c) 2008-2012 Memo Akten, www.memo.tvn
 
 #include "Fluid.h"
+
 
 StarFluid::StarFluid()
 :density(NULL)
@@ -47,7 +47,7 @@ StarFluid& StarFluid::setup(int NX, int NY)
     setDeltaT();
     setFadeSpeed();
     setSolverIterations();
-//    setWrap( true, true );
+    //    setWrap( true, true );
     setWrap(false,false);
     
     //maa
@@ -92,12 +92,12 @@ void StarFluid::destroy() {
     if(custom_brush[1]) delete[] custom_brush[1];
     if(custom_brush[2]) delete[] custom_brush[2];
     
-    if(density)		delete []density;
-    if(densityOld)	delete []densityOld;
-    if(color)		delete []color;
-    if(colorOld)	delete []colorOld;
-    if(uv)		delete []uv;
-    if(uvOld)	delete []uvOld;
+    if(density)        delete []density;
+    if(densityOld)    delete []densityOld;
+    if(color)        delete []color;
+    if(colorOld)    delete []colorOld;
+    if(uv)        delete []uv;
+    if(uvOld)    delete []uvOld;
 }
 
 
@@ -105,10 +105,10 @@ void StarFluid::reset() {
     destroy();
     _isInited = true;
     
-    density		= new float[_numCells];
-    densityOld	= new float[_numCells];
-    color		= new Color3[_numCells];
-    colorOld	= new Color3[_numCells];
+    density        = new float[_numCells];
+    densityOld    = new float[_numCells];
+    color        = new Color3[_numCells];
+    colorOld    = new Color3[_numCells];
     uv    = new Vec2[_numCells];
     uvOld = new Vec2[_numCells];
     
@@ -177,42 +177,43 @@ float StarFluid::getAvgSpeed() const {
 
 
 void StarFluid::update() {
+    
     if (_isInited) {
-
+        
         addSource(uv, uvOld);
         
         starSwap(uv, uvOld);
         
         diffuseUV( viscocity );
-
+        
         project(uv, uvOld); //
-
+        
         starSwap(uv, uvOld);
         
         advect2d(uv, uvOld); //
         
         project(uv, uvOld);
         
-        addSource(color, colorOld);
-        
-        starSwap(color, colorOld);
-        
-        advectRGB(0, uv);
-        
-        fadeRGB();
+//        addSource(color, colorOld);
+//        
+//        starSwap(color, colorOld);
+//        
+//        advectRGB(0, uv);
+//        
+//        fadeRGB();
         
     }
 }
 
-#define ZERO_THRESH		1e-9			// if value falls under this, set to zero (to avoid denormal slowdown)
-//#define ZERO_THRESH		0			// if value falls under this, set to zero (to avoid denormal slowdown)
-#define CHECK_ZERO(p)	if(fabsf(p)<ZERO_THRESH) p = 0
+// if value falls under this, set to zero (to avoid denormal slowdown)
+#define ZERO_THRESH        1e-9
+#define CHECK_ZERO(p)    if(fabsf(p)<ZERO_THRESH) p = 0
 
 
 void StarFluid::fadeRGB() {
     
-    float holdAmount = 1 - _avgDensity * _avgDensity * fadeSpeed;	// this is how fast the density will decay depending on how full the screen currently is
-//    float holdAmount = 1 - fadeSpeed;
+    float holdAmount = 1 - _avgDensity * _avgDensity * fadeSpeed;    // this is how fast the density will decay depending on how full the screen currently is
+    //    float holdAmount = 1 - fadeSpeed;
     
     _avgDensity = 0;
     _avgSpeed = 0;
@@ -236,9 +237,16 @@ void StarFluid::fadeRGB() {
         tmp.g = starMin( 1.0f, color[i].g );
         tmp.b = starMin( 1.0f, color[i].b );
         
+        //        tmp.x=  color[i].x;
+        //        tmp.y = color[i].y;
+        //        tmp.z = color[i].z;
+        //            tmp.a = min( 1.0f, color[i].a );
+        
+        //            float density = max(tmp.a, max( tmp.r, max( tmp.g, tmp.b ) ) );
+        //            float density = max( tmp.r, max( tmp.g, tmp.b ) );
         float t = starMax( tmp.g, tmp.b);
         float density = starMax( tmp.r, t );
-        _avgDensity += density;	// add it up
+        _avgDensity += density;    // add it up
         
         // calc deviation (for _uniformity)
         currentDeviation = density - _avgDensity;
@@ -247,41 +255,45 @@ void StarFluid::fadeRGB() {
         // fade out old
         color[i] = tmp * holdAmount;
         
-        /*
-        color[i].r = starMin(color[i].r, 0.0f);
-        color[i].g = starMin(color[i].g, 0.0f);
-        color[i].b = starMin(color[i].b, 0.0f);
-        uv[i].x = starMin(uv[i].x, 0.0f);
-        uv[i].y = starMin(uv[i].y, 0.0f);
-         */
+        CHECK_ZERO(color[i].r);
+        CHECK_ZERO(color[i].g);
+        CHECK_ZERO(color[i].b);
+        CHECK_ZERO(uv[i].x);
+        CHECK_ZERO(uv[i].y);
     }
     _avgDensity *= _invNumCells;
     _avgSpeed *= _invNumCells;
-    _uniformity = 1.0f / (1 + totalDeviations * _invNumCells);
-    // 0: very wide distribution, 1: very uniform
+    
+    //println("%.3f\n", _avgDensity);
+    _uniformity = 1.0f / (1 + totalDeviations * _invNumCells);        // 0: very wide distribution, 1: very uniform
 }
 
 
 void StarFluid::advect( int bound, float* d, const float* d0, const Vec2* duv) {
     int i0, j0, i1, j1;
     float x, y, s0, t0, s1, t1;
-    int	index;
+    int    index;
     
     const float dt0x = deltaT * _NX;
     const float dt0y = deltaT * _NY;
     
-    for (int j = 0; j <_NY; ++j)
-        for (int i = 0; i < _NX; ++i)
+    for (int j = _NY; j > 0; --j)
+    {
+        for (int i = _NX; i > 0; --i)
         {
             index = FLUID_IX(i, j);
             x = i - dt0x * duv[index].x;
             y = j - dt0y * duv[index].y;
             
-            x = starMax(starMin(x, _NX + 0.5f),0.5f);
+            if (x > _NX + 0.5) x = _NX + 0.5f;
+            if (x < 0.5)     x = 0.5f;
+            
             i0 = (int) x;
             i1 = i0 + 1;
             
-            y = starMax(starMin(y, _NY + 0.5f),0.5f);
+            if (y > _NY + 0.5) y = _NY + 0.5f;
+            if (y < 0.5)     y = 0.5f;
+            
             j0 = (int) y;
             j1 = j0 + 1;
             
@@ -292,7 +304,9 @@ void StarFluid::advect( int bound, float* d, const float* d0, const Vec2* duv) {
             
             d[index] = s0 * (t0 * d0[FLUID_IX(i0, j0)] + t1 * d0[FLUID_IX(i0, j1)])
             + s1 * (t0 * d0[FLUID_IX(i1, j0)] + t1 * d0[FLUID_IX(i1, j1)]);
+            
         }
+    }
     setBoundary(bound, d);
 }
 
@@ -302,23 +316,28 @@ void StarFluid::advect( int bound, float* d, const float* d0, const Vec2* duv) {
 void StarFluid::advect2d( Vec2 *uv, const Vec2 *duv ) {
     int i0, j0, i1, j1;
     float s0, t0, s1, t1;
-    int	index;
+    int    index;
     
     const float dt0x = deltaT * _NX;
     const float dt0y = deltaT * _NY;
     
-    for (int j = 0; j <_NY; ++j)
-        for (int i = 0; i < _NX; ++i)
+    for (int j = _NY; j > 0; --j)
+    {
+        for (int i = _NX; i > 0; --i)
         {
             index = FLUID_IX(i, j);
             float x = i - dt0x * duv[index].x;
             float y = j - dt0y * duv[index].y;
             
-            x = starMax(starMin(x, _NX + 0.5f),0.5f);
+            if (x > _NX + 0.5) x = _NX + 0.5f;
+            if (x < 0.5)     x = 0.5f;
+            
             i0 = (int) x;
             i1 = i0 + 1;
             
-            y = starMax(starMin(y, _NY + 0.5f),0.5f);
+            if (y > _NY + 0.5) y = _NY + 0.5f;
+            if (y < 0.5)     y = 0.5f;
+            
             j0 = (int) y;
             j1 = j0 + 1;
             
@@ -331,21 +350,24 @@ void StarFluid::advect2d( Vec2 *uv, const Vec2 *duv ) {
             + s1 * (t0 * duv[FLUID_IX(i1, j0)].x + t1 * duv[FLUID_IX(i1, j1)].x);
             uv[index].y = s0 * (t0 * duv[FLUID_IX(i0, j0)].y + t1 * duv[FLUID_IX(i0, j1)].y)
             + s1 * (t0 * duv[FLUID_IX(i1, j0)].y + t1 * duv[FLUID_IX(i1, j1)].y);
+            
         }
+    }
     setBoundary2d(1, uv);
     setBoundary2d(2, uv);
 }
 
 void StarFluid::advectRGB(int bound, const Vec2* duv) {
-   	int i0, j0;
+    int i0, j0;
     float x, y, s0, t0, s1, t1, dt0x, dt0y;
-    int	index;
+    int    index;
     
     dt0x = deltaT * _NX;
     dt0y = deltaT * _NY;
     
-    for (int j = 0; j <_NY; ++j)
-        for (int i = 0; i < _NX; ++i)
+    for (int j = _NY; j > 0; --j)
+    {
+        for (int i = _NX; i > 0; --i)
         {
             index = FLUID_IX(i, j);
             x = i - dt0x * duv[index].x;
@@ -366,10 +388,11 @@ void StarFluid::advectRGB(int bound, const Vec2* duv) {
             t1 = y - j0;
             t0 = 1 - t1;
             
-            i0 = FLUID_IX(i0, j0);	//we don't need col/row index any more but index in 1 dimension
+            i0 = FLUID_IX(i0, j0);    //we don't need col/row index any more but index in 1 dimension
             j0 = i0 + (_NX + 2);
             color[index] = ( colorOld[i0] * t0 + colorOld[j0] * t1 ) * s0 + ( colorOld[i0+1] * t0 + colorOld[j0+1] * t1) * s1;
         }
+    }
     setBoundaryRGB();
 }
 
@@ -382,12 +405,11 @@ void StarFluid::diffuseUV( float diff )
 
 void StarFluid::project(Vec2* xy, Vec2* pDiv)
 {
-    float	 h;
-    int		index;
-    int		step_x = _NX + 2;
+    float     h;
+    int        index;
+    int        step_x = _NX + 2;
     
     h = - 0.5f / _NX;
-    
     for (int j = _NY; j > 0; --j)
     {
         index = FLUID_IX(_NX, j);
@@ -405,7 +427,7 @@ void StarFluid::project(Vec2* xy, Vec2* pDiv)
     linearSolverProject( pDiv );
     
     float fx = 0.5f * _NX;
-    float fy = 0.5f * _NY;	//maa	change it from _NX to _NY
+    float fy = 0.5f * _NY;    //maa    change it from _NX to _NY
     for (int j = _NY; j > 0; --j)
     {
         index = FLUID_IX(_NX, j);
@@ -422,13 +444,13 @@ void StarFluid::project(Vec2* xy, Vec2* pDiv)
 }
 
 
-//	Gauss-Seidel relaxation
+//    Gauss-Seidel relaxation
 void StarFluid::linearSolver( int bound, float* __restrict x, const float* __restrict x0, float a, float c )
 {
-    int	step_x = _NX + 2;
+    int    step_x = _NX + 2;
     int index;
     c = 1. / c;
-    for (int k = solverIterations; k > 0; --k)	// MEMO
+    for (int k = solverIterations; k > 0; --k)    // MEMO
     {
         for (int j = _NY; j > 0 ; --j)
         {
@@ -445,7 +467,7 @@ void StarFluid::linearSolver( int bound, float* __restrict x, const float* __res
 
 void StarFluid::linearSolverProject( Vec2* __restrict pdiv )
 {
-    int	step_x = _NX + 2;
+    int    step_x = _NX + 2;
     int index;
     for (int k = solverIterations; k > 0; --k) {
         for (int j = _NY; j > 0 ; --j) {
@@ -464,19 +486,19 @@ void StarFluid::linearSolverProject( Vec2* __restrict pdiv )
 
 void StarFluid::linearSolverRGB( float a, float c )
 {
-//    NSLog(@"work?");
+    //    NSLog(@"work?");
     int index1,index2,index3, index4, index;
-    int	step_x = _NX + 2;
+    int    step_x = _NX + 2;
     c = 1. / c;
-    for ( int k = solverIterations; k > 0; --k )	// MEMO
+    for ( int k = solverIterations; k > 0; --k )    // MEMO
     {
         for (int j = _NY; j > 0 ; --j)
         {
             index = FLUID_IX(_NX, j );
-            index1 = index - 1;		//FLUID_IX(i-1, j);
-            index2 = index + 1;		//FLUID_IX(i+1, j);
-            index3 = index - step_x;	//FLUID_IX(i, j-1);
-            index4 = index + step_x;	//FLUID_IX(i, j+1);
+            index1 = index - 1;        //FLUID_IX(i-1, j);
+            index2 = index + 1;        //FLUID_IX(i+1, j);
+            index3 = index - step_x;    //FLUID_IX(i, j-1);
+            index4 = index + step_x;    //FLUID_IX(i, j+1);
             for (int i = _NX; i > 0 ; --i)
             {
                 color[index] = ( ( color[index1] + color[index2]  +  color[index3] + color[index4] ) * a  +  colorOld[index] ) * c;
@@ -493,14 +515,14 @@ void StarFluid::linearSolverRGB( float a, float c )
 
 void StarFluid::linearSolverUV( float a, float c )
 {
-//    NSLog(@"work?");
+    //    NSLog(@"work?");
     int index;
-    int	step_x = _NX + 2;
+    int    step_x = _NX + 2;
     c = 1. / c;
     Vec2* __restrict localUV = uv;
     const Vec2* __restrict localOldUV = uvOld;
     
-    for (int k = solverIterations; k > 0; --k)	
+    for (int k = solverIterations; k > 0; --k)
     {
         for (int j = _NY; j > 0 ; --j)
         {
@@ -522,7 +544,7 @@ void StarFluid::linearSolverUV( float a, float c )
 
 void StarFluid::setBoundary(int bound, float* x)
 {
-
+    
     int dst1, dst2, src1, src2;
     int step = FLUID_IX(0, 1) - FLUID_IX(0, 0);
     
@@ -535,14 +557,14 @@ void StarFluid::setBoundary(int bound, float* x)
     if( bound == 1 && !wrap_x )
         for (int i = _NY; i > 0; --i )
         {
-            x[dst1] = -x[src1];	dst1 += step;	src1 += step;
-            x[dst2] = -x[src2];	dst2 += step;	src2 += step;
+            x[dst1] = -x[src1];    dst1 += step;    src1 += step;
+            x[dst2] = -x[src2];    dst2 += step;    src2 += step;
         }
     else
         for (int i = _NY; i > 0; --i )
         {
-            x[dst1] = x[src1];	dst1 += step;	src1 += step;
-            x[dst2] = x[src2];	dst2 += step;	src2 += step;
+            x[dst1] = x[src1];    dst1 += step;    src1 += step;
+            x[dst2] = x[src2];    dst2 += step;    src2 += step;
         }
     
     dst1 = FLUID_IX(1, 0);
@@ -583,8 +605,8 @@ void StarFluid::setBoundary02d(Vec2* x)
         starSwap( src1, src2 );
     for (int i = _NY; i > 0; --i )
     {
-        x[dst1].x = x[src1].x;	dst1 += step;	src1 += step;
-        x[dst2].x = x[src2].x;	dst2 += step;	src2 += step;
+        x[dst1].x = x[src1].x;    dst1 += step;    src1 += step;
+        x[dst2].x = x[src2].x;    dst2 += step;    src2 += step;
     }
     
     dst1 = FLUID_IX(1, 0);
@@ -599,7 +621,7 @@ void StarFluid::setBoundary02d(Vec2* x)
         x[dst2++] = x[src2++];
     }
     
-   
+    
 }
 
 void StarFluid::setBoundary2d( int bound, Vec2 *xy )
@@ -616,14 +638,14 @@ void StarFluid::setBoundary2d( int bound, Vec2 *xy )
     if( bound == 1 && !wrap_x )
         for (int i = _NY; i > 0; --i )
         {
-            xy[dst1].x = -xy[src1].x;	dst1 += step;	src1 += step;	
-            xy[dst2].x = -xy[src2].x;	dst2 += step;	src2 += step;	
+            xy[dst1].x = -xy[src1].x;    dst1 += step;    src1 += step;
+            xy[dst2].x = -xy[src2].x;    dst2 += step;    src2 += step;
         }
     else
         for (int i = _NY; i > 0; --i )
         {
-            xy[dst1].x = xy[src1].x;	dst1 += step;	src1 += step;	
-            xy[dst2].x = xy[src2].x;	dst2 += step;	src2 += step;	
+            xy[dst1].x = xy[src1].x;    dst1 += step;    src1 += step;
+            xy[dst2].x = xy[src2].x;    dst2 += step;    src2 += step;
         }
     
     dst1 = FLUID_IX(1, 0);
@@ -635,14 +657,14 @@ void StarFluid::setBoundary2d( int bound, Vec2 *xy )
     if( bound == 2 && !wrap_y )
         for (int i = _NX; i > 0; --i )
         {
-            xy[dst1++].y = -xy[src1++].y;	
-            xy[dst2++].y = -xy[src2++].y;	
+            xy[dst1++].y = -xy[src1++].y;
+            xy[dst2++].y = -xy[src2++].y;
         }
     else
         for (int i = _NX; i > 0; --i )
         {
             xy[dst1++].y = xy[src1++].y;
-            xy[dst2++].y = xy[src2++].y;	
+            xy[dst2++].y = xy[src2++].y;
         }
     
     xy[FLUID_IX(  0,   0)][bound-1] = (xy[FLUID_IX(1, 0  )][bound-1] + xy[FLUID_IX(  0, 1)][bound-1])*0.5f;
@@ -651,8 +673,8 @@ void StarFluid::setBoundary2d( int bound, Vec2 *xy )
     xy[FLUID_IX(_NX, _NY)][bound-1] = (xy[FLUID_IX(_NX, _NY)][bound-1] + xy[FLUID_IX(_NX, _NY)][bound-1])*0.5f;
 }
 
-//#define CPY_RGB( d, s )		{	r[d] = r[s];	g[d] = g[s];	b[d] = b[s]; }
-//#define CPY_RGB_NEG( d, s )	{	r[d] = -r[s];	g[d] = -g[s];	b[d] = -b[s]; }
+//#define CPY_RGB( d, s )        {    r[d] = r[s];    g[d] = g[s];    b[d] = b[s]; }
+//#define CPY_RGB_NEG( d, s )    {    r[d] = -r[s];    g[d] = -g[s];    b[d] = -b[s]; }
 
 void StarFluid::setBoundaryRGB()
 {
@@ -669,11 +691,11 @@ void StarFluid::setBoundaryRGB()
     {
         color[dst1] = color[src1];
         dst1 += step;
-        src1 += step;	
+        src1 += step;
         
         color[dst2] = color[src2];
         dst2 += step;
-        src2 += step;	
+        src2 += step;
     }
     
     dst1 = FLUID_IX(1, 0);
@@ -686,11 +708,11 @@ void StarFluid::setBoundaryRGB()
     {
         color[dst1] = color[src1];
         ++dst1;
-        ++src1;	
+        ++src1;
         
         color[dst2] = color[src2];
         ++dst2;
-        ++src2;	
+        ++src2;
     }
 }
 
@@ -700,9 +722,9 @@ void StarFluid::randomizeColor() {
     {
         for (int j = getHeight()-1; j > 0; --j)
         {
-//            int index = FLUID_IX(i, j);
-//            color[index] = Vec3(Rand::randFloat(), Rand::randFloat(), Rand::randFloat());
-//            density[index] = Rand::randFloat();
+            //            int index = FLUID_IX(i, j);
+            //            color[index] = Vec3(Rand::randFloat(), Rand::randFloat(), Rand::randFloat());
+            //            density[index] = Rand::randFloat();
         }
     }
 }
