@@ -74,6 +74,9 @@ class StarTexture
     Texture* getTEXTURE(unsigned int texture_id);
 
     void bindTEXTURE( unsigned int texture_unit, unsigned int texture_id);
+#ifdef ANDROID
+    void bindTEXTURE_OES( unsigned int texture_unit, unsigned int texture_id);
+#endif
     void bindTEXTURE_CUBE( unsigned int texture_unit, unsigned int texture_id);
 	void unbindTEXTURE();
 

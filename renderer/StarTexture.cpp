@@ -478,6 +478,15 @@ void StarTexture::bindTEXTURE(unsigned int texture_unit, unsigned int texture_id
 	glActiveTexture(texture_unit);
 	glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
 }
+
+#ifdef ANDROID
+void StarTexture::bindTEXTURE_OES(unsigned int texture_unit, unsigned int texture_id)
+{
+    glActiveTexture(texture_unit);
+    glBindTexture(GL_TEXTURE_EXTERNAL_OES, texture[texture_id].texture_id);
+}
+#endif
+
 void StarTexture::bindTEXTURE_CUBE(unsigned int texture_unit, unsigned int texture_id)
 {
 	glActiveTexture(texture_unit);
