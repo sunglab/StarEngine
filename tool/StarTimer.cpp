@@ -34,7 +34,7 @@ unsigned long long StarTimer::getTime()
 	const int result = clock_gettime(CLOCK_MONOTONIC, &current); 
 	current_msec = (current.tv_sec * 1000) + (current.tv_nsec / 1000000); 
 
-#elif _WIN32  // windows ... something like that
+#elif _WIN32
 	//clock_t 
 	long current = clock();
 	current_msec = (current); // in msec already
@@ -56,7 +56,7 @@ void StarTimer::getFPS()
 	unsigned long current = getTime();
 	++framePerSecond;
 
-	if (current - lastTime > 1000) { // when higher than 1 SEC
+	if (current - lastTime > 1000) { // when longer than 1 second
 		lastTime = current; // init 
 		delegate->CallbackFPS((int)framePerSecond);
         frame++;
