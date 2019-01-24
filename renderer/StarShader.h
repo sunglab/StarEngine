@@ -18,10 +18,21 @@ unsigned int ShaderLoadSourceFromMemory(const char* pszShaderCode,
 										const GLenum Type,
 										GLuint* const pObject);
 
+unsigned int ComputeShaderFromMemory(const char* pszShaderCode,
+										const GLenum Type,
+										GLuint* const pObject);
+
+
 unsigned int CreateProgram(	GLuint* const pProgramObject,
 						    const GLuint VertexShader,
 						    const GLuint FragmentShader,
 						    const char** const pszAttribs,
 						    const int i32NumAttribs);
+
+unsigned int CreateProgram(	GLuint* const pProgramObject,
+						    const GLuint ComputeShader);
+						    //const char** const pszAttribs,
+						    //const int i32NumAttribs);
 };
+
 #endif

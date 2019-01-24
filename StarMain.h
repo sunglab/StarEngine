@@ -24,10 +24,25 @@ class starengine;
 
 // ANDROID
 #ifdef ANDROID
+
 #include <jni.h>
 #include <android/log.h>
+
+#if DYNAMIC_ES3
+    #include "./android/gl3stub.h"
+#else
+    #define GL_EXT_PROTOTYPES
+    #include <GLES3/gl3.h>
+    #include <GLES2/gl2ext.h>
+    #include <GLES3/gl31.h>
+#endif
+
+/*
+// GLES 2.0
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
+*/
+
 #include <stdlib.h>
 #include <iostream>
 #include <string.h>
