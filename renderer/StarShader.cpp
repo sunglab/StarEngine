@@ -46,7 +46,7 @@ unsigned int StarShader::ShaderLoadSourceFromMemory(	const char* pszShaderCode,
         glGetShaderInfoLog(*pObject, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
 		
 		// Displays the error!
-        starLOG("Failed to compile fragment shader: %s\n", pszInfoLog);
+        starLOG("Failed to compile compute shader: %s\n", pszInfoLog);
 		delete [] pszInfoLog;
 		
 		// Delete shader.

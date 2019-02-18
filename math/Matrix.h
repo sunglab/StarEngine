@@ -93,6 +93,7 @@
 
 	void Matrix_to_Matrix3(Matrix3& out_M, const Matrix& in_M);
 	void Matrix_MxM(Matrix& out_M, const Matrix& in_M1, const Matrix& in_M2);
+	void Matrix_MxM(Matrix3& out_M, const Matrix3& in_M1, const Matrix3& in_M2);
 
 	void Matrix_MxV(Vec4& out_V, const Vec4& in_V, const Matrix& in_M);
 	void Matrix_MxV(Vec3& out_V, const Vec3& in_V, const Matrix& in_M);

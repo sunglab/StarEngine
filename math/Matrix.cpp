@@ -20,10 +20,17 @@ Vec3 operator*(const Vec3& in_V, const Matrix3& in_M)
 Vec4 Matrix::operator*(const Vec4& in_V) const
 {
 	 //row vector
-	 return Vec4(s[0]*in_V.x + s[4]*in_V.y + s[8]*in_V.z  + s[12]*in_V.w,
+	 return Vec4(  s[0]*in_V.x + s[4]*in_V.y + s[8]*in_V.z  + s[12]*in_V.w,
                    s[1]*in_V.x + s[5]*in_V.y + s[9]*in_V.z  + s[13]*in_V.w,
                    s[2]*in_V.x + s[6]*in_V.y + s[10]*in_V.z + s[14]*in_V.w,
                    s[3]*in_V.x + s[7]*in_V.y + s[11]*in_V.z + s[15]*in_V.w);
+}
+
+Matrix3 Matrix3::operator*(const Matrix3& in_M)const
+{
+	Matrix3 out_M;
+	Matrix_MxM(out_M,*this,in_M);
+	return out_M;
 }
 
 Matrix Matrix::operator*(const Matrix& in_M)const
@@ -64,6 +71,39 @@ void Matrix_to_Matrix3( Matrix3& out_M, const Matrix& in_M)
     out_M.s[7] = in_M.s[_1x2_];
     out_M.s[8] = in_M.s[_2x2_];
 }
+
+void Matrix_MxM( Matrix3& out_M, const Matrix3& in_M1, const Matrix3& in_M2)
+{
+    Matrix3 temp_M;
+    temp_M.s[_0x0] = in_M1.s[_0x0]*in_M2.s[_0x0] + in_M1.s[_0x1]*in_M2.s[_1x0] + in_M1.s[_0x2]*in_M2.s[_2x0];
+    temp_M.s[_0x1] = in_M1.s[_0x0]*in_M2.s[_0x1] + in_M1.s[_0x1]*in_M2.s[_1x1] + in_M1.s[_0x2]*in_M2.s[_2x1];
+    temp_M.s[_0x2] = in_M1.s[_0x0]*in_M2.s[_0x2] + in_M1.s[_0x1]*in_M2.s[_1x2] + in_M1.s[_0x2]*in_M2.s[_2x2];
+
+    temp_M.s[_1x0] = in_M1.s[_1x0]*in_M2.s[_0x0] + in_M1.s[_1x1]*in_M2.s[_1x0] + in_M1.s[_1x2]*in_M2.s[_2x0];
+    temp_M.s[_1x1] = in_M1.s[_1x0]*in_M2.s[_0x1] + in_M1.s[_1x1]*in_M2.s[_1x1] + in_M1.s[_1x2]*in_M2.s[_2x1];
+    temp_M.s[_1x2] = in_M1.s[_1x0]*in_M2.s[_0x2] + in_M1.s[_1x1]*in_M2.s[_1x2] + in_M1.s[_1x2]*in_M2.s[_2x2];
+
+    temp_M.s[_2x0] = in_M1.s[_2x0]*in_M2.s[_0x0] + in_M1.s[_2x1]*in_M2.s[_1x0] + in_M1.s[_2x2]*in_M2.s[_2x0];
+    temp_M.s[_2x1] = in_M1.s[_2x0]*in_M2.s[_0x1] + in_M1.s[_2x1]*in_M2.s[_1x1] + in_M1.s[_2x2]*in_M2.s[_2x1];
+    temp_M.s[_2x2] = in_M1.s[_2x0]*in_M2.s[_0x2] + in_M1.s[_2x1]*in_M2.s[_1x2] + in_M1.s[_2x2]*in_M2.s[_2x2];
+
+   /*
+	temp_M[0][0] = in_M1[0][0]*in_M2[0][0] + in_M1[0][1]*in_M2[1][0] + in_M1[0][2]*in_M2[2][0];
+    temp_M[0][1] = in_M1[0][0]*in_M2[0][1] + in_M1[0][1]*in_M2[1][1] + in_M1[0][2]*in_M2[2][1];
+    temp_M[0][2] = in_M1[0][0]*in_M2[0][2] + in_M1[0][1]*in_M2[1][2] + in_M1[0][2]*in_M2[2][2];
+    
+    temp_M[1][0] = in_M1[1][0]*in_M2[0][0] + in_M1[1][1]*in_M2[1][0] + in_M1[1][2]*in_M2[2][0];
+    temp_M[1][1] = in_M1[1][0]*in_M2[0][1] + in_M1[1][1]*in_M2[1][1] + in_M1[1][2]*in_M2[2][1];
+    temp_M[1][2] = in_M1[1][0]*in_M2[0][2] + in_M1[1][1]*in_M2[1][2] + in_M1[1][2]*in_M2[2][2];
+    
+    temp_M[2][0] = in_M1[2][0]*in_M2[0][0] + in_M1[2][1]*in_M2[1][0] + in_M1[2][2]*in_M2[2][0];
+    temp_M[2][1] = in_M1[2][0]*in_M2[0][1] + in_M1[2][1]*in_M2[1][1] + in_M1[2][2]*in_M2[2][1];
+    temp_M[2][2] = in_M1[2][0]*in_M2[0][2] + in_M1[2][1]*in_M2[1][2] + in_M1[2][2]*in_M2[2][2];
+    */
+    
+    out_M = temp_M;
+}
+
 void Matrix_MxM( Matrix& out_M, const Matrix& in_M1, const Matrix& in_M2)
 {
     Matrix temp_M;

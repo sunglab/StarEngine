@@ -82,4 +82,16 @@ public:
 #define _3x3_  15
 
 
+#define _0x0  0
+#define _1x0  1
+#define _2x0  2
+
+#define _0x1  3
+#define _1x1  4
+#define _2x1  5
+
+#define _0x2  6
+#define _1x2  7
+#define _2x2  8
+
 #endif // STAR_H

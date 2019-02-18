@@ -444,7 +444,6 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             }
-            
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		}
@@ -462,6 +461,15 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
         else if(type == ToInt(TextureType::SHORT))
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, 0);
 	}
+}
+
+void StarTexture::createTEXTURE_OBJ( unsigned int texture_unit, unsigned int texture_id, unsigned int bo) 
+{
+	glGenTextures(1, &texture[texture_id].texture_id);
+	glBindTexture(texture_unit, texture[texture_id].texture_id);
+#ifdef ANDROID
+    glTexBufferEXT(texture_unit, GL_RGBA32F, bo);
+#endif
 }
 
 Texture* StarTexture::getTEXTURE(unsigned int texture_id)
