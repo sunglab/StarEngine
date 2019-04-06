@@ -10,8 +10,11 @@
 
 class starengine;
 
-#include <memory>
+#ifdef __cplusplus
+//#include <memory>
 #include <algorithm>
+#endif
+
 
 // IOS
  #ifdef IOS

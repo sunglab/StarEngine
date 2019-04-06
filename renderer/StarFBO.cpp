@@ -289,8 +289,8 @@ void StarFBO::createVAO(unsigned int object_id)
 	glGenVertexArraysOES(1, &vao[object_id]);
 	glBindVertexArrayOES(vao[object_id]);
 #elif ANDROID  // only supports VBO
-	//    glGenVertexArraysOES(1,&vao[object_id]);
-	//	glBindVertexArrayOES(vao[object_id]);
+//	    glGenVertexArraysOES(1,&vao[object_id]);
+//		glBindVertexArrayOES(vao[object_id]);
 #endif
 }
 
@@ -303,7 +303,7 @@ void StarFBO::bindVAO(unsigned int object_id)
 #elif IOS
 	glBindVertexArrayOES(vao[object_id]);
 #elif ANDROID
-	//    glBindVertexArrayOES(vao[object_id]);
+//	    glBindVertexArrayOES(vao[object_id]);
 #endif
 }
 void StarFBO::unbindVAO()

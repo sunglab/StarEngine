@@ -465,11 +465,11 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 
 void StarTexture::createTEXTURE_OBJ( unsigned int texture_unit, unsigned int texture_id, unsigned int bo) 
 {
+  #ifdef ES31
 	glGenTextures(1, &texture[texture_id].texture_id);
 	glBindTexture(texture_unit, texture[texture_id].texture_id);
-#ifdef ANDROID
     glTexBufferEXT(texture_unit, GL_RGBA32F, bo);
-#endif
+  #endif
 }
 
 Texture* StarTexture::getTEXTURE(unsigned int texture_id)

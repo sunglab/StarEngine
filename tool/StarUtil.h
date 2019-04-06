@@ -8,7 +8,10 @@
 
 #ifndef STARUTIL_H
 #define STARUTIL_H
+
+#ifdef ANDROID
 #include <algorithm>
+#endif
 /*
  *  singleton
  */
