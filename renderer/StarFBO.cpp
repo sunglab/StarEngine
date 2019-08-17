@@ -70,7 +70,7 @@ StarFBO::~StarFBO()
 {
 }
 
-void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id)
+void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id, GLenum colorInternalFormat)
 {
     stencil = false; // TODO : no stencil
     int err;
@@ -83,9 +83,9 @@ void StarFBO::createFBO(bool depth, bool stencil, unsigned int width, unsigned i
 		glBindRenderbuffer(GL_RENDERBUFFER, rboColor[object_id]);
 
 #ifdef ANDROID
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8_OES, width, height);
+		glRenderbufferStorage(GL_RENDERBUFFER, colorInternalFormat, width, height);
 #elif IOS
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8_OES, width, height);
+		glRenderbufferStorage(GL_RENDERBUFFER, colorInternalFormat, width, height);
 #else // Windows & OSX
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
 #endif
@@ -285,12 +285,9 @@ void StarFBO::createVAO(unsigned int object_id)
 #elif _WIN32
 	glGenVertexArrays(1, &vao[object_id]);
 	glBindVertexArray(vao[object_id]);
-#elif IOS
+#else
 	glGenVertexArraysOES(1, &vao[object_id]);
 	glBindVertexArrayOES(vao[object_id]);
-#elif ANDROID  // only supports VBO
-//	    glGenVertexArraysOES(1,&vao[object_id]);
-//		glBindVertexArrayOES(vao[object_id]);
 #endif
 }
 
@@ -300,10 +297,8 @@ void StarFBO::bindVAO(unsigned int object_id)
 	glBindVertexArray(vao[object_id]);
 #elif _WIN32
 	glBindVertexArray(vao[object_id]);
-#elif IOS
+#else
 	glBindVertexArrayOES(vao[object_id]);
-#elif ANDROID
-//	    glBindVertexArrayOES(vao[object_id]);
 #endif
 }
 void StarFBO::unbindVAO()
@@ -312,10 +307,8 @@ void StarFBO::unbindVAO()
 	glBindVertexArray(0);
 #elif _WIN32
 	glBindVertexArray(0);
-#elif IOS
+#else
 	glBindVertexArrayOES(0);
-#elif ANDROID
-	//    glBindVertexArrayOES(0);
 #endif
 }
 
@@ -344,12 +337,9 @@ void StarFBO::createVAO_INDI(unsigned int* object_id)
 #elif _WIN32
 	glGenVertexArrays(1, object_id);
 	glBindVertexArray(*object_id);
-#elif IOS
+#else
 	glGenVertexArraysOES(1, object_id);
 	glBindVertexArrayOES(*object_id);
-#elif ANDROID  // only supports VBO
-	//    glGenVertexArraysOES(1,&vao[object_id]);
-	//	glBindVertexArrayOES(vao[object_id]);
 #endif
 }
 
@@ -372,10 +362,8 @@ void StarFBO::bindVAO_INDI(unsigned int* object_id)
 	glBindVertexArray(*object_id);
 #elif _WIN32
 	glBindVertexArray(*object_id);
-#elif IOS
+#else
 	glBindVertexArrayOES(*object_id);
-#elif ANDROID
-	//    glBindVertexArrayOES(vao[object_id]);
 #endif
 }
 void StarFBO::bindVBO_INDI(unsigned int target, unsigned int* object_id)
