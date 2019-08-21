@@ -41,11 +41,11 @@ public:
 
 class StarTexture
 {
-    public:
+public:
     std::unique_ptr<Texture[]> texture;
     unsigned int total_texture_number = 0;
     StarTexture(unsigned int texture_number);
-
+    
     ~StarTexture()
     {
         if(texture) {
@@ -62,35 +62,35 @@ class StarTexture
     void createTEXTURE_ANDROID(void* array,unsigned int width, unsigned int height, unsigned int texture_id, bool repeat = false, bool opt = false);
 #elif _WIN32
     void createTEXTURE_WINDOWS( void* array, unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false,bool _float = false, bool opt=false); // for camera
-	void createTEXTURE_CUBE_WINDOWS(void** array, unsigned int width, unsigned int height, unsigned int texture_id,bool opt=false);
+    void createTEXTURE_CUBE_WINDOWS(void** array, unsigned int width, unsigned int height, unsigned int texture_id,bool opt=false);
 #endif
     void createTEXTURE_CAMERA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,bool _float = false); // for camera
     void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,int type= 0); // for camera
     void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false,bool resize=false, bool opt = false, int type = 0);
     void createTEXTURE_OBJ( unsigned int texture_unit, unsigned int texture_id, unsigned int bo);
-
+    
 #if (MAC||_WIN32)
     void createTEXTURE_RTF( unsigned int width, unsigned int height, unsigned int texture_id,unsigned int numOfMS);
-#endif 
+#endif
     Texture* getTEXTURE(unsigned int texture_id);
-
+    
     void bindTEXTURE( unsigned int texture_unit, unsigned int texture_id);
     void bindTEXTURE_IMAGE(unsigned int layout_unit,
-                        unsigned int texture_id,
-                        unsigned int level,
-                        bool layered,
-                        unsigned int layer_number,
-	                    unsigned int access,
-	                    unsigned int format);
-
+                           unsigned int texture_id,
+                           unsigned int level,
+                           bool layered,
+                           unsigned int layer_number,
+                           unsigned int access,
+                           unsigned int format);
+    
 #ifdef ANDROID
     void bindTEXTURE_OES( unsigned int texture_unit, unsigned int texture_id);
 #endif
     void bindTEXTURE_CUBE( unsigned int texture_unit, unsigned int texture_id);
-	void unbindTEXTURE();
-
+    void unbindTEXTURE();
+    
     void deleteTEXTURE(unsigned int texture_id);
-
-   
+    
+    
 };
 #endif

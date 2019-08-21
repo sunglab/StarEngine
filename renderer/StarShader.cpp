@@ -93,6 +93,7 @@ unsigned int StarShader::CreateProgram(	GLuint* const pProgramObject,
 		char* pszInfoLog = new char[i32InfoLogLength];
 		glGetProgramInfoLog(*pProgramObject, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
 		//*pReturnError = CString("Failed to link: ") + pszInfoLog + "\n";
+        starLOG("Program link log:\n%s <- ENDLINE\n", pszInfoLog);
 		delete [] pszInfoLog;
 		return FAIL;
 	}
@@ -160,6 +161,7 @@ unsigned int StarShader::CreateProgram(	GLuint* const pProgramObject,
 		glGetProgramiv(*pProgramObject, GL_INFO_LOG_LENGTH, &i32InfoLogLength);
 		char* pszInfoLog = new char[i32InfoLogLength];
 		glGetProgramInfoLog(*pProgramObject, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
+        starLOG("Program link log:\n%s <- ENDLINE\n", pszInfoLog);
 		//*pReturnError = CString("Failed to link: ") + pszInfoLog + "\n";
 		delete [] pszInfoLog;
 		return FAIL;

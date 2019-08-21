@@ -9,10 +9,7 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#ifndef IOS
 #include <cmath>
-#endif
-
 #include "../star.h"
 #include <stdio.h>
 

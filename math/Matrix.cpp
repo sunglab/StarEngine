@@ -294,7 +294,7 @@ void Matrix_MxV_NEON(__VERTEX__TYPE__* out_V, const __VERTEX__TYPE__* in_V, cons
 
 void Matrix_Viewport(Matrix& out_M, const Vec2& in_Rect, const Matrix& in_M)
 {
-//    throw std::runtime_error("empty matrix");
+    throw std::runtime_error("empty matrix");
 //    out_M.s[_0x0_] = 1.f; out_M.s[_0x1_] = 0.f; out_M.s[_0x2_] = 0.f; out_M.s[_0x3_] = 0.f;
 //    out_M.s[_1x0_] = 0.f; out_M.s[_1x1_] = 1.f; out_M.s[_1x2_] = 0.f; out_M.s[_1x3_] = 0.f;
 //    out_M.s[_2x0_] = 0.f; out_M.s[_2x1_] = 0.f; out_M.s[_2x2_] = 1.f; out_M.s[_2x3_] = 0.f;
