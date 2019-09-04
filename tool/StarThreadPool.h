@@ -41,14 +41,14 @@ public:
 //        using TYPE = typename std::result_of<FUN(ARGS...)>::type;
         using TYPE = typename std::invoke_result<FUN, ARGS...>::type;
         //Fowarding with && Not to be Copied
-        std::packaged_task<TYPE()> TASK(std::bind(std::forward<FUN>(fun),
+        auto TASK = std::make_shared< std::packaged_task<TYPE()>>(std::bind(std::forward<FUN>(fun),
                                                   std::forward<ARGS>(args)... ));
         
-        auto TaskResult = TASK.get_future();
+        auto TaskResult = TASK->get_future();
         {
             std::lock_guard<std::mutex> Lock(PoolMutex);
-            Tasks.push([&TASK](){
-                TASK();
+            Tasks.push([TASK](){
+                (*TASK)();
             });
         }
         TaskCondition.notify_one();
