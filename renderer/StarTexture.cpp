@@ -92,7 +92,7 @@ void StarTexture::createTEXTURE_IOS(const char*filename, unsigned int texture_id
     }
 }
 
-#elif MAC
+#elif (MAC && !StarQt)
 void StarTexture::createTEXTURE_MAC(NSString *filename, unsigned texture_id, bool repeat, bool opt)
 {
     CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath : filename];

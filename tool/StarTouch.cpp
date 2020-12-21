@@ -19,7 +19,7 @@ StarTouch::StarTouch(StarTouchDelegate* _delegate,Vec2 rect, bool TUIO)
 
 void StarTouch::init(bool TUIO)
 {
-#ifdef MAC
+#if (MAC && !StarQt)
     if(TUIO)
         StarTUIO* app = new StarTUIO(3333,this);
     //    app->run();
@@ -35,7 +35,7 @@ void StarTouch::init(bool TUIO)
     fingers = 0;
 }
 
-#ifdef MAC
+#if (MAC && !StarQt)
 void StarTUIO::addTuioObject(TuioObject *tobj) {
     if (verbose)
         std::cout << "add obj " << tobj->getSymbolID() << " (" << tobj->getSessionID() << "/"<<  tobj->getTuioSourceID() << ") "<< tobj->getX() << " " << tobj->getY() << " " << tobj->getAngle() << std::endl;

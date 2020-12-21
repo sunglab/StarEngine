@@ -56,7 +56,7 @@ public:
     
 #ifdef IOS
     void createTEXTURE_IOS(const char*, unsigned texture_id,bool repeat = false, bool opt = false);
-#elif MAC
+#elif (MAC && !starQt)
     void createTEXTURE_MAC(NSString *filename, unsigned texture_id,bool repeat = false, bool opt = false);
 #elif ANDROID
     void createTEXTURE_ANDROID(void* array,unsigned int width, unsigned int height, unsigned int texture_id, bool repeat = false, bool opt = false);

@@ -52,8 +52,14 @@ class starengine;
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__) 
 #endif
 
+#if (StarQt)
+#include <QOpenGLFunctions>
+#include <QOpenGLBuffer>
+#include <QOpenGLFramebufferObject>
+
+#endif
 // MAC
-#ifdef MAC
+#if (MAC && !StarQt)
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
 #import <Cocoa/Cocoa.h>
@@ -101,7 +107,9 @@ void winprintf(const char *fmt, ...);
 
 #define STRINGIFY(A)  #A
 
-#ifdef IOS
+#if starQt
+#define starLOG qDebug
+#elif IOS
 #define starLOG printf
 #elif MAC
 #define starLOG printf

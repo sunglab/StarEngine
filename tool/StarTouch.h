@@ -11,7 +11,7 @@
 #include "../star.h"
 #include "../math/StarMath.h"
 
-#ifdef MAC
+#if (MAC && !StarQt)
 #include "TuioListener.h"
 #include "TuioClient.h"
 #include "UdpReceiver.h"
@@ -68,7 +68,7 @@ class StarTouch
     void callbackCancel(){delegate->CallbackTouchCancel();}
 };
 
-#ifdef MAC
+#if (MAC && !StarQt)
 using namespace TUIO;
 class StarTUIO : public TuioListener {
     
