@@ -107,7 +107,7 @@ void winprintf(const char *fmt, ...);
 
 #define STRINGIFY(A)  #A
 
-#if starQt
+#if StarQt
 #define starLOG qDebug
 #elif IOS
 #define starLOG printf

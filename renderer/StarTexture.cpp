@@ -463,12 +463,36 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
     }
 }
 
-void StarTexture::createTEXTURE_OBJ( unsigned int texture_unit, unsigned int texture_id, unsigned int bo)
+void StarTexture::createTEXTURE_OBJ( unsigned int texture_unit, unsigned int texture_id, unsigned int bo, unsigned int width, unsigned int height, void* buffer, GLenum textureType, GLenum dataType)
 {
-#ifdef ES31
-    glGenTextures(1, &texture[texture_id].texture_id);
-    glBindTexture(texture_unit, texture[texture_id].texture_id);
-    glTexBufferEXT(texture_unit, GL_RGBA32F, bo);
+#if(ANDROID)
+    if(texture_unit == GL_TEXTURE_2D_ARRAY) {
+        glGenTextures(1, &texture[texture_id].texture_id);
+        glBindTexture(texture_unit, texture[texture_id].texture_id);
+        glTexStorage3D(texture_unit, 1, textureType, width, height, 1);
+        glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, width, height, 1, GL_RGBA, dataType, buffer);
+        glTexBufferEXT(texture_unit, textureType, bo);
+        
+    } else if(texture_unit == GL_TEXTURE_2D){
+        
+        glGenTextures(1, &texture[texture_id].texture_id);
+        glBindTexture(texture_unit, texture[texture_id].texture_id);
+        glTexStorage2D(GL_TEXTURE_2D, 1, textureType, width, height);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, dataType, buffer);
+        //glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, buffer);
+        
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+        //        int y = 142*2834*4;
+        //        int x = 10*4;
+        //        starLOG("image color before %f %f %f %f ",buffer[x+y+0], buffer[x+y+1], buffer[x+y+2], buffer[x+y+3]);
+    } else {
+        glGenTextures(1, &texture[texture_id].texture_id);
+        glBindTexture(texture_unit, texture[texture_id].texture_id);
+        glTexBufferEXT(texture_unit, textureType, bo);
+    }
 #endif
 }
 
@@ -485,6 +509,19 @@ void StarTexture::bindTEXTURE(unsigned int texture_unit, unsigned int texture_id
 {
     glActiveTexture(texture_unit);
     glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
+}
+
+void StarTexture::bindTEXTURE_IMAGE(unsigned int layout_unit,
+                                    unsigned int texture_id,
+                                    unsigned int level,
+                                    bool layered,
+                                    unsigned int layer_number,
+                                    unsigned int access,
+                                    unsigned int format)
+{
+#if(ANDROID)
+    glBindImageTexture(layout_unit, texture_id, level, layered, layer_number, access, format);
+#endif
 }
 
 #ifdef ANDROID

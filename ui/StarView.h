@@ -267,7 +267,7 @@ public:
                 
                 for (unsigned int i = 0; i < NUMBER; i++)
                 {
-                    rect_pos[i] = (Vec3(0.0,0.0,0.));
+                    rect_pos[i] = (Vec3(0.0,0.0,0.0));
                     rect_color[i] = (Color4(1.0));
                     rect_idx[i] = (i);
                 }

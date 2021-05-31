@@ -33,7 +33,12 @@ public:
     StarFBO( unsigned int fbo_number, unsigned int vbo_number, unsigned int vao_number);
     
     //ETC Renderbuffers and Framebuffer Setting
-    void createFBO( bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id, GLenum color = GL_RGBA8);
+    void createFBO( bool depth, bool stencil, unsigned int width, unsigned int height, unsigned int object_id, GLenum color =
+#ifdef IOS
+                   GL_RGBA8_OES);
+#else
+                   GL_RGBA8);
+#endif
 
     void bindFBO( unsigned int object_id);
     void unbindFBO();
