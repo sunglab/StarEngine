@@ -194,13 +194,13 @@ void StarFluid::update() {
         
         project(uv, uvOld);
         
-//        addSource(color, colorOld);
-//        
-//        starSwap(color, colorOld);
-//        
-//        advectRGB(0, uv);
-//        
-//        fadeRGB();
+        addSource(color, colorOld);
+        
+        starSwap(color, colorOld);
+        
+        advectRGB(0, uv);
+        
+        fadeRGB();
         
     }
 }
