@@ -8,7 +8,6 @@
 #ifndef STARTOUCH_H
 #define STARTOUCH_H
 
-#include "../star.h"
 #include "../math/StarMath.h"
 
 #if (MAC && !StarQt)
@@ -18,7 +17,6 @@
 #include "TcpReceiver.h"
 #include <list>
 #endif
-
 
 #define MAX_FINGERS 10
 

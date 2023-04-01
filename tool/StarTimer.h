@@ -8,15 +8,11 @@
 #ifndef StarEngine_Timer
 #define StarEngine_Timer
 
-#include "../StarMain.h"
-//#include "iostream"
 #ifdef __APPLE__
 #include "TargetConditionals.h"
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 #include <CoreFoundation/CoreFoundation.h>
-//#include <iostream>
-//using namespace std;
 
 #elif ANDROID
 #include <stdlib.h>
