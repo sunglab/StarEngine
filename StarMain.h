@@ -8,35 +8,32 @@
 #ifndef StarEngine_Main_Header
 #define StarEngine_Main_Header
 
-class starengine;
-
 #ifdef __cplusplus
-//#include <memory>
 #include <algorithm>
+#include <vector>
 #endif
 
-
 // IOS
- #ifdef IOS
-#import "GLView.h"
-#import <UIKit/UIKit.h>
+#if defined(IOS)
+#ifndef METAL
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
+#import <UIKit/UIKit.h>
 #include <iostream>
- #endif
+#import "GLView.h"
+#endif
+#endif
 
 // ANDROID
 #ifdef ANDROID
 
-#include <jni.h>
 #include <android/log.h>
+#include <jni.h>
 
 #define GL_GLEXT_PROTOTYPES
 #include <GLES3/gl3.h>
 #include <GLES2/gl2ext.h>
 #include <GLES3/gl31.h>
-
-//#endif
 
 /*
 // GLES 2.0
@@ -45,58 +42,59 @@ class starengine;
 */
 
 #include <stdlib.h>
-#include <iostream>
 #include <string.h>
-#define  LOG_TAG    "StarEngine"
-#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__) 
+#include <iostream>
+#define LOG_TAG "StarEngine"
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 #endif
 
 #if (StarQt)
-#include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
 #include <QOpenGLFramebufferObject>
+#include <QOpenGLFunctions>
 
 #endif
 // MAC
 #if (MAC && !StarQt)
+#import <Cocoa/Cocoa.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
-#import <Cocoa/Cocoa.h>
-#elif _WIN32 //Windows
+#elif _WIN32  //Windows
 
-#include <SDL.h>
 #include <GL/glew.h>
+#include <SDL.h>
 #include <SDL_opengl.h>
 #include <gl/glu.h>
 
 #include <stdio.h>
-#include <string>
 #include <cstdlib>
+#include <string>
 
-void winprintf(const char *fmt, ...);
+void winprintf(const char* fmt, ...);
 #endif
 
-// OS FREE
-#include "./renderer/StarShader.h"
-#include "./renderer/StarFBO.h"
-#include "./renderer/StarTexture.h"
+//OS Free
 #include "./math/StarMath.h"
 #include "./tool/StarTimer.h"
 #include "./tool/StarTouch.h"
 #include "./tool/StarUtil.h"
 
-#include "./effect/StarEffect.h"
-#include "./effect/StarParticle.h"
-#include "./geometry/StarStructure.h"
-#include "./geometry/StarOBJ.h"
+#ifndef METAL
+#include "./renderer/StarFBO.h"
+#include "./renderer/StarShader.h"
+#include "./renderer/StarTexture.h"
+
+#include "./ai/StarAnt.h"
 #include "./geometry/StarGeo.h"
 #include "./geometry/StarMesh.h"
-#include "./ai/StarAnt.h"
+#include "./geometry/StarOBJ.h"
+#include "./geometry/StarStructure.h"
 
-#include "./ui/StarView.h"
-#include "./cv/StarCV.h"
 #include "./ui/StarScene.h"
+#include "./ui/StarView.h"
+#include "./effect/StarEffect.h"
+#endif
 
 
 #define ToInt(x) static_cast<int>(x)
@@ -105,7 +103,7 @@ void winprintf(const char *fmt, ...);
 #define ToFloat(x) static_cast<float>(x)
 #define ToDouble(x) static_cast<double>(x)
 
-#define STRINGIFY(A)  #A
+#define STRINGIFY(A) #A
 
 #if StarQt
 #define starLOG qDebug
