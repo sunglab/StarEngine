@@ -175,6 +175,16 @@ namespace starparticle
             avg += nowPos[a];
         avg /= fingers;
     }
+
+    void getAVG(Vec2* nowPos, Vec3& avg, const int fingers)
+    {
+        if(fingers == 0)
+            return;
+
+        for(int a=0; a<fingers; a++)
+            avg += nowPos[a];
+        avg /= fingers;
+    }
     
     void getCircleFingers(std::shared_ptr<StarTouch> startouch, Vec2 *circle_finger_pos[], float& circumference, Vec3& avg)
     {
