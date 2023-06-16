@@ -165,25 +165,20 @@ namespace starparticle
         }
     }
 
-    void getAVG(std::shared_ptr<StarTouch> startouch, Vec3& avg, const int fingers)
+    void getAVG(Vec2* pos, Vec3& avg, const int fingers)
     {
         if(fingers == 0)
             return;
-        
-        Vec2* nowPos = (startouch->nowPos);
+
         for(int a=0; a<fingers; a++)
-            avg += nowPos[a];
+            avg += pos[a];
         avg /= fingers;
     }
 
-    void getAVG(Vec2* nowPos, Vec3& avg, const int fingers)
+    void getAVG(std::shared_ptr<StarTouch> startouch, Vec3& avg, const int fingers)
     {
-        if(fingers == 0)
-            return;
-
-        for(int a=0; a<fingers; a++)
-            avg += nowPos[a];
-        avg /= fingers;
+        Vec2* pos = (startouch->nowPos);
+        getAVG(pos, avg, fingers);
     }
     
     void getCircleFingers(std::shared_ptr<StarTouch> startouch, Vec2 *circle_finger_pos[], float& circumference, Vec3& avg)
