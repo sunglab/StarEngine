@@ -265,6 +265,13 @@ void Color4::operator-=(const Color4& in_Color)
 	a -= in_Color.a;
 }
 
+void Color4::operator=(const Color3& in_Color)
+{
+  r = in_Color.r;
+  g = in_Color.g;
+  b = in_Color.b;
+}
+
 void Color4::operator+=(__COLOR__TYPE__ in_Scalar)
 {
 	r += in_Scalar;

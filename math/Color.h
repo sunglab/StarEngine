@@ -153,6 +153,7 @@ public:
     Color4 operator-(const Color4& inColor)const;
     void operator+=(const Color4& inColor);
     void operator-=(const Color4& inColor);
+    void operator=(const Color3& inColor);
     
     Color4 operator+(__COLOR__TYPE__ in_Scalar)const;
     Color4 operator-(__COLOR__TYPE__ in_Scalar)const;
