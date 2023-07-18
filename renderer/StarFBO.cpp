@@ -34,21 +34,30 @@ StarFBO::StarFBO()
 
 StarFBO::StarFBO(unsigned int fbo_number, unsigned int vbo_number, unsigned int vao_number)
 {
-
+    
     fbo = std::unique_ptr<unsigned int[]>(new unsigned int[fbo_number]);
     rboColor = std::unique_ptr<unsigned int[]>(new unsigned int[fbo_number]);
     rboDepth = std::unique_ptr<unsigned int[]>(new unsigned int[fbo_number]);
     vbo = std::unique_ptr<unsigned int[]>(new unsigned int[vbo_number]);
     vao = std::unique_ptr<unsigned int[]>(new unsigned int[vao_number]);
-
+    
     for(int i=0;i<fbo_number;i++)
     {
         fbo[i] = 0;
         rboColor[i] = 0;
         rboDepth[i] = 0;
-        vbo[i]=0;
-        vao[i]=0;
     }
+    
+    for(int i=0;i<vbo_number;i++)
+    {
+        vbo[i] = 0;
+    }
+    
+    for(int i=0;i<vao_number;i++)
+    {
+        vao[i] = 0;
+    }
+    
 #ifdef IOS
 	glGenRenderbuffers(1, &rboColor[0]);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboColor[0]);
