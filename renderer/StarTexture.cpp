@@ -416,7 +416,11 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
         }
         else if(type == ToInt(TextureType::FLOAT))
         {
+#ifdef MAC
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_FLOAT, 0);
+#else
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_HALF_FLOAT_OES, 0);
+#endif
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
         }
         else if(type == ToInt(TextureType::SHORT))
@@ -457,7 +461,11 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
         if(type == ToInt(TextureType::CHAR))
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
         else if(type == ToInt(TextureType::FLOAT))
+#ifdef MAC
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_FLOAT, 0);
+#else
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_HALF_FLOAT_OES, 0);
+#endif
         else if(type == ToInt(TextureType::SHORT))
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, 0);
     }
