@@ -66,7 +66,7 @@ public:
 #endif
     void createTEXTURE_CAMERA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,bool _float = false); // for camera
     void createTEXTURE_DATA( void* data, unsigned int width, unsigned int height, unsigned int texture_id,bool alpha = true,int type= 0); // for camera
-    void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false,bool resize=false, bool opt = false, int type = 0);
+    void createTEXTURE_RTT( unsigned int width, unsigned int height, unsigned int texture_id,bool repeat = false,bool resize=false, bool opt = false, int type = 0, GLint internalformat = GL_RGBA, GLenum format = GL_RGBA);
     void createTEXTURE_OBJ( unsigned int texture_unit, unsigned int texture_id, unsigned int bo, unsigned int w=0, unsigned int h=0, void* buffer = nullptr, GLenum
 #ifdef IOS
                         textureType = GL_RGBA, GLenum dataType = GL_FLOAT);
