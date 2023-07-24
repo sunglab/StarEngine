@@ -7,53 +7,21 @@
 //
 
 #include "StarTimer.h"
+#include <chrono>
 
-#if IOS || MAC
-unsigned long long StarTimer::getTime()
+uint64_t StarTimer::getMS()
 {
-	static mach_timebase_info_data_t  sTimebaseInfo;
-	uint64_t  time = mach_absolute_time();
-	uint64_t  nanos;
-
-	if (sTimebaseInfo.denom == 0) {
-		(void)mach_timebase_info(&sTimebaseInfo);
-	}
-
-	nanos = time * sTimebaseInfo.numer / sTimebaseInfo.denom;
-
-	return (unsigned long long)(nanos / 1000000);
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
 }
-
-#else  /* ANDROID or any others */
-unsigned long long StarTimer::getTime()
-{ 
-	float fTimer = 0.0f; 
-	long long current_msec; 
-#ifdef ANDROID
-	timespec current; 
-	const int result = clock_gettime(CLOCK_MONOTONIC, &current); 
-	current_msec = (current.tv_sec * 1000) + (current.tv_nsec / 1000000); 
-
-#elif _WIN32
-	//clock_t 
-	long current = clock();
-	current_msec = (current); // in msec already
-#else
-	clock_t current = clock();
-	current_msec = (current /1000000.); // in msec 
-#endif 
-	fTimer = (unsigned long long)current_msec;///1000.0f;
-
-	return fTimer; 
-}
-#endif
 
 void StarTimer::getFPS() 
 { 
-	static unsigned long framePerSecond = 0; 
-	static unsigned long lastTime = 0;
-	static unsigned long frameTime = 0;
-	unsigned long current = getTime();
+	static uint64_t framePerSecond = 0; 
+	static uint64_t lastTime = 0;
+	static uint64_t prev = 0;
+	uint64_t current = getMS();
 	++framePerSecond;
 
 	if (current - lastTime > 1000) { // when longer than 1 second
@@ -62,11 +30,11 @@ void StarTimer::getFPS()
         frame++;
 		framePerSecond = 0; 
 	}
-    delegate->CallbackTICK((double)(current-frameTime));
-	frameTime = current;
+    delegate->CallbackTICK(static_cast<double>(current-prev));
+	prev = current;
 }
 
-int StarTimer::getFrame()
+uint64_t StarTimer::getFrame()
 {
     return frame;
 }

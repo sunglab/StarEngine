@@ -28,13 +28,13 @@ public:
 class StarTimer
 {
 private:
-    int frame;
+    uint64_t frame;
     StarTimerDelegate* delegate;
 public:
     StarTimer(StarTimerDelegate* _delegate):frame(0){ delegate = _delegate; };
-    unsigned long long getTime() ;
+    uint64_t getMS() ;
     void  getFPS() ;
-    int getFrame();
+    uint64_t getFrame();
 };
 
 
