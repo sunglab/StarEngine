@@ -91,7 +91,8 @@ public:
     const Color3& operator[](int index)const;
     Color3& operator[](int index);
     Color3& operator=(const __COLOR__TYPE__& in_Scalar);
-    
+    Color3& operator=(const Color3& in_Scalar);
+
     void zero()
     {
         (*this) = (float)0.0f;
@@ -141,6 +142,7 @@ public:
         b = newColor.b;
         a = newColor.a;
     }
+
     Color4(const Color3& newColor, float alpha)
     {
         r = newColor.r;
@@ -153,8 +155,9 @@ public:
     Color4 operator-(const Color4& inColor)const;
     void operator+=(const Color4& inColor);
     void operator-=(const Color4& inColor);
-    void operator=(const Color3& inColor);
-    
+    Color4& operator=(const Color3& inColor);
+    Color4& operator=(const Color4& inColor);
+
     Color4 operator+(__COLOR__TYPE__ in_Scalar)const;
     Color4 operator-(__COLOR__TYPE__ in_Scalar)const;
     Color4 operator*(__COLOR__TYPE__ in_Scalar)const;
@@ -168,7 +171,7 @@ public:
     const Color4& operator[](int index)const;
     Color4& operator[](int index);
     Color4& operator=(const __COLOR__TYPE__& in_Scalar);
-    
+
     Color3 rgb()
     {
         return Color3(r,g,b);

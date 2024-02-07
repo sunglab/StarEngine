@@ -108,6 +108,14 @@ Color3& Color3::operator=(const __COLOR__TYPE__& in_Scalar)
 	return (*this);
 }
 
+Color3& Color3::operator=(const Color3& in_Color)
+{
+	r = in_Color.r;
+	g = in_Color.g;
+	b = in_Color.b;
+	return (*this);
+}
+
 const Color3& Color3::operator[](int index)const
 {
 	return (this)[index];
@@ -265,11 +273,21 @@ void Color4::operator-=(const Color4& in_Color)
 	a -= in_Color.a;
 }
 
-void Color4::operator=(const Color3& in_Color)
+Color4&  Color4::operator=(const Color3& in_Color)
 {
 	r = in_Color.r;
 	g = in_Color.g;
 	b = in_Color.b;
+	return *this;
+}
+
+Color4&  Color4::operator=(const Color4& in_Color)
+{
+	r = in_Color.r;
+	g = in_Color.g;
+	b = in_Color.b;
+	a = in_Color.a;
+	return *this;
 }
 
 void Color4::operator+=(__COLOR__TYPE__ in_Scalar)
