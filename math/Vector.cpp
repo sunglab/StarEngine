@@ -161,7 +161,9 @@ __VERTEX__TYPE__ Vec2::dot(const Vec2& in_Vec) const
 
 void Vec2::normalize()
 {
-	(*this) /= length();
+	float len = length();
+	if(len > 0.000001f)
+	(*this) /= len;
 }
 
 void Vec2::lerp(float t, Vec2& in_Vec)
@@ -347,7 +349,9 @@ __VERTEX__TYPE__ Vec3::dot(const Vec3& in_Vec) const
 
 void Vec3::normalize()
 {
-    (*this) /= length();
+	float len = length();
+	if(len > 0.000001f)
+	(*this) /= len;
 }
 
 Vec3 Vec3::cross(const Vec3& in_Vec)const
@@ -577,7 +581,9 @@ __VERTEX__TYPE__ Vec4::dot(const Vec4& in_Vec) const
 
 void Vec4::normalize()
 {
-	(*this) /= length();
+	float len = length();
+	if(len > 0.000001f)
+	(*this) /= len;
 }
 
 Vec2 Vec4::xy()
