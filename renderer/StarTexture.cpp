@@ -463,7 +463,7 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
     }
 }
 
-void StarTexture::createTEXTURE_OBJ( unsigned int texture_unit, unsigned int texture_id, unsigned int bo, unsigned int width, unsigned int height, void* buffer, GLenum textureType, GLenum dataType)
+void StarTexture::createTEXTURE_OBJ( unsigned int texture_unit, unsigned int texture_id, unsigned int bo, unsigned int width, unsigned int height, void* buffer, GLenum textureType, GLenum dataType, GLenum minFilterOpt, GLenum magFilterOpt)
 {
 #if(ANDROID)
     if(texture_unit == GL_TEXTURE_2D_ARRAY) {
@@ -481,8 +481,8 @@ void StarTexture::createTEXTURE_OBJ( unsigned int texture_unit, unsigned int tex
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, dataType, buffer);
         //glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, buffer);
         
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,minFilterOpt);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,magFilterOpt);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
         //        int y = 142*2834*4;
