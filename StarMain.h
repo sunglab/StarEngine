@@ -104,6 +104,7 @@ void winprintf(const char* fmt, ...);
 #define ToDouble(x) static_cast<double>(x)
 
 #define STRINGIFY(A) #A
+#define XSTRINGIFY(A) STRINGIFY(A)
 
 #if StarQt
 #define starLOG qDebug
