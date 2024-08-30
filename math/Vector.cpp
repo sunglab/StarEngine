@@ -18,6 +18,13 @@ Vec4 Normalize(Vec4 vec4)
 /*
  *      Vec2
  */
+
+Vec2::Vec2(const Vec3& in_V)
+{
+	x = in_V.x;
+	y = in_V.y;
+}
+
 Vec2 Vec2::operator+(const Vec2& in_Vec)const
 {
 	Vec2 out_Vector;
@@ -143,6 +150,11 @@ Vec2& Vec2::operator=(const __VERTEX__TYPE__& in_Scalar)
     return (*this);
 }
 
+Vec2& Vec2::operator=(const Vec3& in_Vec3)
+{
+    x = in_Vec3.x; y = in_Vec3.y;
+    return (*this);
+}
 
 __VERTEX__TYPE__ Vec2::length() const
 {
