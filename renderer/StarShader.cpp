@@ -140,7 +140,8 @@ unsigned int StarShader::CreateProgram(	GLuint* const pProgramObject,
 }
 
 unsigned int StarShader::CreateProgram(	GLuint* const pProgramObject,
-						   const GLuint ComputeShader)
+						                const GLuint ComputeShader,
+                                        bool shouldValidate)
 //CString* const pReturnError)
 {
 	// Create the shader program.
@@ -189,21 +190,23 @@ unsigned int StarShader::CreateProgram(	GLuint* const pProgramObject,
 		return 0;
 	}
 
-	glValidateProgram(*pProgramObject);
-	glGetProgramiv(*pProgramObject, GL_INFO_LOG_LENGTH, &logLength);
-	if (logLength > 0)
-	{
-		GLchar *log = (GLchar*)malloc(logLength);
-		glGetProgramInfoLog(*pProgramObject, logLength, &logLength, log);
-		starLOG("Program validate log:\n%s\n", log);
-		free(log);
-	}
-
-	glGetProgramiv(*pProgramObject, GL_VALIDATE_STATUS, &status);
-	if (status == 0)
-	{
-		starLOG("Failed to validate program\n");
-		return 0;
-	}
+    if (shouldValidate) {
+        glValidateProgram(*pProgramObject);
+        glGetProgramiv(*pProgramObject, GL_INFO_LOG_LENGTH, &logLength);
+        if (logLength > 0)
+        {
+          GLchar *log = (GLchar*)malloc(logLength);
+          glGetProgramInfoLog(*pProgramObject, logLength, &logLength, log);
+          starLOG("Program validate log:\n%s\n", log);
+          free(log);
+        }
+        
+        glGetProgramiv(*pProgramObject, GL_VALIDATE_STATUS, &status);
+        if (status == 0)
+        {
+          starLOG("Failed to validate program\n");
+          return 0;
+        }
+    }
 	return SUCCESS;
 }

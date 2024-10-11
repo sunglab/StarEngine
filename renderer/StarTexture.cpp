@@ -19,6 +19,7 @@ StarTexture::StarTexture(unsigned int texture_number)
     {
         texture[i].texture_width = 0;
         texture[i].texture_height = 0;
+        texture[i].texture_depth = 0;
         texture[i].texture_id = 0;
     }
 }
@@ -399,6 +400,41 @@ void StarTexture::createTEXTURE_RTF(unsigned int texture_width, unsigned int tex
 }
 #endif
 
+void StarTexture::createTEXTURE2DARRY_RTT(unsigned int width, unsigned int height, unsigned int depth, unsigned int texture_id, bool repeat, bool opt, GLint internalformat) {
+    texture[texture_id].texture_width = width;
+    texture[texture_id].texture_height = height;
+    texture[texture_id].texture_depth= depth;
+    
+    glGenTextures(1, &texture[texture_id].texture_id);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, texture[texture_id].texture_id);
+    glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, internalformat, width, height, depth);
+        
+    if (repeat)
+    {
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_REPEAT);
+    }
+    else
+    {
+        if(opt)
+        {
+            glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        else
+        {
+            glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        }
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    }
+}
+
 void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat, bool resize, bool opt, int type, GLint internalformat, GLenum format)
 {
     texture[texture_id].texture_width = texture_width;
@@ -538,6 +574,11 @@ void StarTexture::bindTEXTURE_CUBE(unsigned int texture_unit, unsigned int textu
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture[texture_id].texture_id);
 }
 
+void StarTexture::bindTEXTURE_2DARRAY(unsigned int texture_unit, unsigned int texture_id) {
+    glActiveTexture(texture_unit);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, texture[texture_id].texture_id);
+}
+
 void StarTexture::deleteTEXTURE(unsigned int texture_id)
 {
     if (texture[texture_id].texture_id != 0)
@@ -547,5 +588,6 @@ void StarTexture::deleteTEXTURE(unsigned int texture_id)
         texture[texture_id].texture_id = 0;
         texture[texture_id].texture_width = 0;
         texture[texture_id].texture_height = 0;
+        texture[texture_id].texture_depth = 0;
     }
 }
