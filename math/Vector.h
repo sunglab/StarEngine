@@ -19,6 +19,8 @@
 //#define __VERTEX__TYPE___ABS(a)			(	(VERTEX_TYPE)(	fabs(a)		)
 //template <typename T>
 
+class Vec3;
+class Vec4;
 class Vec2
 {
 public: 
@@ -37,7 +39,7 @@ public:
         x = in_XY;
         y = in_XY;
     }
-    
+    Vec2(const Vec3& vec3);
     Vec2 operator+(const Vec2& in_Vector)const;
     Vec2 operator-(const Vec2& in_Vector)const;
     Vec2& operator+=(const Vec2& in_Vector);
@@ -57,6 +59,7 @@ public:
 	__VERTEX__TYPE__& operator[](int index);
 	const __VERTEX__TYPE__& operator[](const int index) const;
     Vec2& operator=(const __VERTEX__TYPE__& in_Scalar);
+    Vec2& operator=(const Vec3& in_Vec3);
     
     __VERTEX__TYPE__ length()const;
     __VERTEX__TYPE__ lengthSquared()const;
