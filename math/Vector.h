@@ -106,13 +106,14 @@ public:
         y = in_V.y;
         z = in_Scalar;
     }
+
     Vec3(const Vec2& in_V)
     {
         x = in_V.x;
         y = in_V.y;
 		z = 0.0;
     }
-    
+
     Vec3 operator+(const Vec3& in_Vector)const;
     Vec3 operator-(const Vec3& in_Vector)const;
     
@@ -140,17 +141,15 @@ public:
     Vec3& operator-=(const __VERTEX__TYPE__& in_Scalar);
     Vec3& operator*=(const __VERTEX__TYPE__& in_Scalar);
     Vec3& operator/=(const __VERTEX__TYPE__& in_Scalar);
-    
+ 
 	__VERTEX__TYPE__& operator[](int index);
 	const __VERTEX__TYPE__& operator[](const int index) const;
     Vec3& operator=(const __VERTEX__TYPE__& in_Scalar);
-    
+
     __VERTEX__TYPE__ length()const;
     __VERTEX__TYPE__ lengthSquared()const;
 	__VERTEX__TYPE__ dot(const Vec3& in_V)const; 
 	void normalize(); Vec3 cross(const Vec3& in_V)const;
-    
-    
     
 	friend Vec3 operator*(const Vec3& in_V1, const Vec3& in_V2)
     {
@@ -205,6 +204,11 @@ public:
     {
         x = in_V.x; y = in_V.y; z = sz; w = sw;
     }
+
+    Vec4(const Vec2& in_V1, const Vec2& in_V2)
+    {
+        x = in_V1.x; y = in_V1.y; z = in_V2.x; w = in_V2.y;
+    }
     
     Vec4(const __VERTEX__TYPE__& s, const Vec3& in_V)
     {
@@ -243,8 +247,8 @@ public:
 	__VERTEX__TYPE__& operator[](int index);
 	const __VERTEX__TYPE__& operator[](const int index) const;
 
-    Vec4& operator=(const __VERTEX__TYPE__& in_Scalar); // [] where ??? is it ?
-    
+    Vec4& operator=(const __VERTEX__TYPE__& in_Scalar);
+
     friend Vec4 operator*(const Vec4& in_V1, const Vec4& in_V2)
     {
         return Vec4(in_V1.x*in_V2.x,in_V1.y*in_V2.y, in_V1.z*in_V2.z,1.0);
