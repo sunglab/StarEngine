@@ -30,7 +30,8 @@ unsigned int CreateProgram(	GLuint* const pProgramObject,
 						    const int i32NumAttribs);
 
 unsigned int CreateProgram(	GLuint* const pProgramObject,
-						    const GLuint ComputeShader);
+						    const GLuint ComputeShader,
+                            bool shouldValidate = true);
 						    //const char** const pszAttribs,
 						    //const int i32NumAttribs);
 };
