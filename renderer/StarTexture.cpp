@@ -400,6 +400,7 @@ void StarTexture::createTEXTURE_RTF(unsigned int texture_width, unsigned int tex
 }
 #endif
 
+#if (!MAC)
 void StarTexture::createTEXTURE2DARRY_RTT(unsigned int width, unsigned int height, unsigned int depth, unsigned int texture_id, bool repeat, bool opt, GLint internalformat) {
     texture[texture_id].texture_width = width;
     texture[texture_id].texture_height = height;
@@ -434,6 +435,7 @@ void StarTexture::createTEXTURE2DARRY_RTT(unsigned int width, unsigned int heigh
         glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     }
 }
+#endif
 
 void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat, bool resize, bool opt, int type, GLint internalformat, GLenum format)
 {
