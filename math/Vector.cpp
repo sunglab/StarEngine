@@ -25,6 +25,12 @@ Vec2::Vec2(const Vec3& in_V)
 	y = in_V.y;
 }
 
+Vec2::Vec2(const Vec4& in_V)
+{
+	x = in_V.x;
+	y = in_V.y;
+}
+
 Vec2 Vec2::operator+(const Vec2& in_Vec)const
 {
 	Vec2 out_Vector;
@@ -34,6 +40,14 @@ Vec2 Vec2::operator+(const Vec2& in_Vec)const
 }
 
 Vec2 Vec2::operator-(const Vec2& in_Vec)const
+{
+	Vec2 out_Vector;
+	out_Vector.x = x - in_Vec.x;
+	out_Vector.y = y - in_Vec.y;
+	return out_Vector;
+}
+
+Vec2 Vec2::operator-(const Vec4& in_Vec)const
 {
 	Vec2 out_Vector;
 	out_Vector.x = x - in_Vec.x;
@@ -156,6 +170,12 @@ Vec2& Vec2::operator=(const Vec3& in_Vec3)
     return (*this);
 }
 
+Vec2& Vec2::operator=(const Vec4& in_Vec4)
+{
+    x = in_Vec4.x; y = in_Vec4.y;
+    return (*this);
+}
+
 __VERTEX__TYPE__ Vec2::length() const
 {
  return sqrtf((x*x)+(y*y));
@@ -191,6 +211,24 @@ void Vec2::lerp(float t, Vec2& in_Vec)
 /*
  *      Vec3
  */
+ Vec3 Vec3::operator+(const Vec4& in_Vec)const
+{
+    Vec3 out_Vector;
+    out_Vector.x = x + in_Vec.x;
+    out_Vector.y = y + in_Vec.y;
+    out_Vector.z = z + in_Vec.z;
+	return out_Vector;
+}
+
+Vec3 Vec3::operator-(const Vec4& in_Vec)const
+{
+    Vec3 out_Vector;
+    out_Vector.x = x - in_Vec.x;
+    out_Vector.y = y - in_Vec.y;
+    out_Vector.z = z - in_Vec.z;
+	return out_Vector;
+}
+
 Vec3 Vec3::operator+(const Vec3& in_Vec)const
 {
     Vec3 out_Vector;

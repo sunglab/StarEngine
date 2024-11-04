@@ -40,8 +40,10 @@ public:
         y = in_XY;
     }
     Vec2(const Vec3& vec3);
+    Vec2(const Vec4& vec4);
     Vec2 operator+(const Vec2& in_Vector)const;
     Vec2 operator-(const Vec2& in_Vector)const;
+    Vec2 operator-(const Vec4& in_Vector)const;
     Vec2& operator+=(const Vec2& in_Vector);
     Vec2& operator-=(const Vec2& in_Vector);
     Vec2 operator*(const Vec2& in_Vector)const;
@@ -60,6 +62,7 @@ public:
 	const __VERTEX__TYPE__& operator[](const int index) const;
     Vec2& operator=(const __VERTEX__TYPE__& in_Scalar);
     Vec2& operator=(const Vec3& in_Vec3);
+    Vec2& operator=(const Vec4& in_Vec4);
     
     __VERTEX__TYPE__ length()const;
     __VERTEX__TYPE__ lengthSquared()const;
@@ -114,6 +117,8 @@ public:
 		z = 0.0;
     }
 
+    Vec3 operator+(const Vec4& in_Vector)const;
+    Vec3 operator-(const Vec4& in_Vector)const;
     Vec3 operator+(const Vec3& in_Vector)const;
     Vec3 operator-(const Vec3& in_Vector)const;
     
@@ -221,6 +226,14 @@ public:
         y = *pVector++;
         z = *pVector++;
         w = *pVector;
+    }
+
+    Vec4(const Vec2& in_V)
+    {
+        x = in_V.x;
+        y = in_V.y;
+		z = 0.0;
+        w = 0.0;
     }
     
     Vec4 operator+(const Vec4& in_Vector)const;
