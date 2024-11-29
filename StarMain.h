@@ -109,9 +109,9 @@ void winprintf(const char* fmt, ...);
 #if StarQt
 #define starLOG qDebug
 #elif IOS
-#define starLOG printf
+#define starLOG(...) do { printf(__VA_ARGS__); puts(""); } while (0)
 #elif MAC
-#define starLOG printf
+#define starLOG(...) do { printf(__VA_ARGS__); puts(""); } while (0)
 #elif ANDROID
 #define starLOG LOGE
 #elif _WIN32
