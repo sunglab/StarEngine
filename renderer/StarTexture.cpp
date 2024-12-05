@@ -466,6 +466,9 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
 void StarTexture::createTEXTURE_OBJ( unsigned int texture_unit, unsigned int texture_id, unsigned int bo, unsigned int width, unsigned int height, void* buffer, GLenum textureType, GLenum dataType, GLenum minFilterOpt, GLenum magFilterOpt)
 {
 #if(ANDROID)
+  texture[texture_id].texture_width = width;
+  texture[texture_id].texture_height = height;
+
     if(texture_unit == GL_TEXTURE_2D_ARRAY) {
         glGenTextures(1, &texture[texture_id].texture_id);
         glBindTexture(texture_unit, texture[texture_id].texture_id);
