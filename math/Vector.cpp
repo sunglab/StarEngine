@@ -247,6 +247,24 @@ Vec3 Vec3::operator-(const Vec3& in_Vec)const
 	return out_Vector;
 }
 
+Vec3 Vec3::operator+(const Vec2& in_Vec)const
+{
+  Vec3 out_Vector;
+  out_Vector.x = x + in_Vec.x;
+  out_Vector.y = y + in_Vec.y;
+  out_Vector.z = z;
+  return out_Vector;
+}
+
+Vec3 Vec3::operator-(const Vec2& in_Vec)const
+{
+  Vec3 out_Vector;
+  out_Vector.x = x - in_Vec.x;
+  out_Vector.y = y - in_Vec.y;
+  out_Vector.z = z;
+  return out_Vector;
+}
+
 Vec3 Vec3::operator+(const __VERTEX__TYPE__& in_Scalar)const
 { 
     Vec3 out_Vector;

@@ -121,6 +121,8 @@ public:
     Vec3 operator-(const Vec4& in_Vector)const;
     Vec3 operator+(const Vec3& in_Vector)const;
     Vec3 operator-(const Vec3& in_Vector)const;
+    Vec3 operator+(const Vec2& in_Vector)const;
+    Vec3 operator-(const Vec2& in_Vector)const;
     
     Vec3& operator+=(const Vec2& in_Vector);
     Vec3& operator-=(const Vec2& in_Vector);
