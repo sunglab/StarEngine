@@ -437,7 +437,7 @@ void StarTexture::createTEXTURE2DARRY_RTT(unsigned int width, unsigned int heigh
 }
 #endif
 
-void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat, bool resize, bool opt, int type, GLint internalformat, GLenum format)
+void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int texture_height, unsigned int texture_id, bool repeat, bool resize, bool opt, int type, GLint internalformat, GLenum format, bool storage)
 {
     texture[texture_id].texture_width = texture_width;
     texture[texture_id].texture_height = texture_height;
@@ -446,21 +446,30 @@ void StarTexture::createTEXTURE_RTT(unsigned int texture_width, unsigned int tex
     {
         glGenTextures(1, &texture[texture_id].texture_id);
         glBindTexture(GL_TEXTURE_2D, texture[texture_id].texture_id);
-        
-        if(type == ToInt(TextureType::CHAR))
+
+        if(storage)
         {
-            glTexImage2D(GL_TEXTURE_2D, 0, internalformat, texture_width, texture_height, 0, format, GL_UNSIGNED_BYTE, 0);
+            glTexStorage2D(GL_TEXTURE_2D, 1, internalformat, texture_width, texture_height);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
         }
-        else if(type == ToInt(TextureType::FLOAT))
+
+        else
         {
-            glTexImage2D(GL_TEXTURE_2D, 0, internalformat, texture_width, texture_height, 0, format, GL_FLOAT, 0);
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
-        }
-        else if(type == ToInt(TextureType::SHORT))
-        {
-            glTexImage2D(GL_TEXTURE_2D, 0, internalformat, texture_width, texture_height, 0, format, GL_UNSIGNED_SHORT_4_4_4_4, 0);
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+            if(type == ToInt(TextureType::CHAR))
+            {
+                glTexImage2D(GL_TEXTURE_2D, 0, internalformat, texture_width, texture_height, 0, format, GL_UNSIGNED_BYTE, 0);
+                glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+            }
+            else if(type == ToInt(TextureType::FLOAT))
+            {
+                glTexImage2D(GL_TEXTURE_2D, 0, internalformat, texture_width, texture_height, 0, format, GL_FLOAT, 0);
+                glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+            }
+            else if(type == ToInt(TextureType::SHORT))
+            {
+                glTexImage2D(GL_TEXTURE_2D, 0, internalformat, texture_width, texture_height, 0, format, GL_UNSIGNED_SHORT_4_4_4_4, 0);
+                glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[texture_id].texture_id, 0);
+            }
         }
         
         if (repeat)
