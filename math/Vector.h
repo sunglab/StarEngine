@@ -219,7 +219,10 @@ public:
     
     Vec4(const __VERTEX__TYPE__& s, const Vec3& in_V)
     {
-        x = s, y = in_V.z, z = in_V.y; w = in_V.z;
+        x = s; 
+        y = in_V.x;
+        z = in_V.y; 
+        w = in_V.z;
     }
     
     Vec4(const __VERTEX__TYPE__* pVector)
