@@ -1,4 +1,3 @@
-
 //
 //  Vector.h
 //
@@ -220,7 +219,7 @@ public:
     Vec4(const __VERTEX__TYPE__& s, const Vec3& in_V)
     {
         x = s; 
-        y = in_V.x;
+        y = in_V.x; 
         z = in_V.y; 
         w = in_V.z;
     }
