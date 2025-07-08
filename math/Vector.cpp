@@ -632,6 +632,16 @@ Vec4& Vec4::operator=(const __VERTEX__TYPE__& in_Scalar)
     return (*this);
 }
 
+Vec4& Vec4::operator=(const Vec2& in_Vec2) {
+    x = in_Vec2.x; y = in_Vec2.y; z = 0.f; w = 0.f;
+    return (*this);
+}
+
+Vec4& Vec4::operator=(const Vec3& in_Vec3) {
+    x = in_Vec3.x; y = in_Vec3.y; z = in_Vec3.z; w = 0.f;
+    return (*this);
+}
+
 __VERTEX__TYPE__ Vec4::length() const
 {
  return sqrtf((x*x)+(y*y)+(z*z)+(w*w));
