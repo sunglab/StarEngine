@@ -514,15 +514,17 @@ void StarTexture::createTEXTURE_OBJ( unsigned int texture_unit, unsigned int tex
         glGenTextures(1, &texture[texture_id].texture_id);
         glBindTexture(texture_unit, texture[texture_id].texture_id);
         glTexStorage3D(texture_unit, 1, textureType, width, height, 1);
-        glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, width, height, 1, GL_RGBA, dataType, buffer);
+        if (buffer)
+          glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, width, height, 1, GL_RGBA, dataType, buffer);
         glTexBufferEXT(texture_unit, textureType, bo);
         
     } else if(texture_unit == GL_TEXTURE_2D){
-        
+
         glGenTextures(1, &texture[texture_id].texture_id);
         glBindTexture(texture_unit, texture[texture_id].texture_id);
         glTexStorage2D(GL_TEXTURE_2D, 1, textureType, width, height);
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, dataType, buffer);
+        if (buffer)
+          glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, dataType, buffer);
         //glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, buffer);
         
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,minFilterOpt);
