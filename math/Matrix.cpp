@@ -688,11 +688,11 @@ void  Quaternion_Identity(Quaternion& out_Q)
 void Quaternion_Normalize(Quaternion& out_Q)
 {
     double t_BigMag =  out_Q.x*out_Q.x + out_Q.y*out_Q.y + out_Q.z*out_Q.z + out_Q.w*out_Q.w;
-    double t_Mag = (float)sqrt(t_BigMag);
+    double t_Mag = sqrt(t_BigMag);
     
-    if(t_Mag!=0.0f)
+    if(t_Mag > 1e-10)
     {
-        t_Mag = 1.0f / t_Mag;
+        t_Mag = 1.0 / t_Mag;
         out_Q.x *= t_Mag;
         out_Q.y *= t_Mag;
         out_Q.z *= t_Mag;
